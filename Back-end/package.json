@@ -1,9 +1,10 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon --inspect index.js",
+    "start": "nodemon server.js",
+    "debug": "nodemon --inspect server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,8 +25,7 @@
   "homepage": "https://github.com/OHonSam/CS300_NOODLE#readme",
   "description": "",
   "dependencies": {
-    "express": "^4.21.1",
-    "express-handlebars": "^8.0.1"
+    "express": "^4.21.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
