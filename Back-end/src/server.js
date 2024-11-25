@@ -2,9 +2,13 @@
 const express = require('express')
 const morgan = require('morgan')
 const route  = require('./routes/index')
+const db = require('./config/db')
 
 const app = express()
 const port = 5000
+
+// connect to db
+db.connect()
 
 // Middleware
 app.use(morgan('dev'))
@@ -17,8 +21,6 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   next()
 })
-
-
 
 // Routes
 route(app)
