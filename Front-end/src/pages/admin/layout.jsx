@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { FaChartBar, FaUser, FaBook, FaComments } from 'react-icons/fa'
-import AdminSidebar from '../../components/Sidebar/sidenav_admin';
+import AdminSidebar from '../../components/Sidebar/AdminSideNavigation';
 
 
 const AdminLayout = () => {
