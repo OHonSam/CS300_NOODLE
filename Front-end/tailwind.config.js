@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import colors from 'tailwindcss/colors'
+
 export default {
   content: [
     "./index.html",
@@ -6,7 +9,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+        colors: {
+            grey: colors.slate,
+            primary: colors.blue,
+            active: colors.green,
+            error: colors.red,
+            warning: colors.yellow,
+        },
+        fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+        },
+    },
   },
   plugins: [],
 }
