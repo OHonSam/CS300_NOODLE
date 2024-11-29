@@ -3,9 +3,11 @@ const express = require('express')
 const morgan = require('morgan')
 const route  = require('./routes/index')
 const db = require('./config/db')
+const dotenv = require('dotenv');
+dotenv.config({ path:'./.env'});
 
 const app = express()
-const port = 5000
+const port = process.env.PORT
 
 // connect to db
 db.connect()
