@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { FaChartBar, FaUser, FaBook, FaComments } from 'react-icons/fa'
-import AdminSidebar from '../../components/Sidebar/AdminSideNavigation';
+import SideNavigationBar from '../../components/Sidebar/SideNavigationBar';
 
 
 const AdminLayout = () => {
@@ -28,7 +28,7 @@ const AdminLayout = () => {
   ];
   return (
     <div className="flex">
-      <AdminSidebar navlinks={navlinks} />
+      <SideNavigationBar navlinks={navlinks} />
       <Outlet />
     </div>
   );

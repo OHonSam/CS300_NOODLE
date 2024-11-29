@@ -4,6 +4,7 @@ import AdminLayout from './pages/admin/layout'
 import AdminManageAccounts from './pages/admin/accounts'
 import AdminManageSections from './pages/admin/sections'
 import AdminAnnouncements from './pages/admin/announcements'
+import SignIn from './pages/auth/login'
 
 function App() {
 
@@ -11,6 +12,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Admin Routes */}
+        <Route path='/auth'>
+          <Route path='login' element={<SignIn />} />
+        </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="accounts" element={<AdminManageAccounts />} />
