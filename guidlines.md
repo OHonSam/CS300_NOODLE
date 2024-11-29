@@ -1,6 +1,18 @@
 1. Download and install Node.js from nodejs.org. This will also install npm.
-2. Add path to environment variables  
-3. npm run dev
+2. Add path to environment variables (optional)
+
+## Front-end
+1. npm i
+2. npm run dev
+
+## Back-end
+1. npm i
+2. npm run dev
+
+### Note
+Remember to run 2 folder in 2 different terminals, and it must be run on Command Prompt.
+
+
 
 # React + Vite
 
