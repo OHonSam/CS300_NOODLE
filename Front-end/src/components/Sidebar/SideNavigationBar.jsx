@@ -5,8 +5,6 @@ import { NavLink } from 'react-router-dom'
 const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  console.log(navlinks)
-
 return (
     <div
       className={`${

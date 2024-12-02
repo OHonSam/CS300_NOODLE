@@ -1,8 +1,10 @@
+import Header from "../../../components/Header";
+
 const AdminManageSections = () => {
   
   return (
     <div className="flex-1 p-6 bg-gray-100">
-      <h1 className="text-2xl font-bold">Manage Sections</h1>
+      <Header title={'Manage Sections'}/>
       <p>This is where the main content goes.</p>
     </div>
   );

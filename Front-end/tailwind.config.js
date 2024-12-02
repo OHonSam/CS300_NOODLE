@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 
 import colors from 'tailwindcss/colors'
-import daisyui from "daisyui"
 
 export default {
   content: [
     "./index.html",
     "./src/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     extend: {
@@ -23,8 +23,6 @@ export default {
         },
     },
   },
-  plugins: [
-    daisyui,
-  ],
+  plugins: [],
 }
 
