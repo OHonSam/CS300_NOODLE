@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaBars, FaArrowLeft } from "react-icons/fa";
 import { NavLink } from 'react-router-dom'
 
-const AdminSidebar = ({ navlinks }) => {
+const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   console.log(navlinks)
@@ -60,4 +60,4 @@ return (
   );
 };
 
-export default AdminSidebar;
+export default SideNavigationBar;
