@@ -72,7 +72,7 @@ const OtpConfirmation = () => {
 
   return (
     <div className="relative">
-      <NavLink to="/auth/login" className="absolute text-lg hover:text-grey-400 duration-500">
+      <NavLink to="/auth/login" className="absolute p-2 text-lg hover:text-grey-400 duration-500">
         <FaArrowLeft />
       </NavLink>
       <div className="text-center mb-6">
