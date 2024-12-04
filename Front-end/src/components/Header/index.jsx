@@ -2,8 +2,18 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaEllipsisH } from "react-icons/fa";
 
-const Header = ({ title, navlinks, configs }) => {
+const Header = ({ title, navlinks, configs, className }) => {
   const [currentTab, setCurrentTab] = useState(0);
+  const [currentConfigs, setCurrentConfigs] = useState(configs[0]);
+
+  const onTabChanged = (index) => {
+    setCurrentTab(index);
+    if (configs && configs.length > 1) {
+      setCurrentConfigs(configs[index]);
+    }
+    console.log(currentConfigs)
+  };
+  
 
   // const navlinks = [
   //   {
@@ -24,7 +34,7 @@ const Header = ({ title, navlinks, configs }) => {
   //   } 
   // ];
 
-  // const configs = [
+  // const configs = [[
   //   {
   //     name: 'Create An Account',
   //     onClick: () => console.log('Create Account')
@@ -37,13 +47,13 @@ const Header = ({ title, navlinks, configs }) => {
   //     name: 'Delete Account(s)',
   //     onClick: () => console.log('Delete Account')
   //   },
-  // ]
+  // ], ...]
 
   return (
-    <div>
+    <div className={className}>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">{title}</h1>
-          {configs && (
+          {currentConfigs && (
             <div>
               <button 
                 id="configDropdownButton"
@@ -56,12 +66,12 @@ const Header = ({ title, navlinks, configs }) => {
                 className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
               >
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="configDropdownButton">
-                  {configs.map((config, index) => {
+                  {currentConfigs.map((config, index) => {
                     return (
                       <li key={index} className='block px-4 py-2 hover:bg-gray-100' onClick={config.onClick}>
                         {config.name}
                       </li>
-                    )
+                    );
                   })}
                 </ul>
               </div>
@@ -73,7 +83,7 @@ const Header = ({ title, navlinks, configs }) => {
             <ul className="flex flex-wrap -mb-px">
               {navlinks.map((navigation, index) => {
                 return (
-                  <li key={index} className="me-1 cursor-pointer" onClick={ () => setCurrentTab(index) }>
+                  <li key={index} className="me-1 cursor-pointer" onClick={ () => onTabChanged(index) }>
                     <NavLink 
                       to={navigation.link} 
                       className={`inline-block p-4 border-b-2 rounded-t-lg ${currentTab == index ? 'border-primary-600 text-primary-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}`}
