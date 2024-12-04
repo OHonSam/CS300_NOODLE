@@ -1,15 +1,54 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [passwordVisbile, setPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    password: ""
+  });
 
-  const onSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    });
+  }
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    // Test error message
-    setErrorMessage("Incorrect Username or Password.");
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        console.log(data);
+        navigate("/admin/dashboard");
+      } else {
+        setErrorMessage(data.message || "Incorrect Username or Password.");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred during sign in. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -25,14 +64,16 @@ const SignIn = () => {
       </div>
       <form onSubmit={ onSubmit } className="space-y-6">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
+          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            Username
           </label>
           <input
-            type="email"
-            id="email"
+            type="text"
+            id="username"
+            value={formData.username}
+            onChange={ handleChange }
             className="w-full px-4 py-2 mt-1 text-gray-900 bg-white border border-black/30 rounded-md shadow-sm focus:border-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            placeholder="Enter your email address"
+            placeholder="Enter your username"
           />
         </div>
         <div>
@@ -43,6 +84,8 @@ const SignIn = () => {
             <input
               type={passwordVisbile ? "text" : "password"}
               id="password"
+              value={formData.password}
+              onChange={ handleChange }
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-white border border-black/30 rounded-md shadow-sm focus:border-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Enter your password"
             />
