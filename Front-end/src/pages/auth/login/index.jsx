@@ -39,7 +39,6 @@ const SignIn = () => {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        console.log(data);
         navigate("/admin/dashboard");
       } else {
         setErrorMessage(data.message || "Incorrect Username or Password.");

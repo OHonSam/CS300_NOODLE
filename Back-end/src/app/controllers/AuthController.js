@@ -12,7 +12,7 @@ class AuthController {
       const { username, password } = req.body;
       const isValid = await this.model.checkCredential(username, password);
       
-      if (isValid) {
+      if (!isValid) {
         return res.status(401).json({ message: 'Incorrect Username or Password!' });
       }
 
