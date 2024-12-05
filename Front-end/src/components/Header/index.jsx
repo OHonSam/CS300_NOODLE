@@ -14,40 +14,6 @@ const Header = ({ title, navlinks, configs, className }) => {
     }
   };
 
-  // const navlinks = [
-  //   {
-  //     name: 'Dashboard',
-  //     link: '/admin/dashboard',
-  //   } ,
-  //   {
-  //     name: 'Accounts',
-  //     link: '/admin/accounts',
-  //   },
-  //   {
-  //     name: 'Sections',
-  //     link: '/admin/sections',
-  //   },
-  //   {
-  //     name: 'Announcements',
-  //     link: '/admin/announcements',
-  //   } 
-  // ];
-
-  // const configs = [[
-  //   {
-  //     name: 'Create An Account',
-  //     onClick: () => console.log('Create Account')
-  //   },
-  //   {
-  //     name: 'Import Account CSV',
-  //     onClick: () => console.log('Import CSV')
-  //   },
-  //   {
-  //     name: 'Delete Account(s)',
-  //     onClick: () => console.log('Delete Account')
-  //   },
-  // ], ...]
-
   return (
     <div className={className}>
       <div className="flex justify-between items-center">
