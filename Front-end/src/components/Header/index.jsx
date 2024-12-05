@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaEllipsisH } from "react-icons/fa";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
 const Header = ({ title, navlinks, configs, className }) => {
   const [currentTab, setCurrentTab] = useState(0);
-  const [currentConfigs, setCurrentConfigs] = useState(configs[0]);
+  const [currentConfigs, setCurrentConfigs] = useState(configs ? configs[0] : []);
 
   const onTabChanged = (index) => {
     setCurrentTab(index);
     if (configs && configs.length > 1) {
       setCurrentConfigs(configs[index]);
     }
-    console.log(currentConfigs)
   };
-  
 
   // const navlinks = [
   //   {
@@ -53,29 +52,31 @@ const Header = ({ title, navlinks, configs, className }) => {
     <div className={className}>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">{title}</h1>
-          {currentConfigs && (
-            <div>
-              <button 
-                id="configDropdownButton"
-                data-dropdown-toggle="configDropdown"
-                className='text-lg hover:text-grey-400 p-2'>
-                <FaEllipsisH  />
-              </button>
-              <div
-                id="configDropdown"
-                className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
+          {currentConfigs.length > 0 && (
+            <Menu>
+              <MenuButton className='hover:text-gray-400'>
+                <FaEllipsisH className="text-lg" />
+              </MenuButton>
+              <MenuItems 
+                anchor='bottom'
+                className={'w-52 z-10 bg-white px-2 py-3 mt-3 rounded-xl'}
               >
-                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="configDropdownButton">
-                  {currentConfigs.map((config, index) => {
-                    return (
-                      <li key={index} className='block px-4 py-2 hover:bg-gray-100' onClick={config.onClick}>
+                {currentConfigs.map((config, index) => {
+                  return (
+                    <MenuItem key={index}
+                      className='p-2 w-full hover:bg-gray-300/30 rounded-xl '
+                    >
+                      <button 
+                        onClick={config.onClick}
+                        className="text-grey-800 text-left"
+                      >
                         {config.name}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
+                      </button>
+                    </MenuItem>
+                  )
+                })}
+              </MenuItems>
+            </Menu>
           )}
       </div>
       {navlinks && (

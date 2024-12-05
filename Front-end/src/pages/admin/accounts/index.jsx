@@ -1,3 +1,4 @@
+import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
 import { Outlet } from "react-router-dom";
 
@@ -66,6 +67,7 @@ const AdminManageAccountLayout = () => {
     <div className="flex-1 p-6 bg-gray-100">
       <Header title={'Accounts'} navlinks={navLinks} configs={configs}/>
       <Outlet />
+      <Footer />
     </div>
   );
 };
