@@ -25,7 +25,7 @@ const Header = ({ title, navlinks, configs, className }) => {
               </MenuButton>
               <MenuItems 
                 anchor='bottom'
-                className={'w-52 z-10 bg-white px-2 py-3 mt-3 rounded-xl'}
+                className={'w-52 z-10 bg-white px-2 py-3 mt-3 rounded-xl shadow-md'}
               >
                 {currentConfigs.map((config, index) => {
                   return (
