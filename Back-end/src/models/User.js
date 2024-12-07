@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     roleId: {type: Number, enum: Object.values(RoleId), required: true},
+    resetPasswordOTP: { type: String, default: null },
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Date, default: null },
 });
@@ -25,7 +26,7 @@ UserSchema.pre('save', function(next) {
     });
 });
 
-UserSchema.methods.checkCredentials = function(password) {
+UserSchema.methods.checkCredential = function(password) {
     return bcrypt.compare(password, this.password);
 };
 

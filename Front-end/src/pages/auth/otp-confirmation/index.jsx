@@ -11,7 +11,6 @@ const OtpConfirmation = () => {
   
   // Get username from location state (passed from previous screen)
   const username = location.state?.username;
-
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);

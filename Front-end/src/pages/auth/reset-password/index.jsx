@@ -1,18 +1,76 @@
 import { useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Get username and temporary token from location state
+  const username = location.state?.username;
+  const tempToken = localStorage.getItem('tempToken');
 
-  const onSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    newPassword: '',
+    confirmPassword: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    // Test error message
-    setErrorMessage("Incorrect OTP code.");
-    navigate("/auth/login")
+    setErrorMessage("");
+    
+    // Validate password match
+    if (formData.newPassword !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:5000/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tempToken}`
+        },
+        body: JSON.stringify({
+          username,
+          newPassword: formData.newPassword,
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Clear temporary token
+        localStorage.removeItem('tempToken');
+        
+        // Navigate to login with success message
+        navigate("/auth/login", { 
+          state: { 
+            successMessage: "Password reset successfully. Please log in." 
+          } 
+        });
+      } else {
+        setErrorMessage(data.message || "Failed to reset password");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -29,17 +87,21 @@ const ResetPassword = () => {
         <h2 className="text-2xl font-semibold text-gray-800">Reset Password</h2>
         <p className="text-gray-500">Enter a new password.</p>
       </div>
-      <form onSubmit={ onSubmit } className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6">
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
             New Password
           </label>
           <div className="relative">
             <input 
               type={newPasswordVisible ? "text" : "password"}
-              id="password"
+              id="newPassword"
+              value={formData.newPassword}
+              onChange={handleInputChange}
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-white border border-black/30 rounded-md shadow-sm focus:border-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Enter your new password"  />
+              placeholder="Enter your new password"
+              required
+            />
             <button
               type="button"
               className="absolute inset-y-0 right-3 flex items-center text-gray-500"
@@ -50,15 +112,19 @@ const ResetPassword = () => {
           </div>
         </div>
         <div>
-          <label htmlFor="confirm" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
             Confirm Password
           </label>
           <div className="relative">
             <input 
               type={confirmPasswordVisible ? "text" : "password"}
-              id="confirm"
+              id="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-white border border-black/30 rounded-md shadow-sm focus:border-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Confirm your new password"  />
+              placeholder="Confirm your new password"
+              required
+            />
             <button
               type="button"
               className="absolute inset-y-0 right-3 flex items-center text-gray-500"
@@ -70,9 +136,10 @@ const ResetPassword = () => {
         </div>
         <button
           type="submit"
-          className="w-full px-4 py-2 text-white bg-primary-600 rounded-md hover:bg-primary-700"
+          className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          disabled={isLoading}
         >
-          Confirm
+          {isLoading ? "Resetting..." : "Confirm"}
         </button>
       </form>
       {errorMessage && <p className="mt-2 text-sm text-center text-error-500">{errorMessage}</p>}
