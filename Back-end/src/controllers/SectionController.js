@@ -1,6 +1,6 @@
 const section = require('../models/section')
 
-class SiteController {
+class SectionController {
     index(req, res) {
 
         section.find({})
@@ -12,14 +12,6 @@ class SiteController {
             res.status(500).json({ error: 'Internal Server Error' });
         });
     }
+}
 
-    home(req, res) {
-        res.json({ message: "Home" })
-    }
-
-    search(req, res) {
-        res.json({ message: "Search" })
-    }
-  }
-
-module.exports = new SiteController()
+module.exports = new SectionController()

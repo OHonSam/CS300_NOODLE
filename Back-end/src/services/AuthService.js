@@ -1,4 +1,4 @@
-class AuthModel {
+class AuthService {
     constructor(Account) {
         this.Account = Account;
     }
@@ -45,4 +45,4 @@ class AuthModel {
     }
 }
 
-module.exports = AuthModel;
+module.exports = AuthService;

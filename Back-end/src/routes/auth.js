@@ -1,14 +1,14 @@
 // routes/auth.js
 const express = require('express');
 const router = express.Router();
-const AuthController = require('../app/controllers/AuthController');
-const AuthModel = require('../app/models/AuthModel');
-const { Account } = require('../app/models/Account');
+const AuthController = require('../controllers/AuthController');
+const AuthService = require('../services/AuthService');
+const { Account } = require('../models/Account');
 const authMiddleware = require('../middleware/auth');
 
 // Initialize controller
-const authModel = new AuthModel(Account);
-const authController = new AuthController(authModel);
+const authService = new AuthService(Account);
+const authController = new AuthController(authService);
 
 // Routes
 router.post('/login', (req, res) => authController.login(req, res));

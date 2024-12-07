@@ -5,11 +5,9 @@ const route  = require('./routes/index')
 const db = require('./config/db')
 const dotenv = require('dotenv');
 dotenv.config({ path:'./.env'});
-
 const app = express()
 const port = process.env.PORT
 
-// connect to db
 db.connect()
 
 // Middleware
@@ -24,7 +22,6 @@ app.use((req, res, next) => {
   next()
 })
 
-// Routes
 route(app)
 
 // Error handling middleware

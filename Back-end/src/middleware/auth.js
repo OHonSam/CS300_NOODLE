@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Account } = require('../app/models/Account');
+const { Account } = require('../models/Account');
 
 const authMiddleware = {
   verifyToken: (req, res, next) => {
