@@ -63,9 +63,9 @@ class AuthController {
     const { username } = req.body;
     
     try {
-      const account = await this.authService.Account.findOne({ username });
-      if (!account) {
-        return res.status(404).json({ message: 'Account not found' });
+      const user = await this.authService.User.findOne({ username });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
       }
 
       const otp = this.generateOTP();
@@ -75,8 +75,8 @@ class AuthController {
         return res.status(500).json({ message: 'Failed to generate OTP' });
       }
 
-      // Assuming email is stored in the account model
-      const emailSent = await this.mailService.sendOTP(account.email, otp);
+      // Assuming email is stored in the user model
+      const emailSent = await this.mailService.sendOTP(user.email, otp);
       
       if (!emailSent) {
         return res.status(500).json({ message: 'Failed to send OTP email' });

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Account } = require('../models/Account');
+const { User } = require('../models/User');
 
 const authMiddleware = {
   verifyToken: (req, res, next) => {
@@ -21,9 +21,9 @@ const authMiddleware = {
   checkRole: (allowedRoles) => {
     return async (req, res, next) => {
       try {
-        const account = await Account.findOne({ username: req.user.username });
+        const user = await User.findOne({ username: req.user.username });
         
-        if (!account || !allowedRoles.includes(account.roleId)) {
+        if (!user || !allowedRoles.includes(user.roleId)) {
           return res.status(403).json({ message: 'Insufficient permissions' });
         }
         

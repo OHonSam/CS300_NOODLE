@@ -7,7 +7,7 @@ const RoleId = {
     STUDENT: 2
 };
 
-const AccountSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     roleId: {type: Number, enum: Object.values(RoleId), required: true},
@@ -15,7 +15,7 @@ const AccountSchema = new mongoose.Schema({
     resetPasswordExpires: { type: Date, default: null },
 });
 
-AccountSchema.pre('save', function(next) {
+UserSchema.pre('save', function(next) {
     if (!this.isModified('password')) return next();
     bcrypt.hash(this.password, 12, (err, hash) => {
         if (err) return next(err);
@@ -24,10 +24,10 @@ AccountSchema.pre('save', function(next) {
     });
 });
 
-AccountSchema.methods.checkCredentials = function(password) {
+UserSchema.methods.checkCredentials = function(password) {
     return bcrypt.compare(password, this.password);
 };
 
-const Account = mongoose.model('Account', AccountSchema);
+const User = mongoose.model('User', UserSchema);
 
-module.exports = { Account, RoleId };
+module.exports = { User, RoleId };

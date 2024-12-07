@@ -3,11 +3,11 @@ const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/AuthController');
 const AuthService = require('../services/AuthService');
-const { Account } = require('../models/Account');
+const { User } = require('../models/User');
 const authMiddleware = require('../middleware/auth');
 
 // Initialize controller
-const authService = new AuthService(Account);
+const authService = new AuthService(User);
 const authController = new AuthController(authService);
 
 // Routes

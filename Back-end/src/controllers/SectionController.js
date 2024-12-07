@@ -1,8 +1,7 @@
-const section = require('../models/section')
+const section = require('../models/Section')
 
 class SectionController {
     index(req, res) {
-
         section.find({})
         .then(section => {
             res.json(section);
