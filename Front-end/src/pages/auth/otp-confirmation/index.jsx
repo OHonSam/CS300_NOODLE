@@ -34,7 +34,7 @@ const OtpConfirmation = () => {
       if (response.ok) {
         // Store temporary token and navigate to password reset page
         localStorage.setItem('tempToken', data.token);
-        navigate("/auth/new-password", { state: { username } });
+        navigate("/auth/reset-password", { state: { username } });
       } else {
         setErrorMessage(data.message || "Invalid OTP code.");
       }

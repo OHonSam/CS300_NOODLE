@@ -49,6 +49,45 @@ const SignIn = () => {
       setIsLoading(false);
     }
   };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    
+    // Check if username is empty
+    if (!formData.username) {
+      setErrorMessage("Please enter your username to reset password");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const response = await fetch('http://localhost:5000/auth/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        navigate("/auth/otp-confirmation", { 
+          state: { username: formData.username }
+        });
+      } else {
+        setErrorMessage(data.message || "Failed to send OTP. Please try again.");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   return (
     <div>
@@ -102,9 +141,13 @@ const SignIn = () => {
             <input type="checkbox" className="checkbox checkbox-sm mr-2 [--chkbg:theme(colors.primary.500)] rounded" />
             Remember me
           </label>
-          <NavLink to="/auth/otp-confirmation" className="text-sm text-blue-500 hover:underline">
+         <button
+            onClick={handleForgotPassword}
+            className="text-sm text-blue-500 hover:underline"
+            disabled={isLoading}
+          >
             Forgot password?
-          </NavLink>
+          </button>
         </div>
         <button
           type="submit"

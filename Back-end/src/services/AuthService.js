@@ -30,7 +30,7 @@ class AuthService {
         const user = await this.User.findOne({ username });
         if (!user) return false;
         user.resetPasswordToken = resetPasswordToken;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        user.resetPasswordExpires = Date.now() + 300000; // 5 minutes
         await user.save();
         return true;
     }
