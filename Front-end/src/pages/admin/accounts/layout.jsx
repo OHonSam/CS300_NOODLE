@@ -6,7 +6,7 @@ import Tab from "../../../components/tab";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
 import FileUploadDialog from "../../../components/dialog/FileUploadDialog";
 import StudentAccountView from "./student_accounts";
-import ToastSuccess from "../../../components/toast/ToastSuccess";
+import ToastSuccess from "../../../components/toast";
 
 const AdminManageAccountLayout = () => {
   const [studentCreationDialogVisible, setStudentCreationDialogVisible] = useState(false);
@@ -70,7 +70,7 @@ const AdminManageAccountLayout = () => {
 
   return (
     <StudentInfoProvider>
-      <div className="relative flex items-center justify-center p-8 bg-gray-100 w-full">
+      <div className="relative flex flex-col items-center justify-center p-8 bg-gray-100 w-full h-full">
         <Tab title={'Accounts'} tabs={tabs} configs={configs} className={'w-full h-full'}>
           <div className="hidden p-4 h-full rounded-lg" id="student" role="tabpanel" aria-labelledby="student-tab">
             <StudentAccountView />
@@ -101,8 +101,12 @@ const AdminManageAccountLayout = () => {
           fileFormat={['.csv', '.xlsx', '.txt']}
           className={'left-[25%] right-[25%] top-44 bottom-44'}
         />
+      {toast && <ToastSuccess message={toast} onClick={ () => setToast('') } className={'m-auto top-6'} Icon={
+        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+        </svg>
+      }/>}
       </div>
-      {toast && <ToastSuccess message={toast} onClick={ () => setToast('') } className={'m-auto top-6'}/>}
     </StudentInfoProvider>
   );
 };

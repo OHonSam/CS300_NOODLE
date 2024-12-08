@@ -67,7 +67,7 @@ const Tab = ({ children, title, tabs, configs, className }) => {
             </ul>
         </div>
       )}
-      <div id="default-tab-content" className="">
+      <div id="default-tab-content">
         {children}
       </div>
     </div>
