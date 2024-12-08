@@ -1,4 +1,4 @@
-const section = require('../models/Section')
+const section = require('../models/SectionModel')
 
 class SectionController {
     index(req, res) {

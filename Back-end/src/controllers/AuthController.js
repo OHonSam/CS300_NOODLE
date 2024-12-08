@@ -96,7 +96,6 @@ class AuthController {
   }
   
   async logout(req, res) {
-    // In a real application, you might want to invalidate the token
     res.json({ message: 'Logged out successfully' });
   }
 }

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../models/User');
+const { User } = require('../models/UserModel');
 
 const authMiddleware = {
   verifyToken: (req, res, next) => {
@@ -62,15 +62,12 @@ const authMiddleware = {
     }
 
     try {
-      // Verify the token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
-      // Additional validation for password reset
       if (!decoded.passwordReset || !decoded.username || !decoded.resetPasswordToken) {
         return res.status(401).json({ message: 'Invalid reset token' });
       }
 
-      // Verify the reset token against the user's stored reset token
       const user = await User.findOne({ 
         username: decoded.username,
         resetPasswordToken: decoded.resetPasswordToken,

@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/AuthController');
 const AuthService = require('../services/AuthService');
-const { User } = require('../models/User');
-const authMiddleware = require('../middleware/auth');
+const { User } = require('../models/UserModel');
+const authMiddleware = require('../middleware/AuthMiddleware');
 const MailService = require('../services/MailService');
 
 // Initialize controller
