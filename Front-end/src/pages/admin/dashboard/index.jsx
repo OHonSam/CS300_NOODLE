@@ -1,9 +1,9 @@
-import Header from "../../../components/Header";
+import Header from "../../../components/tab";
 
 const AdminDashboard = () => {
   
   return (
-    <div className="flex-1 p-6 bg-gray-100">
+    <div className="relative flex items-center justify-center p-8 bg-gray-100 w-full">
       <Header title={'Dashboard'}/>
       <p>This is where the main content goes.</p>
     </div>

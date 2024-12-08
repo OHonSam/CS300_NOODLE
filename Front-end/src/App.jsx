@@ -8,10 +8,8 @@ import SignIn from './pages/auth/login'
 import AuthLayout from './pages/auth/layout'
 import OtpConfirmation from './pages/auth/otp-confirmation'
 import ResetPassword from './pages/auth/reset-password'
-import StudentAccountView from './pages/admin/accounts/student_accounts'
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
@@ -26,12 +24,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="accounts" element={<AdminManageAccountLayout />}>
-            <Route index element={<Navigate to="/admin/accounts/student" replace />} />
-            <Route path='student' element={<StudentAccountView />}/>
-            <Route path='teacher' element={<p>Teacher page</p>}/>
-            <Route path='admin' element={<p>Admin page</p>}/>
-          </Route>
+          <Route path="accounts" element={<AdminManageAccountLayout />}/>
           <Route path="sections" element={<AdminManageSections />} />
           <Route path="announcements" element={<AdminAnnouncements />} />
         </Route>

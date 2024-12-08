@@ -1,11 +1,13 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
+import { useStudentInfo } from "../../hooks/useStudentInfo";
 
-const StudentCreationDialog = ({ isOpen, onSubmit, onClose, className }) => {
-  const [selectPlaceHolder, setSelectPlaceHolder] = useState(true);
-  const [datePickerPlaceHolder, setDatePickerPlaceholder] = useState(true);
-  const [formData, setFormData] = useState({
+const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose, className }) => {
+  const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');
+  const [datePickerPlaceHolder, setDatePickerPlaceholder] = useState(dialogFor === 'create');
+  const { addStudent, updateStudent, deleteStudent } = useStudentInfo();
+  const [formData, setFormData] = useState(studentData ? studentData : {
     studentId: '',
     fullName: '',
     gender: 'default',
@@ -16,21 +18,7 @@ const StudentCreationDialog = ({ isOpen, onSubmit, onClose, className }) => {
     email: '',
   });
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-    handleClose();
-  };
-
-  const handleClose = () => {
+  const resetForm = () => {
     setSelectPlaceHolder(true);
     setDatePickerPlaceholder(true);
     setFormData({
@@ -43,6 +31,37 @@ const StudentCreationDialog = ({ isOpen, onSubmit, onClose, className }) => {
       address: '',
       email: '',
     });
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (dialogFor === 'create') {
+      onCreate(formData);
+      addStudent(formData);
+    } else {
+      onUpdate(formData);
+      updateStudent(formData);
+    }
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    onDelete(formData);
+    deleteStudent(formData.studentId);
+    handleClose();
+  };
+
+  const handleClose = () => {
+    if (dialogFor === 'create') 
+      resetForm();
     onClose();
   };
 
@@ -118,11 +137,32 @@ const StudentCreationDialog = ({ isOpen, onSubmit, onClose, className }) => {
               value={formData.email}
               onChange={handleChange}/>
           </div>  
-          <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+          {dialogFor === 'info' ? (  
+            <div className="flex">
+              <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                Save
+              </button>
+              <button onClick={handleDelete}
+                className="text-white ms-2 bg-error-700 hover:bg-error-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              >
+                Delete
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                Add
+              </button>
+              <button onClick={resetForm}
+                className="text-white ms-2 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                Clear
+              </button>
+            </div>
+          )}
         </form>
       </DialogPanel>
     </Dialog>
   );
 };
 
-export default StudentCreationDialog;
+export default StudentInfoDialog;

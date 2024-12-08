@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 import { FaEllipsisH } from "react-icons/fa";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
-const Header = ({ title, navlinks, configs, className }) => {
+const Tab = ({ children, title, tabs, configs, className }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const [currentConfigs, setCurrentConfigs] = useState(configs ? configs[0] : []);
 
@@ -45,26 +44,34 @@ const Header = ({ title, navlinks, configs, className }) => {
             </Menu>
           )}
       </div>
-      {navlinks && (
+      {tabs && (
         <div className="text-sm font-medium text-center text-grey-600 border-b border-grey-200">
-            <ul className="flex flex-wrap -mb-px">
-              {navlinks.map((navigation, index) => {
+            <ul className="flex flex-wrap -mb-px" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+              {tabs.map((tab, index) => {
                 return (
-                  <li key={index} className="me-1 cursor-pointer" onClick={ () => onTabChanged(index) }>
-                    <NavLink 
-                      to={navigation.link} 
+                  <li key={index} role="presentation" className="me-1 cursor-pointer" onClick={ () => onTabChanged(index) }>
+                    <button 
+                      id={tab.id} 
+                      data-tabs-target={`#${tab.tabId}`}
+                      role="tab"
+                      type="button"
+                      aria-controls={tab.tabId}
+                      aria-selected={false}
                       className={`inline-block p-4 border-b-2 rounded-t-lg ${currentTab == index ? 'border-primary-600 text-primary-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}`}
                     >
-                      {navigation.name}
-                    </NavLink>
+                      {tab.name}
+                    </button>
                   </li>
                 );
               })}
             </ul>
         </div>
       )}
+      <div id="default-tab-content" className="">
+        {children}
+      </div>
     </div>
   );
 };
 
-export default Header;
+export default Tab;

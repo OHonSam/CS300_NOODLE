@@ -27,7 +27,7 @@ const AdminLayout = () => {
     } 
   ];
   return (
-    <div className="flex">
+    <div className="flex h-screen w-screen">
       <SideNavigationBar navlinks={navlinks} />
       <Outlet />
     </div>
