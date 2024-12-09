@@ -3,6 +3,7 @@ import { TeacherInfoContext } from "../hooks/useTeacherInfo";
 
 export const TeacherInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend
+  const [currentPage, setCurrentPage] = useState(1);
   const [teachers, setTeachers] = useState([
     {
       teacherId: '22125009',
@@ -36,6 +37,18 @@ export const TeacherInfoProvider = ({ children }) => {
     }
   ]);
 
+  const teachersPerPage = 10;
+  const paginatedTeachers = teachers.slice(
+    (currentPage - 1) * teachersPerPage,
+    currentPage * teachersPerPage
+  );
+
+  const totalPages = Math.ceil(teachers.length / teachersPerPage);
+
+  const changePage = (page) => {
+    setCurrentPage(page);
+  };
+
   const addTeacher = async (newTeacher) => {
     // call backend API
     setTeachers((prev) => [...prev, newTeacher]);
@@ -57,7 +70,7 @@ export const TeacherInfoProvider = ({ children }) => {
 
   return (
     <TeacherInfoContext.Provider
-      value={{ teachers, addTeacher, updateTeacher, deleteTeacher }}
+      value={{ teachers: paginatedTeachers, totalPages, changePage, addTeacher, updateTeacher, deleteTeacher }}
     >
       {children}
     </TeacherInfoContext.Provider>

@@ -3,6 +3,7 @@ import { AdminInfoContext } from "../hooks/useAdminInfo";
 
 export const AdminInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend
+  const [currentPage, setCurrentPage] = useState(1);
   const [admins, setAdmins] = useState([
     {
       adminId: '22125009',
@@ -33,6 +34,18 @@ export const AdminInfoProvider = ({ children }) => {
     }
   ]);
 
+  const adminsPerPage = 10;
+  const paginatedAdmins = admins.slice(
+    (currentPage - 1) * adminsPerPage,
+    currentPage * adminsPerPage
+  );
+
+  const totalPages = Math.ceil(admins.length / adminsPerPage);
+
+  const changePage = (page) => {
+    setCurrentPage(page);
+  };
+
   const addAdmin = async (newAdmin) => {
     // call backend API
     setAdmins((prev) => [...prev, newAdmin]);
@@ -54,7 +67,7 @@ export const AdminInfoProvider = ({ children }) => {
 
   return (
     <AdminInfoContext.Provider
-      value={{ admins, addAdmin, updateAdmin, deleteAdmin }}
+      value={{ admins: paginatedAdmins, totalPages, changePage, addAdmin, updateAdmin, deleteAdmin }}
     >
       {children}
     </AdminInfoContext.Provider>

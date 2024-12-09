@@ -3,6 +3,7 @@ import { StudentInfoContext } from "../hooks/useStudentInfo";
 
 export const StudentInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend
+  const [currentPage, setCurrentPage] = useState(1);
   const [students, setStudents] = useState([
     {
       studentId: '22125009',
@@ -36,6 +37,18 @@ export const StudentInfoProvider = ({ children }) => {
     }
   ]);
 
+  const studentsPerPage = 10;
+  const paginatedStudents = students.slice(
+    (currentPage - 1) * studentsPerPage,
+    currentPage * studentsPerPage
+  );
+
+  const totalPages = Math.ceil(students.length / studentsPerPage);
+
+  const changePage = (page) => {
+    setCurrentPage(page);
+  };
+
   const addStudent = async (newStudent) => {
     // call backend API
     setStudents((prev) => [...prev, newStudent]);
@@ -57,7 +70,7 @@ export const StudentInfoProvider = ({ children }) => {
 
   return (
     <StudentInfoContext.Provider
-      value={{ students, addStudent, updateStudent, deleteStudent }}
+      value={{ students: paginatedStudents, totalPages, changePage, addStudent, updateStudent, deleteStudent }}
     >
       {children}
     </StudentInfoContext.Provider>
