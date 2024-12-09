@@ -24,7 +24,7 @@ const SignIn = () => {
     setIsLoading(true);
     setErrorMessage("");
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const SignIn = () => {
     setErrorMessage("");
 
     try {
-      const response = await fetch('http://localhost:5000/auth/reset-password', {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const OtpConfirmation = () => {
     setErrorMessage("");
 
     try {
-      const response = await fetch('http://localhost:5000/auth/verify-otp', {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/auth/verify-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const OtpConfirmation = () => {
     setErrorMessage("");
 
     try {
-      const response = await fetch('http://localhost:5000/auth/reset-password', {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
