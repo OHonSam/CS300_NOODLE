@@ -1,12 +1,10 @@
 // src/routes/index.js
-
-const welcomeRouter = require('./welcome')
-const siteRouter = require('./site')
+const authRouter = require('./auth')
+const sectionRouter = require('./section')
 
 function route(app) {
-  app.use('/api', welcomeRouter)
-
-  app.use('/', siteRouter)
+  app.use('/auth', authRouter)
+  app.use('/', sectionRouter)
 }
 
 module.exports = route

@@ -7,7 +7,7 @@
 
 ## Back-end
 1. npm i
-2. npm run dev
+2. npm start
 
 ### Note
 Remember to run 2 folder in 2 different terminals, and it must be run on Command Prompt.
