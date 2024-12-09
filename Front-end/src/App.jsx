@@ -14,6 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Authentication Routes */}
+        <Route index element={<Navigate to="/auth" replace />} />
         <Route path='/auth' element={<AuthLayout />}>
           <Route index element={<Navigate to="/auth/login" replace />} />
           <Route path='login' element={<SignIn />} />

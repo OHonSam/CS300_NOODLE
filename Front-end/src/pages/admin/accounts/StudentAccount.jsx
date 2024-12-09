@@ -1,9 +1,9 @@
-import Table from "../../../../components/table";
-import Pager from "../../../../components/footer/pager";
+import Table from "../../../components/table";
+import Pager from "../../../components/footer/pager";
 import { useState } from "react";
-import StudentInfoDialog from "../../../../components/dialog/StudentInfoDialog";
-import { useStudentInfo } from "../../../../hooks/useStudentInfo";
-import ToastSuccess from "../../../../components/toast";
+import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
+import { useStudentInfo } from "../../../hooks/useStudentInfo";
+import ToastSuccess from "../../../components/toast";
 
 const StudentAccountView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
