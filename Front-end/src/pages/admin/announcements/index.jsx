@@ -1,8 +1,10 @@
+import Header from "../../../components/tab";
+
 const AdminAnnouncements = () => {
   
   return (
-    <div className="flex-1 p-6 bg-gray-100">
-      <h1 className="text-2xl font-bold">Announcements</h1>
+    <div className="relative flex items-center justify-center p-8 bg-gray-100 w-full h-full">
+      <Header title={'Announcements'}/>
       <p>This is where the main content goes.</p>
     </div>
   );

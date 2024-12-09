@@ -5,13 +5,11 @@ import { NavLink } from 'react-router-dom'
 const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
 
-  console.log(navlinks)
-
 return (
     <div
       className={`${
-        isOpen ? "w-64" : "w-20"
-      } bg-gray-900 h-screen duration-300 flex flex-col relative`}
+        isOpen ? "w-80" : "w-20"
+      } bg-gray-900 h-screen duration-300 flex flex-col relative py-4`}
     >
       {/* Logo */}
       <div className={`flex items-center gap-4 p-4 ${isOpen? 'justify-between' : 'justify-center'}`}>
