@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
 import { useStudentInfo } from "../../hooks/useStudentInfo";
 
-const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose, className }) => {
+const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
   const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');
   const [datePickerPlaceHolder, setDatePickerPlaceholder] = useState(dialogFor === 'create');
   const { addStudent, updateStudent, deleteStudent } = useStudentInfo();
@@ -68,7 +68,7 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
   return (
     <Dialog open={isOpen} onClose={handleClose} 
       className={`absolute top-0 left-0 w-screen h-screen backdrop-blur-sm`}>
-      <DialogPanel className={`absolute m-auto bg-white px-10 py-8 z-50 focus:outline-none shadow-lg ${className} rounded-xl`}>
+      <DialogPanel className={`absolute w-[700px] bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
         <div className="mt-4 mb-8 flex items-center justify-between">
           <h3 className="font-semibold text-2xl">Add a student</h3>
           <button className="hover:text-gray-300" onClick={handleClose}>

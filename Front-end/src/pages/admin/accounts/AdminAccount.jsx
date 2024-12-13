@@ -35,7 +35,6 @@ const AdminAccountView = () => {
           onClose={ () => setAdminInfoDialogVisible(false) }
           onUpdate={ () => setToast('Admin updated successfully.') }
           onDelete={ () => setToast('Admin deleted successfully.') }
-          className={'left-[25%] right-[25%] top-12 bottom-12'}
         />
       </Table>
       {totalPages > 1 && <Pager 

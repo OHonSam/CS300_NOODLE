@@ -36,7 +36,6 @@ const StudentAccountView = () => {
           onClose={ () => setStudentInfoDialogVisible(false) }
           onUpdate={ () => setToast('Student updated successfully.') }
           onDelete={ () => setToast('Student deleted successfully.') }
-          className={'left-[25%] right-[25%] top-12 bottom-12'}
         />
       </Table>
       {totalPages > 1 && <Pager 

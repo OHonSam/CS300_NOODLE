@@ -36,7 +36,6 @@ const TeacherAccountView = () => {
           onClose={ () => setTeacherDialogVisible(false) }
           onUpdate={ () => setToast('Teacher updated successfully.') }
           onDelete={ () => setToast('Teacher deleted successfully.') }
-          className={'left-[25%] right-[25%] top-12 bottom-12'}
         />
       </Table>
       {totalPages > 1 && <Pager 

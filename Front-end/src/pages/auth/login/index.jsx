@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -17,7 +17,13 @@ const SignIn = () => {
       ...formData,
       [e.target.id]: e.target.value
     });
-  }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && formData.username && formData.password) {
+      onSubmit(e);
+    }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +49,7 @@ const SignIn = () => {
       } else {
         setErrorMessage(data.message || "Incorrect Username or Password.");
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("An error occurred during sign in. Please try again.");
     } finally {
       setIsLoading(false);
@@ -82,7 +88,7 @@ const SignIn = () => {
       } else {
         setErrorMessage(data.message || "Failed to send OTP. Please try again.");
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -108,8 +114,10 @@ const SignIn = () => {
           <input
             type="text"
             id="username"
+            required
             value={formData.username}
-            onChange={ handleChange }
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
             className="w-full px-4 py-2 mt-1 text-gray-900 bg-white border border-black/30 rounded-md shadow-sm focus:border-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Enter your username"
           />
@@ -122,8 +130,10 @@ const SignIn = () => {
             <input
               type={passwordVisbile ? "text" : "password"}
               id="password"
+              required
               value={formData.password}
-              onChange={ handleChange }
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-white border border-black/30 rounded-md shadow-sm focus:border-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Enter your password"
             />
@@ -142,6 +152,7 @@ const SignIn = () => {
             Remember me
           </label>
          <button
+            type="button"
             onClick={handleForgotPassword}
             className="text-sm text-blue-500 hover:underline"
             disabled={isLoading}

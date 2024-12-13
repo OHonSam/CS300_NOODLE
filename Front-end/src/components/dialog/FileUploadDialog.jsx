@@ -2,7 +2,7 @@ import { Dialog, DialogBackdrop } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
 
-const FileUploadDialog = ({ heading, isOpen, onClose, onSubmit, fileFormat, className }) => {
+const FileUploadDialog = ({ heading, isOpen, onClose, onSubmit, fileFormat }) => {
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -31,7 +31,7 @@ const FileUploadDialog = ({ heading, isOpen, onClose, onSubmit, fileFormat, clas
   return (
     <Dialog open={isOpen} onClose={onClose}
       className={'absolute top-0 left-0 w-screen h-screen backdrop-blur-sm'}>
-      <DialogBackdrop className={`absolute top-12 bottom-12 m-auto bg-white px-10 py-8 z-50 focus:outline-none shadow-lg ${className} rounded-xl`}>
+      <DialogBackdrop className={`absolute w-[700px] bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-semibold text-2xl">{heading}</h3>
           <button className="hover:text-gray-300" onClick={handleClose}>

@@ -97,7 +97,6 @@ const AdminManageAccountLayout = () => {
           isOpen={studentCreationDialogVisible} 
           onCreate={ () => setToast('Student created successfully.') }
           onClose={ () => setStudentCreationDialogVisible(false) }
-          className={'left-[25%] right-[25%] top-12 bottom-12'}
         />
         <FileUploadDialog 
           heading={'Import student file'}
@@ -108,7 +107,6 @@ const AdminManageAccountLayout = () => {
           }}
           onClose={ () => setStudentFileUploadDialogVisible(false) }
           fileFormat={['.csv', '.xlsx', '.txt']}
-          className={'left-[25%] right-[25%] top-44 bottom-44'}
         />
         {/* Create / Import teachers */}
         <TeacherInfoDialog 
@@ -116,7 +114,6 @@ const AdminManageAccountLayout = () => {
           isOpen={teacherCreationDialogVisible}
           onCreate={ () => setToast('Teacher created successfully.') }
           onClose={ () => setTeacherCreationDialogVisible(false) }
-          className={'left-[25%] right-[25%] top-12 bottom-12'}
         />
         <FileUploadDialog
           heading={'Import teacher file'}
@@ -127,7 +124,6 @@ const AdminManageAccountLayout = () => {
           }}
           onClose={ () => setTeacherFileUploadVisible(false) }
           fileFormat={['.csv', '.xlsx', '.txt']}
-          className={'left-[25%] right-[25%] top-44 bottom-44'}
         />
         {/* Create / Import administrators */}
         <AdminInfoDialog 
@@ -135,7 +131,6 @@ const AdminManageAccountLayout = () => {
           isOpen={adminCreationDialogVisible}
           onCreate={ () => setToast('Administrator created successfully.') }
           onClose={ () => setAdminCreationDialogVisible(false) }
-          className={'left-[25%] right-[25%] top-12 bottom-12'}
         />
         <FileUploadDialog
           heading={'Import administrator file'}
@@ -146,7 +141,6 @@ const AdminManageAccountLayout = () => {
           }}
           onClose={ () => setAdminFileUploadDialogVisible(false) }
           fileFormat={['.csv', '.xlsx', '.txt']}
-          className={'left-[25%] right-[25%] top-44 bottom-44'}
         />
 
       {toast && <ToastSuccess message={toast} onClick={ () => setToast('') } className={'m-auto top-6'} Icon={
