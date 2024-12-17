@@ -1,6 +1,24 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { RoleId } from "../../../utils/roleId";
+
+// Authentication state
+const authState = {
+  user: null,
+  isAuthenticated: false
+};
+
+// Export authentication check function
+export const useAuth = () => {
+  const token = localStorage.getItem('token');
+  const storedUser = localStorage.getItem('user');
+
+  return {
+    user: token ? JSON.parse(storedUser) : null,
+    isAuthenticated: token ? true : false
+  }
+};
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -45,7 +63,9 @@ const SignIn = () => {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        navigate("/admin/dashboard");
+        localStorage.setItem('user', JSON.stringify(data.user));        
+        const role = Object.keys(RoleId).find(key => RoleId[key] === data.user.roleId).toLowerCase();
+        navigate("/" + role + "/dashboard");
       } else {
         setErrorMessage(data.message || "Incorrect Username or Password.");
       }

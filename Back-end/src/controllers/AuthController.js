@@ -9,7 +9,7 @@ class AuthController {
   async login(req, res) {
     try {
       const { username, password } = req.body;
-      const isValid = await this.authService.checkCredential(username, password);
+      const { isValid, roleId } = await this.authService.checkCredential(username, password);
       
       if (!isValid) {
         return res.status(401).json({ message: 'Incorrect Username or Password!' });
@@ -18,8 +18,8 @@ class AuthController {
       const token = jwt.sign({ username }, process.env.JWT_SECRET, {
         expiresIn: '24h'
       });
-
-      res.json({ token });
+      const user = { username, roleId };
+      res.json({ token, user });
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
     }

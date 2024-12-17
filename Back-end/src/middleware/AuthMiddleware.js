@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { Account } = require('../models/AccountModel');
 
 const authMiddleware = {
-  verifyToken: (req, res, next) => {
+  verifyToken: async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
