@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { Account } = require('../models/AccountModel');
+const CryptoJS = require('crypto-js');
 
 const authMiddleware = {
   verifyToken: async (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = CryptoJS.AES.decrypt(req.headers.authorization?.split(' ')[1], process.env.JWT_SECRET).toString(CryptoJS.enc.Utf8);
+
 
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
@@ -55,7 +57,7 @@ const authMiddleware = {
 
   // New middleware specifically for password reset routes
   verifyPasswordResetToken: async (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1]
 
     if (!token) {
       return res.status(401).json({ message: 'No reset token provided' });
