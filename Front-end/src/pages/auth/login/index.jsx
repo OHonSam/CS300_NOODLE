@@ -30,7 +30,7 @@ const SignIn = () => {
     setIsLoading(true);
     setErrorMessage("");
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/auth/login`, {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
