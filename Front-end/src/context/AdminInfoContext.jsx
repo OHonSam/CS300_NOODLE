@@ -1,46 +1,112 @@
-import { useState } from "react";
+// Front-end/src/context/AdminInfoContext.jsx
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
+
 import { AdminInfoContext } from "../hooks/useAdminInfo";
+// export const AdminInfoContext = createContext();
+
+// Set base URL for all axios requests
+axios.defaults.baseURL = `http://localhost:${import.meta.env.VITE_BACKEND_PORT}`;
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const AdminInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend
   const [currentPage, setCurrentPage] = useState(1);
-  const [admins, setAdmins] = useState([
-    {
-      adminId: '22125009',
-      fullName: 'Ngo Thien Bao',
-      email: 'ntbao22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      dob: '2004-12-04',
-      address: '100 randon',
-      phone: '123-45-678',
-    },
-    {
-      adminId: '22125010',
-      fullName: 'Phan Phuc Bao',
-      email: 'pbbao22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      dob: '2004-01-01',
-      address: '100 randon',
-      phone: '123-45-678',
-    },
-    {
-      adminId: '22125085',
-      fullName: 'O Hon Sam',
-      email: 'ohsam22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      dob: '2004-01-01',
-      address: '100 randon',
-      phone: '123-45-678',
-    }
-  ]);
-
+  const [admins, setAdmins] = useState([]);
   const adminsPerPage = 10;
+  const [totalPages, setTotalPages] = useState(0);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      try {
+        const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`);
+        if (response.data.admins.length === 0) {
+          setAdmins([    
+            {
+              adminId: '22125009',
+              fullName: 'Ngo Thien Bao',
+              email: 'ntbao22@apcs.fitus.edu.vn',
+              gender: 'Male',
+              dob: '2004-12-04',
+            }
+          ]);
+          setTotalPages(1);
+        } else {
+          console.log("Admins fetched:", response.data.admins);
+          setAdmins(response.data.admins);
+          setTotalPages(response.data.totalPages);
+        }
+        console.log("Admins fetched:", response.data.admins);
+      } catch (error) {
+        if (error.response?.status === 401) {
+          // Handle unauthorized access - redirect to login
+          window.location.href = '/login';
+        }
+      }
+    };
+
+    if (localStorage.getItem("token")) {
+      fetchAdmins();
+    } else {
+      window.location.href = '/login';
+    }
+  }, [currentPage]);
+
+  // useEffect(() => {
+  //   const fetchAdmins = async () => {
+  //     try {
+  //       const token = localStorage.getItem('token');
+  //       const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       });
+  //       setAdmins(response.data.admins);
+  //       // After fetching admins
+  //       // console.log("Admins fetched:", response.data.admins);
+  //       setTotalPages(response.data.totalPages);
+  //     } catch (error) {
+  //       console.error("Error fetching admins:", error);
+  //     }
+  //   };
+  //   fetchAdmins();
+  // }, [currentPage]);
+  
   const paginatedAdmins = admins.slice(
     (currentPage - 1) * adminsPerPage,
     currentPage * adminsPerPage
   );
 
-  const totalPages = Math.ceil(admins.length / adminsPerPage);
+  // const totalPages = Math.ceil(admins.length / adminsPerPage);
+
+
+  // useEffect(() => {
+  //   const fetchAdmins = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`);
+  //       setAdmins(response.data.admins);
+  //       setTotalPages(response.data.totalPages);
+  //     } catch (error) {
+  //       console.error("Error fetching admins:", error);
+  //     }
+  //   };
+  
+  //   fetchAdmins();
+  // }, [currentPage]);
 
   const changePage = (page) => {
     setCurrentPage(page);
@@ -48,7 +114,13 @@ export const AdminInfoProvider = ({ children }) => {
 
   const addAdmin = async (newAdmin) => {
     // call backend API
-    setAdmins((prev) => [...prev, newAdmin]);
+    try {
+      const response = await axios.post('/api/admin/admins', newAdmin);
+      // Optionally, fetch the updated list or update the state
+      setAdmins((prev) => [...prev, response.data]);
+    } catch (error) {
+      console.error("Error adding admin:", error);
+    }
   };
 
   const updateAdmin = async (updatedAdmin) => {
@@ -66,10 +138,15 @@ export const AdminInfoProvider = ({ children }) => {
   };
 
   return (
-    <AdminInfoContext.Provider
-      value={{ admins: paginatedAdmins, totalPages, changePage, addAdmin, updateAdmin, deleteAdmin }}
-    >
+    <AdminInfoContext.Provider value={{ admins, totalPages, changePage, addAdmin, updateAdmin, deleteAdmin }}>
       {children}
     </AdminInfoContext.Provider>
   );
 };
+
+// Hook to use the AdminInfoContext
+export const useAdminInfo = () => {
+  return useContext(AdminInfoContext);
+};
+
+export default AdminInfoProvider;

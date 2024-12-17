@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-export const AdminInfoContext = createContext();
+export const AdminInfoContext = createContext(0);
 
 export const useAdminInfo = () => {
   const context = useContext(AdminInfoContext);
