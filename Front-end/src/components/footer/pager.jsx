@@ -5,7 +5,7 @@ const Pager = ({ numberOfPages, onPageChange, className }) => {
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      const newPage =  currentPage - 1;
+      const newPage = currentPage - 1;
       setCurrentPage(newPage);
       onPageChange(newPage);
     }
@@ -19,7 +19,7 @@ const Pager = ({ numberOfPages, onPageChange, className }) => {
     }
   };
 
-  const handlePageClick = (page) => { 
+  const handlePageClick = (page) => {
     setCurrentPage(page);
     onPageChange(page);
   };
@@ -51,14 +51,13 @@ const Pager = ({ numberOfPages, onPageChange, className }) => {
           <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight ${
-              currentPage === 1
-                ? "text-gray-300 bg-gray-100 border-gray-300 cursor-not-allowed"
-                : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-            } border border-e-0 rounded-s-lg`}>
+            className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight ${currentPage === 1
+              ? "text-gray-300 bg-gray-100 border-gray-300 cursor-not-allowed"
+              : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              } border border-e-0 rounded-s-lg`}>
             <span className="sr-only">Previous</span>
             <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4"/>
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
             </svg>
           </button>
         </li>
@@ -71,11 +70,10 @@ const Pager = ({ numberOfPages, onPageChange, className }) => {
             ) : (
               <button
                 onClick={() => handlePageClick(page)}
-                className={`flex items-center justify-center w-10 h-8 leading-tight ${
-                  page === currentPage
-                    ? "text-blue-600 border-blue-300 bg-blue-50"
-                    : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                } border`}
+                className={`flex items-center justify-center w-10 h-8 leading-tight ${page === currentPage
+                  ? "text-blue-600 border-blue-300 bg-blue-50"
+                  : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                  } border`}
               >
                 {page}
               </button>
@@ -83,18 +81,17 @@ const Pager = ({ numberOfPages, onPageChange, className }) => {
           </li>
         ))}
         <li>
-          <button 
+          <button
             onClick={handleNextPage}
             disabled={currentPage === numberOfPages}
-            className={`flex items-center justify-center px-3 h-8 leading-tight ${
-              currentPage === numberOfPages
-                ? "text-gray-300 bg-gray-100 border-gray-300"
-                : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-            } border rounded-e-lg`}
+            className={`flex items-center justify-center px-3 h-8 leading-tight ${currentPage === numberOfPages
+              ? "text-gray-300 bg-gray-100 border-gray-300"
+              : "text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              } border rounded-e-lg`}
           >
             <span className="sr-only">Next</span>
             <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
             </svg>
           </button>
         </li>
