@@ -1,44 +1,44 @@
 const crypto = require('crypto');
 
 class AuthService {
-    constructor(User) {
-        this.User = User;
+    constructor(Account) {
+        this.Account = Account;
     }
 
     async checkCredential(username, password) {
-        const user = await this.User.findOne({ username});
-        if (!user) return false;
-        return await user.checkCredential(password);
+        const account = await this.Account.findOne({ username});
+        if (!account) return false;
+        return await account.checkCredential(password);
     }
 
     async checkResetPasswordCredential(username, resetPasswordToken) {
-        const user = await this.User.findOne({
+        const account = await this.Account.findOne({
           username,
           resetPasswordToken: resetPasswordToken,
           resetPasswordExpires: { $gt: Date.now() }
         });
-        return !!user;
+        return !!account;
       }
     
     async changePassword(username, newPassword) {
-        const user = await this.User.findOne({ username });
-        if (!user) return false;
-        user.password = newPassword;
-        await user.save();
+        const account = await this.Account.findOne({ username });
+        if (!account) return false;
+        account.password = newPassword;
+        await account.save();
         return true;
     }
 
     async addResetPasswordToken(username) {
-        const user = await this.User.findOne({ username });
-        if (!user) return null;
+        const account = await this.Account.findOne({ username });
+        if (!account) return null;
 
         const resetPasswordToken = crypto.randomBytes(32).toString('hex');
         const otp = this.generateOTP();
 
-        user.resetPasswordToken = resetPasswordToken;
-        user.resetPasswordOTP = otp;
-        user.resetPasswordExpires = Date.now() + 300000; // 5 minutes
-        await user.save();
+        account.resetPasswordToken = resetPasswordToken;
+        account.resetPasswordOTP = otp;
+        account.resetPasswordExpires = Date.now() + 300000; // 5 minutes
+        await account.save();
 
         return { resetPasswordToken, otp };
     }
@@ -48,22 +48,22 @@ class AuthService {
     }
 
     async verifyOTP(username, otp) {
-        const user = await this.User.findOne({
+        const account = await this.Account.findOne({
             username,
             resetPasswordOTP: otp,
             resetPasswordExpires: { $gt: Date.now() }
         });
 
-        return user ? true : false;
+        return account ? true : false;
     }
 
     async removeResetPasswordToken(username) {
-        const user = await this.User.findOne({ username });
-        if (!user) return false;
-        user.resetPasswordToken = null;
-        user.resetPasswordOTP = null;
-        user.resetPasswordExpires = null;
-        await user.save();
+        const account = await this.Account.findOne({ username });
+        if (!account) return false;
+        account.resetPasswordToken = null;
+        account.resetPasswordOTP = null;
+        account.resetPasswordExpires = null;
+        await account.save();
         return true;
     }
 }

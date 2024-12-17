@@ -28,7 +28,7 @@ class AuthController {
   async changePassword(req, res) {
     try {
       const { username, newPassword } = req.body;
-      const resetPasswordToken = req.user.resetPasswordToken;
+      const resetPasswordToken = req.account.resetPasswordToken;
 
       const isValid = await this.authService.checkResetPasswordCredential(username, resetPasswordToken);
 
@@ -49,9 +49,9 @@ class AuthController {
     const { username } = req.body;
     
     try {
-      const user = await this.authService.User.findOne({ username });
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+      const account = await this.authService.Account.findOne({ username });
+      if (!account) {
+        return res.status(404).json({ message: 'Account not found' });
       }
 
       const tokenData = await this.authService.addResetPasswordToken(username);
@@ -60,8 +60,8 @@ class AuthController {
         return res.status(500).json({ message: 'Failed to generate OTP' });
       }
 
-      // Send OTP to user's email
-      const emailSent = await this.mailService.sendOTP(user.email, tokenData.otp);
+      // Send OTP to account's email
+      const emailSent = await this.mailService.sendOTP(account.email, tokenData.otp);
       
       if (!emailSent) {
         return res.status(500).json({ message: 'Failed to send OTP email' });
@@ -83,8 +83,8 @@ class AuthController {
         return res.status(400).json({ message: 'Invalid or expired OTP' });
       }
 
-      const user = await this.authService.User.findOne({ username });
-      const resetPasswordToken = user.resetPasswordToken;
+      const account = await this.authService.Account.findOne({ username });
+      const resetPasswordToken = account.resetPasswordToken;
 
       // Generate a temporary token for password reset
       const tempToken = jwt.sign({ username, resetPasswordToken, passwordReset: true}, process.env.JWT_SECRET, { expiresIn: '15m' });
