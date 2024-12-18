@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const AdminSchema = new Schema({
   adminId: { type: String, required: true, unique: true },
   fullName: { type: String, required: true },
-  // TODO: move email to AccountModel.js
   email: { type: String, required: true, unique: true },
   gender: { type: String },
   dob: { type: Date },

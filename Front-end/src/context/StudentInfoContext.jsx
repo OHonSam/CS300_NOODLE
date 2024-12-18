@@ -1,78 +1,120 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../axios.config";
 import { StudentInfoContext } from "../hooks/useStudentInfo";
 
 export const StudentInfoProvider = ({ children }) => {
-  // Sample data, replace this with data fetched from backend
   const [currentPage, setCurrentPage] = useState(1);
-  const [students, setStudents] = useState([
-    {
-      studentId: '22125009',
-      fullName: 'Ngo Thien Bao',
-      email: 'ntbao22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      class: '22TT2',
-      dob: '2004-12-04',
-      address: '100 randon',
-      phone: '123-45-678',
-    },
-    {
-      studentId: '22125010',
-      fullName: 'Phan Phuc Bao',
-      email: 'pbbao22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      class: '22TT2',
-      dob: '2004-01-01',
-      address: '100 randon',
-      phone: '123-45-678',
-    },
-    {
-      studentId: '22125085',
-      fullName: 'O Hon Sam',
-      email: 'ohsam22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      class: '22TT2',
-      dob: '2004-01-01',
-      address: '100 randon',
-      phone: '123-45-678',
-    }
-  ]);
-
+  const [students, setStudents] = useState([]);
   const studentsPerPage = 10;
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get(`/api/admin/students?page=${currentPage}&limit=${studentsPerPage}`);
+        if (response.data.students.length === 0) {
+          setStudents([
+            {
+              studentId: "No students found",
+              fullName: "No students found",
+              email: "No students found",
+              class: "No students found",
+              gender: 'Male',
+              dob: '2004-01-01',
+            }
+          ]);
+          setTotalPages(1);
+        } else {
+          setStudents(response.data.students);
+          setTotalPages(response.data.totalPages);
+        }
+      } catch (error) {
+        if (error.response?.status === 401) {
+          window.location.href = '/login';
+        }
+      }
+    };
+
+    if (localStorage.getItem("token")) {
+      fetchStudents();
+    } else {
+      window.location.href = '/login';
+    }
+  }, [currentPage]);
+
   const paginatedStudents = students.slice(
     (currentPage - 1) * studentsPerPage,
     currentPage * studentsPerPage
   );
-
-  const totalPages = Math.ceil(students.length / studentsPerPage);
 
   const changePage = (page) => {
     setCurrentPage(page);
   };
 
   const addStudent = async (newStudent) => {
-    // call backend API
-    setStudents((prev) => [...prev, newStudent]);
+    try {
+      const response = await axios.post('/api/admin/students', newStudent);
+      setStudents((prev) => [...prev, response.data.student]);
+      const newTotalPages = Math.ceil((students.length + 1) / studentsPerPage);
+      setTotalPages(newTotalPages);
+      return true;
+    } catch (error) {
+      console.error("Error adding student:", error);
+      return false;
+    }
   };
 
   const updateStudent = async (updatedStudent) => {
-    // call backend API
-    setStudents((prev) =>
-      prev.map((student) =>
-        student.studentId === updatedStudent.studentId ? updatedStudent : student
-      )
-    );
+    try {
+      const response = await axios.put(
+        `/api/admin/students/${updatedStudent.studentId}`,
+        updatedStudent
+      );
+      
+      if (response.data) {
+        setStudents(prev =>
+          prev.map(student =>
+            student.studentId === updatedStudent.studentId ? response.data : student
+          )
+        );
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating student:", error);
+      return false;
+    }
   };
 
   const deleteStudent = async (studentId) => {
-    // call backend API
-    setStudents((prev) => prev.filter((student) => student.studentId !== studentId));
+    try {
+      await axios.delete(`/api/admin/students/${studentId}`);
+      setStudents((prev) => prev.filter((student) => student.studentId !== studentId));
+      return true;
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      return false;
+    }
   };
 
   return (
-    <StudentInfoContext.Provider
-      value={{ students: paginatedStudents, totalPages, changePage, addStudent, updateStudent, deleteStudent }}
+    <StudentInfoContext.Provider 
+      value={{ 
+        students: paginatedStudents, 
+        totalPages, 
+        changePage, 
+        addStudent, 
+        updateStudent, 
+        deleteStudent 
+      }}
     >
       {children}
     </StudentInfoContext.Provider>
   );
 };
+
+// Hook to use the AdminInfoContext
+export const useStudentInfo = () => {
+  return useContext(StudentInfoContext);
+};
+
+export default StudentInfoProvider;

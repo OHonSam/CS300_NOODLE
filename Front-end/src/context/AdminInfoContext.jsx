@@ -104,7 +104,15 @@ export const AdminInfoProvider = ({ children }) => {
   };
 
   return (
-    <AdminInfoContext.Provider value={{ admins, totalPages, changePage, addAdmin, updateAdmin, deleteAdmin }}>
+    <AdminInfoContext.Provider 
+      value={{ 
+        admins, totalPages, 
+        changePage, 
+        addAdmin, 
+        updateAdmin, 
+        deleteAdmin 
+      }}
+    >
       {children}
     </AdminInfoContext.Provider>
   );
