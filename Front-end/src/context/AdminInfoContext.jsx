@@ -109,8 +109,14 @@ export const AdminInfoProvider = ({ children }) => {
   };
 
   const deleteAdmin = async (adminId) => {
-    // call backend API
-    setAdmins((prev) => prev.filter((admin) => admin.adminId !== adminId));
+    try {
+      await axios.delete(`/api/admin/admins/${adminId}`);
+      setAdmins((prev) => prev.filter((admin) => admin.adminId !== adminId));
+      return true;
+    } catch (error) {
+      console.error("Error deleting admin:", error);
+      return false;
+    }
   };
 
   return (

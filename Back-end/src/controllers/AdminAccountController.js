@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Admin = require('../models/AdminModel');
 const { Account, RoleId } = require('../models/AccountModel');
 const bcrypt= require('bcryptjs');
@@ -101,14 +102,57 @@ class AdminAccountController {
   // Delete an admin
   async deleteAdmin(req, res) {
     const adminId = req.params.adminId;
+
+    // Use a session to ensure atomic operation
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-      const deletedAdmin = await Admin.findByIdAndDelete(adminId);
+      // 1. Find and delete the admin
+      const deletedAdmin = await Admin.findOneAndDelete(
+        { adminId: adminId },
+        { session }
+      );
+
+      // 2. Check if admin exists
       if (!deletedAdmin) {
+        await session.abortTransaction();
         return res.status(404).json({ error: 'Admin not found' });
       }
-      res.json({ message: 'Admin deleted successfully' });
+
+      // 3. Delete the associated account
+      const deletedAccount = await Account.findOneAndDelete(
+        { username: adminId },
+        { session }
+      );
+
+      // 4. Check if account was deleted
+      if (!deletedAccount) {
+        await session.abortTransaction();
+        return res.status(500).json({ 
+          error: 'Failed to delete associated account' 
+        });
+      }
+
+      // 5. Commit the transaction
+      await session.commitTransaction();
+
+      // 6. Send success response
+      res.json({ 
+        message: 'Admin and associated account deleted successfully',
+        deletedAdmin
+      });
     } catch (error) {
-      res.status(500).json({ error: 'Server error' });
+      // 7. Handle errors
+      await session.abortTransaction();
+      console.error('Delete admin error:', error);
+      res.status(500).json({ 
+        error: 'Server error',
+        message: error.message 
+      });
+    } finally {
+      // 8. End the session
+      session.endSession();
     }
   }
 }
