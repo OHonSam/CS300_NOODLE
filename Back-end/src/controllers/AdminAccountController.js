@@ -40,7 +40,6 @@ class AdminAccountController {
         password: await bcrypt.hash(adminData.adminId, 12), // Using adminId as initial password
         email: adminData.email,
         roleId: RoleId.ADMIN,
-        
       });
       await newAccount.save();
 

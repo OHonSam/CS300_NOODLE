@@ -74,9 +74,16 @@ export const AdminInfoProvider = ({ children }) => {
     try {
       const response = await axios.post('/api/admin/admins', newAdmin);
       // Optionally, fetch the updated list or update the state
-      setAdmins((prev) => [...prev, response.data]);
+      setAdmins((prev) => [...prev, response.data.admin]);
+      // Recalculate total pages
+      const newTotalPages = Math.ceil((admins.length + 1) / adminsPerPage);
+      setTotalPages(newTotalPages);
+      // // Optionally switch to the last page to see the new admin
+      // setCurrentPage(newTotalPages);
+      return true;
     } catch (error) {
       console.error("Error adding admin:", error);
+      return false;
     }
   };
 
