@@ -1,24 +1,8 @@
 // Front-end/src/context/AdminInfoContext.jsx
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import axios from "../axios.config";
 
 import { AdminInfoContext } from "../hooks/useAdminInfo";
-
-// Set base URL for all axios requests
-axios.defaults.baseURL = `http://localhost:${import.meta.env.VITE_BACKEND_PORT}`;
-
-axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 export const AdminInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend
