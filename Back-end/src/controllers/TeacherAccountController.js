@@ -1,4 +1,4 @@
-// Back-end/src/controllers/TeacherAccountController.js
+const mongoose = require('mongoose');
 const Teacher = require('../models/TeacherModel');
 const { Account, RoleId } = require('../models/AccountModel');
 const bcrypt = require('bcryptjs');

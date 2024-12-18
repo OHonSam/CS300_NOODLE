@@ -71,7 +71,7 @@ export const TeacherInfoProvider = ({ children }) => {
 
   const deleteTeacher = async (teacherId) => {
     try {
-      await axios.delete(`/api/teacher/teachers/${teacherId}`);
+      await axios.delete(`/api/admin/teachers/${teacherId}`);
       setTeachers((prev) => prev.filter((teacher) => teacher.teacherId !== teacherId));
       return true;
     } catch (error) {
