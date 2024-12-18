@@ -43,11 +43,9 @@ export const AdminInfoProvider = ({ children }) => {
           ]);
           setTotalPages(1);
         } else {
-          console.log("Admins fetched:", response.data.admins);
           setAdmins(response.data.admins);
           setTotalPages(response.data.totalPages);
         }
-        console.log("Admins fetched:", response.data.admins);
       } catch (error) {
         if (error.response?.status === 401) {
           // Handle unauthorized access - redirect to login
@@ -73,7 +71,6 @@ export const AdminInfoProvider = ({ children }) => {
   };
 
   const addAdmin = async (newAdmin) => {
-    // call backend API
     try {
       const response = await axios.post('/api/admin/admins', newAdmin);
       // Optionally, fetch the updated list or update the state
@@ -84,12 +81,24 @@ export const AdminInfoProvider = ({ children }) => {
   };
 
   const updateAdmin = async (updatedAdmin) => {
-    // call backend API
-    setAdmins((prev) =>
-      prev.map((admin) =>
-        admin.adminId === updatedAdmin.adminId ? updatedAdmin : admin
-      )
-    );
+    try {
+      const response = await axios.put(
+          `/api/admin/admins/${updatedAdmin.adminId}`,
+          updatedAdmin
+      );
+      
+      if (response.data) {
+          setAdmins(prev =>
+              prev.map(admin =>
+                  admin.adminId === updatedAdmin.adminId ? response.data : admin
+              )
+          );
+          return true;
+      }
+    } catch (error) {
+        console.error("Error updating admin:", error);
+        return false;
+    }
   };
 
   const deleteAdmin = async (adminId) => {

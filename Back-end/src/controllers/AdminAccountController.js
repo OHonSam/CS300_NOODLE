@@ -60,14 +60,42 @@ class AdminAccountController {
   async updateAdmin(req, res) {
     const adminId = req.params.adminId;
     const updateData = req.body;
+
+    console.log('Updating admin with ID:', adminId);
+    console.log('Update data:', updateData);
+
     try {
-      const updatedAdmin = await Admin.findByIdAndUpdate(adminId, updateData, { new: true });
+
+      const updatedAdmin = await Admin.findOneAndUpdate(
+        { adminId: adminId }, 
+        { $set: updateData },
+        { new: true,
+          runValidators: true
+        }
+      );
+
+      console.log('Updated admin:', updatedAdmin);
+
       if (!updatedAdmin) {
+        console.log('Admin not found');
         return res.status(404).json({ error: 'Admin not found' });
+      } 
+
+      // If email was updated, also update the associated account
+      if (updateData.email) {
+        await Account.findOneAndUpdate(
+          { username: adminId },
+          { email: updateData.email }
+        );
       }
+
       res.json(updatedAdmin);
     } catch (error) {
-      res.status(500).json({ error: 'Server error' });
+      console.error('Update admin error:', error);
+      res.status(500).json({ 
+        error: 'Server error',
+        message: error.message 
+      });
     }
   }
 

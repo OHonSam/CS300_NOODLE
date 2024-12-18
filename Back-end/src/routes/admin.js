@@ -15,5 +15,6 @@ router.use(authMiddleware.verifyToken);
 router.get('/admins', adminAccountController.getAdmins);
 router.post('/admins', adminAccountController.createAdmin);
 router.put('/admins/:adminId', adminAccountController.updateAdmin);
+router.delete('/admins/:adminId', adminAccountController.deleteAdmin);
 
 module.exports = router;
