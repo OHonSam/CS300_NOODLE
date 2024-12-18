@@ -3,7 +3,6 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 import { AdminInfoContext } from "../hooks/useAdminInfo";
-// export const AdminInfoContext = createContext();
 
 // Set base URL for all axios requests
 axios.defaults.baseURL = `http://localhost:${import.meta.env.VITE_BACKEND_PORT}`;
@@ -27,8 +26,6 @@ export const AdminInfoProvider = ({ children }) => {
   const [admins, setAdmins] = useState([]);
   const adminsPerPage = 10;
   const [totalPages, setTotalPages] = useState(0);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -66,47 +63,10 @@ export const AdminInfoProvider = ({ children }) => {
     }
   }, [currentPage]);
 
-  // useEffect(() => {
-  //   const fetchAdmins = async () => {
-  //     try {
-  //       const token = localStorage.getItem('token');
-  //       const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`
-  //         }
-  //       });
-  //       setAdmins(response.data.admins);
-  //       // After fetching admins
-  //       // console.log("Admins fetched:", response.data.admins);
-  //       setTotalPages(response.data.totalPages);
-  //     } catch (error) {
-  //       console.error("Error fetching admins:", error);
-  //     }
-  //   };
-  //   fetchAdmins();
-  // }, [currentPage]);
-  
   const paginatedAdmins = admins.slice(
     (currentPage - 1) * adminsPerPage,
     currentPage * adminsPerPage
   );
-
-  // const totalPages = Math.ceil(admins.length / adminsPerPage);
-
-
-  // useEffect(() => {
-  //   const fetchAdmins = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`);
-  //       setAdmins(response.data.admins);
-  //       setTotalPages(response.data.totalPages);
-  //     } catch (error) {
-  //       console.error("Error fetching admins:", error);
-  //     }
-  //   };
-  
-  //   fetchAdmins();
-  // }, [currentPage]);
 
   const changePage = (page) => {
     setCurrentPage(page);

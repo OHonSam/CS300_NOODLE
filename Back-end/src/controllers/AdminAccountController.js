@@ -1,4 +1,6 @@
 const Admin = require('../models/AdminModel');
+const { Account, RoleId } = require('../models/AccountModel');
+const bcrypt= require('bcryptjs');
 
 class AdminAccountController {
   // Get page number and items per page from request query
@@ -24,15 +26,33 @@ class AdminAccountController {
     }
   }
 
-  // Create a new admin
+  // Create a new admin with account
   async createAdmin(req, res) {
     const adminData = req.body;
     try {
+      // Create the admin first
       const newAdmin = new Admin(adminData);
       await newAdmin.save();
-      res.status(201).json(newAdmin);
+
+      // Create associated account
+      const newAccount = new Account({
+        username: adminData.adminId,
+        password: await bcrypt.hash(adminData.adminId, 12), // Using adminId as initial password
+        email: adminData.email,
+        roleId: RoleId.ADMIN,
+        
+      });
+      await newAccount.save();
+
+      res.status(201).json({
+        admin: newAdmin,
+        account: newAccount,
+      });
     } catch (error) {
-      res.status(500).json({ error: 'Server error' });
+      res.status(500).json({ 
+        error: 'Server error',
+        message: error.message 
+      });
     }
   }
 
