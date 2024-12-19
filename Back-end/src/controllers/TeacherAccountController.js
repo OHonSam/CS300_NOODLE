@@ -25,16 +25,16 @@ class TeacherAccountController {
   async createTeacher(req, res) {
     const teacherData = req.body;
     try {
-      const newTeacher = new Teacher(teacherData);
-      await newTeacher.save();
-
       const newAccount = new Account({
         username: teacherData.teacherId,
-        password: await bcrypt.hash(teacherData.teacherId, 12),
+        password: teacherData.teacherId,
         email: teacherData.email,
         roleId: RoleId.TEACHER,
       });
+
       await newAccount.save();
+      const newTeacher = new Teacher(teacherData);
+      await newTeacher.save();
 
       res.status(201).json({
         teacher: newTeacher,

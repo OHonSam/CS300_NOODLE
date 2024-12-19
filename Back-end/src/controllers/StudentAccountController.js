@@ -31,18 +31,18 @@ class StudentAccountController {
   async createStudent(req, res) {
     const studentData = req.body;
     try {
-      // Create the student first
-      const newStudent = new Student(studentData);
-      await newStudent.save();
-
       // Create associated account
       const newAccount = new Account({
         username: studentData.studentId,
-        password: await bcrypt.hash(studentData.studentId, 12), // Using studentId as initial password
+        password: studentData.studentId, // Using studentId as initial password
         email: studentData.email,
         roleId: RoleId.STUDENT,
       });
+
       await newAccount.save();
+      // Create the student first
+      const newStudent = new Student(studentData);
+      await newStudent.save();
 
       res.status(201).json({
         student: newStudent,

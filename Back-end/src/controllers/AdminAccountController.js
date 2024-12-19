@@ -31,18 +31,18 @@ class AdminAccountController {
   async createAdmin(req, res) {
     const adminData = req.body;
     try {
-      // Create the admin first
-      const newAdmin = new Admin(adminData);
-      await newAdmin.save();
-
       // Create associated account
       const newAccount = new Account({
         username: adminData.adminId,
-        password: await bcrypt.hash(adminData.adminId, 12), // Using adminId as initial password
+        password: adminData.adminId, // Using adminId as initial password
         email: adminData.email,
         roleId: RoleId.ADMIN,
       });
       await newAccount.save();
+
+      // Create the admin first
+      const newAdmin = new Admin(adminData);
+      await newAdmin.save();
 
       res.status(201).json({
         admin: newAdmin,
