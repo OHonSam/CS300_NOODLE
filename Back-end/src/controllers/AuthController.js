@@ -1,25 +1,46 @@
 const jwt = require('jsonwebtoken');
+const CryptoJS = require('crypto-js');
 
 class AuthController {
   constructor(authService, mailService) {
     this.authService = authService;
     this.mailService = mailService;
+    this.tokenSecretKey = process.env.JWT_SECRET;
+  }
+
+  // Encrypt token method
+  encryptToken(token) {
+    try {
+      return CryptoJS.AES.encrypt(token, this.tokenSecretKey).toString();
+    } catch (error) {
+      console.error('Token encryption failed', error);
+      return null;
+    }
   }
 
   async login(req, res) {
     try {
       const { username, password } = req.body;
-      const isValid = await this.authService.checkCredential(username, password);
+      const { isValid, roleId } = await this.authService.checkCredential(username, password);
       
       if (!isValid) {
         return res.status(401).json({ message: 'Incorrect Username or Password!' });
       }
 
-      const token = jwt.sign({ username }, process.env.JWT_SECRET, {
-        expiresIn: '24h'
-      });
+      const token = jwt.sign({ 
+        username, 
+        roleId, 
+      }, this.tokenSecretKey, { expiresIn: '24h'});
 
-      res.json({ token });
+      // encrypt token
+      const encryptedToken = this.encryptToken(token);
+
+      if (!encryptedToken) {
+        return res.status(500).json({ message: 'Token encryption failed' });
+      }
+
+      const user = { username, roleId };
+      res.json({ encryptedToken, user });
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
     }
@@ -29,7 +50,7 @@ class AuthController {
     try {
       const { username, newPassword } = req.body;
       const resetPasswordToken = req.account.resetPasswordToken;
-
+      console.log("Hello")
       const isValid = await this.authService.checkResetPasswordCredential(username, resetPasswordToken);
 
       if (!isValid) {
@@ -87,7 +108,7 @@ class AuthController {
       const resetPasswordToken = account.resetPasswordToken;
 
       // Generate a temporary token for password reset
-      const tempToken = jwt.sign({ username, resetPasswordToken, passwordReset: true}, process.env.JWT_SECRET, { expiresIn: '15m' });
+      const tempToken = jwt.sign({ username, resetPasswordToken, passwordReset: true}, this.tokenSecretKey, { expiresIn: '15m' });
       res.status(200).json({ token: tempToken });
     } catch (error) {
       console.error('OTP verification error:', error);

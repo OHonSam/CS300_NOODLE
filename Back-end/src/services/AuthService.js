@@ -7,8 +7,11 @@ class AuthService {
 
     async checkCredential(username, password) {
         const account = await this.Account.findOne({ username});
-        if (!account) return false;
-        return await account.checkCredential(password);
+        if (!account) return { isValid: false, roleId: null };
+        
+        const isValid = await account.checkCredential(password);
+        const roleId = account.roleId;
+        return { isValid, roleId };
     }
 
     async checkResetPasswordCredential(username, resetPasswordToken) {
