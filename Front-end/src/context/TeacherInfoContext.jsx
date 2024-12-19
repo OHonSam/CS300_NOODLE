@@ -1,78 +1,99 @@
-import { useState } from "react";
+// Front-end/src/context/TeacherInfoContext.jsx
+import React, { useState, useEffect } from "react";
+import axios from "../axios.config";
 import { TeacherInfoContext } from "../hooks/useTeacherInfo";
 
 export const TeacherInfoProvider = ({ children }) => {
-  // Sample data, replace this with data fetched from backend
   const [currentPage, setCurrentPage] = useState(1);
-  const [teachers, setTeachers] = useState([
-    {
-      teacherId: '22125009',
-      fullName: 'Ngo Thien Bao',
-      email: 'ntbao22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      department: 'Information Technology',
-      dob: '2004-12-04',
-      address: '100 randon',
-      phone: '123-45-678',
-    },
-    {
-      teacherId: '22125010',
-      fullName: 'Phan Phuc Bao',
-      email: 'pbbao22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      department: 'Information Technology',
-      dob: '2004-01-01',
-      address: '100 randon',
-      phone: '123-45-678',
-    },
-    {
-      teacherId: '22125085',
-      fullName: 'O Hon Sam',
-      email: 'ohsam22@apcs.fitus.edu.vn',
-      gender: 'Male',
-      department: 'Information Technology',
-      dob: '2004-01-01',
-      address: '100 randon',
-      phone: '123-45-678',
-    }
-  ]);
-
+  const [teachers, setTeachers] = useState([]);
   const teachersPerPage = 10;
-  const paginatedTeachers = teachers.slice(
-    (currentPage - 1) * teachersPerPage,
-    currentPage * teachersPerPage
-  );
+  const [totalPages, setTotalPages] = useState(0);
 
-  const totalPages = Math.ceil(teachers.length / teachersPerPage);
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await axios.get(`/api/admin/teachers?page=${currentPage}&limit=${teachersPerPage}`);
+        if (response.data.teachers && response.data.teachers.length > 0) {
+          setTeachers(response.data.teachers);
+          setTotalPages(response.data.totalPages);
+        }
+      } catch (error) {
+        if (error.response?.status === 401) {
+          window.location.href = '/login';
+        }
+      }
+    };
+
+    if (localStorage.getItem("token")) {
+      fetchTeachers();
+    } else {
+      window.location.href = '/login';
+    }
+  }, [currentPage]);
 
   const changePage = (page) => {
     setCurrentPage(page);
   };
 
   const addTeacher = async (newTeacher) => {
-    // call backend API
-    setTeachers((prev) => [...prev, newTeacher]);
+    try {
+      const response = await axios.post('/api/admin/teachers', newTeacher);
+      setTeachers((prev) => [...prev, response.data.teacher]);
+      const newTotalPages = Math.ceil((teachers.length + 1) / teachersPerPage);
+      setTotalPages(newTotalPages);
+      return true;
+    } catch (error) {
+      console.error("Error adding teacher:", error);
+      return false;
+    }
   };
 
   const updateTeacher = async (updatedTeacher) => {
-    // call backend API
-    setTeachers((prev) =>
-      prev.map((teacher) =>
-        teacher.teacherId === updatedTeacher.teacherId ? updatedTeacher : teacher
-      )
-    );
+    try {
+      const response = await axios.put(
+        `/api/admin/teachers/${updatedTeacher.teacherId}`,
+        updatedTeacher
+      );
+      
+      if (response.data) {
+        setTeachers(prev =>
+          prev.map(teacher =>
+            teacher.teacherId === updatedTeacher.teacherId ? response.data : teacher
+          )
+        );
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating teacher:", error);
+      return false;
+    }
   };
 
   const deleteTeacher = async (teacherId) => {
-    // call backend API
-    setTeachers((prev) => prev.filter((teacher) => teacher.teacherId !== teacherId));
+    try {
+      await axios.delete(`/api/admin/teachers/${teacherId}`);
+      setTeachers((prev) => prev.filter((teacher) => teacher.teacherId !== teacherId));
+      return true;
+    } catch (error) {
+      console.error("Error deleting teacher:", error);
+      return false;
+    }
   };
 
   return (
-    <TeacherInfoContext.Provider
-      value={{ teachers: paginatedTeachers, totalPages, changePage, addTeacher, updateTeacher, deleteTeacher }}
+    <TeacherInfoContext.Provider 
+      value={{ 
+        teachers, 
+        totalPages, 
+        changePage, 
+        addTeacher, 
+        updateTeacher, 
+        deleteTeacher 
+      }}
     >
       {children}
     </TeacherInfoContext.Provider>
   );
 };
+
+export default TeacherInfoProvider;
