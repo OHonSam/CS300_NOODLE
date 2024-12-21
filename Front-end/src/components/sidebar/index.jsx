@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FaBars, FaArrowLeft } from "react-icons/fa";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { GrLogout } from "react-icons/gr";
-import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
+import { decryptToken, getStoredToken, removeStoredToken } from "../../services/auth/tokenService";
 
 const SideNavigationBar = ({ navlinks }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const userData = getStoredToken();
   const decodedData = decryptToken(userData);
@@ -61,7 +62,12 @@ return (
           {isOpen && <span className="text-grey-100">Hi, {userName}</span>}
         </div>
         {isOpen && 
-          <button onClick={() => console.log('Logging out')}
+          <button onClick={() => {
+            removeStoredToken();
+            navigate("/auth/login", { 
+              state: { successMessage: "Log out successfully. Thanks for using our application!" } 
+            });       
+          }}
             className="bg-gray-800 text-error-400 rounded-full p-2 shadow-md hover:bg-gray-700">
             <GrLogout />
           </button>}
