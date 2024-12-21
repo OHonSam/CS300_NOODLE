@@ -70,7 +70,7 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
       className={`absolute top-0 left-0 w-screen h-screen backdrop-blur-sm`}>
       <DialogPanel className={`absolute w-[700px] bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
         <div className="mt-4 mb-8 flex items-center justify-between">
-          <h3 className="font-semibold text-2xl">Add a student</h3>
+          <h3 className="font-semibold text-2xl">{dialogFor === 'create' ? 'Add a Student' : 'Student Info'}</h3>
           <button className="hover:text-gray-300" onClick={handleClose}>
             <FaXmark className="text-xl" />
           </button>
@@ -79,8 +79,9 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label htmlFor="studentId" className="block mb-2 text-sm font-medium text-gray-900">Student ID</label>
-              <input type="text" id="studentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22125009" required 
+              <input type="text" id="studentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:text-gray-300" placeholder="22125009" required 
                 value={formData.studentId}
+                disabled={dialogFor === 'info'}
                 onChange={handleChange}/>
             </div>
             <div>
@@ -107,6 +108,8 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
               <label htmlFor="dob" className="block mb-2 text-sm font-medium text-gray-900">Date of Birth</label>
               <input type="date" id="dob" className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${datePickerPlaceHolder ? 'text-gray-400' : 'text-gray-900'}`} required 
                 value={formData.dob}
+                max='2024-01-01'
+                min='1940-01-01'
                 onChange={(e) => {
                   setDatePickerPlaceholder(false) 
                   handleChange(e)
@@ -120,7 +123,7 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
             </div>  
             <div>
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
-              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required 
+              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required 
                 value={formData.phone}
                 onChange={handleChange}/>
             </div>
