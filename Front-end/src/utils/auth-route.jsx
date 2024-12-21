@@ -1,6 +1,6 @@
 // AuthRoute.jsx
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../pages/auth/login/index';
+import { useAuth } from '../hooks/useAuth';
 import { RoleId } from './roleId';
 
 const AuthRoute = () => {

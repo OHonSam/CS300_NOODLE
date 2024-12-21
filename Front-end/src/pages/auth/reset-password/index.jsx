@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
+import { changePassword } from "../../../services/auth/authService";
+import { getTempToken, removeTempToken } from "../../../services/auth/tokenService";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -10,28 +12,18 @@ const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
-  // Get username and temporary token from location state
   const username = location.state?.username;
-  const tempToken = localStorage.getItem('tempToken');
+  const tempToken = getTempToken();
 
   const [formData, setFormData] = useState({
     newPassword: '',
     confirmPassword: ''
   });
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [id]: value
-    }));
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
     
-    // Validate password match
     if (formData.newPassword !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
@@ -39,35 +31,13 @@ const ResetPassword = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/auth/change-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tempToken}`
-        },
-        body: JSON.stringify({
-          username,
-          newPassword: formData.newPassword,
-        })
+      await changePassword(username, formData.newPassword, tempToken);
+      removeTempToken();
+      navigate("/auth/login", { 
+        state: { successMessage: "Password reset successfully. Please log in." } 
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Clear temporary token
-        localStorage.removeItem('tempToken');
-        
-        // Navigate to login with success message
-        navigate("/auth/login", { 
-          state: { 
-            successMessage: "Password reset successfully. Please log in." 
-          } 
-        });
-      } else {
-        setErrorMessage(data.message || "Failed to reset password");
-      }
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }
