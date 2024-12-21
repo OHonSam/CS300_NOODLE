@@ -17,7 +17,7 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
     email: '',
   });
 
-  const resetForm = () => {
+  const clearForm = () => {
     setSelectPlaceHolder(true);
     setDatePickerPlaceholder(true);
     setFormData({
@@ -44,11 +44,12 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
     if (dialogFor === 'create') {
       onCreate(formData);
       addAdmin(formData);
+      clearForm();
     } else {
       onUpdate(formData);
       updateAdmin(formData);
     }
-    handleClose();
+    handleClose(true);
   };
 
   const handleDelete = () => {
@@ -57,22 +58,22 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
     handleClose();
   };
 
-  const handleClose = () => {
+  const handleClose = (updated) => {
     if (dialogFor === 'create') 
-      resetForm();
-    else {
-      setFormData(adminData)
+      clearForm();
+    else if (dialogFor === 'info' && !updated) {
+      setFormData(adminData);
     }
     onClose();
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} 
+    <Dialog open={isOpen} onClose={() => handleClose(false)} 
       className={`absolute top-0 left-0 w-screen h-screen backdrop-blur-sm`}>
       <DialogPanel className={`absolute w-1/2 bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
         <div className="mt-4 mb-8 flex items-center justify-between">
           <h3 className="font-semibold text-2xl">{dialogFor === 'create' ? 'Add an Administrator' : 'Administrator Info'}</h3>
-          <button className="hover:text-gray-300" onClick={handleClose}>
+          <button className="hover:text-gray-300" onClick={() => handleClose(false)}>
             <FaXmark className="text-xl" />
           </button>
         </div>
@@ -151,7 +152,7 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
               <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                 Add
               </button>
-              <button onClick={resetForm}
+              <button onClick={clearForm}
                 className="text-white ms-2 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                 Clear
               </button>
