@@ -1,11 +1,20 @@
+const mongoose = require('mongoose');
 const Section = require('../models/SectionModel');
 
 class AdminSectionController {
   // Get all sections
   async getAllSections(req, res) {
+    const { page = 1, limit = 10 } = req.query;
     try {
-      const sections = await Section.find().populate('course teacher students');
-      res.json(sections);
+      const sections = await Section.find().skip((page - 1) * limit)   
+      .limit(parseInt(limit));
+
+      const totalSections = await Section.countDocuments();
+
+      res.json({
+        sections,
+        totalPages: Math.ceil(totalSections / limit),
+      });
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }

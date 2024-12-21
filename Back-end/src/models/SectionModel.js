@@ -8,7 +8,7 @@ const Section = new Schema({
     capacity: { type: Number, required: true },
     courseName: { type: String, required: true },
     courseCredit: { type:Number, required: true },
-    teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' },
+    teacher: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' }],
     students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
 });
 
