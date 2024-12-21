@@ -7,7 +7,8 @@ const db = require('./config/db')
 const dotenv = require('dotenv');
 dotenv.config({ path:'./.env'});
 const app = express()
-const port = process.env.PORT
+const backend_port = process.env.BACKEND_PORT
+const frontend_port = process.env.FRONTEND_PORT
 
 db.connect()
 
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // CORS middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'http://localhost:' + frontend_port,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 }));
@@ -31,8 +32,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something broke!' })
 })
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
+app.listen(backend_port, () => {
+  console.log(`Server listening on port ${backend_port}`)
 })
 
 module.exports = app
