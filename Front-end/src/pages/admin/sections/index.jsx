@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import Header from "../../../components/tab";
 import Table from "../../../components/table";
 

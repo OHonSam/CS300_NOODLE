@@ -17,7 +17,7 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
     email: '',
   });
 
-  const resetForm = () => {
+  const clearForm = () => {
     setSelectPlaceHolder(true);
     setDatePickerPlaceholder(true);
     setFormData({
@@ -44,11 +44,12 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
     if (dialogFor === 'create') {
       onCreate(formData);
       addAdmin(formData);
+      clearForm();
     } else {
       onUpdate(formData);
       updateAdmin(formData);
     }
-    handleClose();
+    handleClose(true);
   };
 
   const handleDelete = () => {
@@ -57,19 +58,22 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
     handleClose();
   };
 
-  const handleClose = () => {
+  const handleClose = (updated) => {
     if (dialogFor === 'create') 
-      resetForm();
+      clearForm();
+    else if (dialogFor === 'info' && !updated) {
+      setFormData(adminData);
+    }
     onClose();
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} 
+    <Dialog open={isOpen} onClose={() => handleClose(false)} 
       className={`absolute top-0 left-0 w-screen h-screen backdrop-blur-sm`}>
       <DialogPanel className={`absolute w-1/2 bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
         <div className="mt-4 mb-8 flex items-center justify-between">
-          <h3 className="font-semibold text-2xl">Add an administrator</h3>
-          <button className="hover:text-gray-300" onClick={handleClose}>
+          <h3 className="font-semibold text-2xl">{dialogFor === 'create' ? 'Add an Administrator' : 'Administrator Info'}</h3>
+          <button className="hover:text-gray-300" onClick={() => handleClose(false)}>
             <FaXmark className="text-xl" />
           </button>
         </div>
@@ -77,8 +81,9 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label htmlFor="adminId" className="block mb-2 text-sm font-medium text-gray-900">Admin ID</label>
-              <input type="text" id="adminId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22125009" required 
+              <input type="text" id="adminId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:text-gray-300" placeholder="22125009" required 
                 value={formData.adminId}
+                disabled={dialogFor === 'info'}
                 onChange={handleChange}/>
             </div>
             <div>
@@ -99,6 +104,8 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
               <label htmlFor="dob" className="block mb-2 text-sm font-medium text-gray-900">Date of Birth</label>
               <input type="date" id="dob" className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${datePickerPlaceHolder ? 'text-gray-400' : 'text-gray-900'}`} required 
                 value={formData.dob}
+                max='2024-01-01'
+                min='1940-01-01'
                 onChange={(e) => {
                   setDatePickerPlaceholder(false) 
                   handleChange(e)
@@ -106,7 +113,7 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
             </div>  
             <div>
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
-              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required 
+              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required 
                 value={formData.phone}
                 onChange={handleChange}/>
             </div>
@@ -145,7 +152,7 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
               <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                 Add
               </button>
-              <button onClick={resetForm}
+              <button onClick={clearForm}
                 className="text-white ms-2 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                 Clear
               </button>
