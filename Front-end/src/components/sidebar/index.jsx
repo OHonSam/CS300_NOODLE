@@ -1,9 +1,34 @@
 import { useState } from "react";
 import { FaBars, FaArrowLeft } from "react-icons/fa";
 import { NavLink } from 'react-router-dom'
+import { GrLogout } from "react-icons/gr";
+import CryptoJS from "crypto-js";
+
+const SECRET_KEY = import.meta.env.VITE_JWT_SECRET;
+
+const decryptToken = (encryptedToken) => {
+     try {
+      const bytes = CryptoJS.AES.decrypt(encryptedToken, SECRET_KEY);
+      const originalToken = bytes.toString(CryptoJS.enc.Utf8);
+      
+      if (!originalToken) {
+        return null;
+      }
+
+      return JSON.parse(atob(originalToken.split('.')[1]));
+    } catch (error) {
+      console.error('Token decryption failed', error);
+      return null;
+    }
+  };
 
 const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const userData = localStorage.getItem('token');
+  const decodedData = decryptToken(userData);
+  const userName =  decodedData.username
+
+  console.log(decodedData)
 
 return (
     <div
@@ -46,13 +71,20 @@ return (
       </ul>
 
       {/* Footer */}
-      <div className={`p-4 flex items-center gap-4 ${!isOpen && 'justify-center'}`}>
-        <img
-          src="https://via.placeholder.com/40"
-          alt="User Profile"
-          className="h-10 w-10 rounded-full"
-        />
-        {isOpen && <span className="text-grey-100">Hi, John</span>}
+      <div className={`p-4 flex items-center justify-between gap-4 ${!isOpen && 'justify-center'}`}>
+        <div className="flex items-center gap-4">
+          <img
+            src="https://via.placeholder.com/40"
+            alt="User Profile"
+            className="h-10 w-10 rounded-full"
+          />
+          {isOpen && <span className="text-grey-100">Hi, {userName}</span>}
+        </div>
+        {isOpen && 
+          <button onClick={() => console.log('Logging out')}
+            className="bg-gray-800 text-error-400 rounded-full p-2 shadow-md hover:bg-gray-700">
+            <GrLogout />
+          </button>}
       </div>
     </div>
   );
