@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { verifyOTP, requestPasswordReset } from "../../../services/auth/authService";
+import { setTempToken } from "../../../services/auth/tokenService";
 
 const OtpConfirmation = () => {
   const navigate = useNavigate();
@@ -9,36 +11,19 @@ const OtpConfirmation = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [otp, setOtp] = useState("");
   
-  // Get username from location state (passed from previous screen)
   const username = location.state?.username;
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage("");
 
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/auth/verify-otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          otp
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Store temporary token and navigate to password reset page
-        localStorage.setItem('tempToken', data.token);
-        navigate("/auth/reset-password", { state: { username } });
-      } else {
-        setErrorMessage(data.message || "Invalid OTP code.");
-      }
+      const data = await verifyOTP(username, otp);
+      setTempToken(data.token);
+      navigate("/auth/reset-password", { state: { username } });
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -49,22 +34,10 @@ const OtpConfirmation = () => {
     setErrorMessage("");
 
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/auth/reset-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username })
-      });
-
-      if (response.ok) {
-        setErrorMessage("New OTP code has been sent to your email.");
-      } else {
-        const data = await response.json();
-        setErrorMessage(data.message || "Failed to send new OTP code.");
-      }
+      await requestPasswordReset(username);
+      setErrorMessage("New OTP code has been sent to your email.");
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }

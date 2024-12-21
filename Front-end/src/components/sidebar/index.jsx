@@ -1,34 +1,14 @@
 import { useState } from "react";
 import { FaBars, FaArrowLeft } from "react-icons/fa";
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 import { GrLogout } from "react-icons/gr";
-import CryptoJS from "crypto-js";
-
-const SECRET_KEY = import.meta.env.VITE_JWT_SECRET;
-
-const decryptToken = (encryptedToken) => {
-     try {
-      const bytes = CryptoJS.AES.decrypt(encryptedToken, SECRET_KEY);
-      const originalToken = bytes.toString(CryptoJS.enc.Utf8);
-      
-      if (!originalToken) {
-        return null;
-      }
-
-      return JSON.parse(atob(originalToken.split('.')[1]));
-    } catch (error) {
-      console.error('Token decryption failed', error);
-      return null;
-    }
-  };
+import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
 
 const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const userData = localStorage.getItem('token');
+  const userData = getStoredToken();
   const decodedData = decryptToken(userData);
-  const userName =  decodedData.username
-
-  console.log(decodedData)
+  const userName =  decodedData?.username
 
 return (
     <div
