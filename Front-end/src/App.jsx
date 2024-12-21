@@ -9,6 +9,7 @@ import AuthLayout from './pages/auth/layout'
 import OtpConfirmation from './pages/auth/otp-confirmation'
 import ResetPassword from './pages/auth/reset-password'
 import PrivateRoute from './utils/private-route'
+import AuthRoute from './utils/auth-route'  // Import the new AuthRoute
 import { RoleId } from './utils/roleId'
 
 function App() {
@@ -18,12 +19,14 @@ function App() {
         {/* Public Routes */}
         <Route index element={<Navigate to="/auth" replace />} />
         
-        {/* Authentication Routes */}
-        <Route path='/auth' element={<AuthLayout />}>
-          <Route index element={<Navigate to="/auth/login" replace />} />
-          <Route path='login' element={<SignIn />} />
-          <Route path='reset-password' element={<ResetPassword />} />
-          <Route path='otp-confirmation' element={<OtpConfirmation />}/>
+        {/* Authentication Routes - Now wrapped with AuthRoute */}
+        <Route element={<AuthRoute />}>
+          <Route path='/auth' element={<AuthLayout />}>
+            <Route index element={<Navigate to="/auth/login" replace />} />
+            <Route path='login' element={<SignIn />} />
+            <Route path='reset-password' element={<ResetPassword />} />
+            <Route path='otp-confirmation' element={<OtpConfirmation />}/>
+          </Route>
         </Route>
 
         {/* Protected Admin Routes */}
