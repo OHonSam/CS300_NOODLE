@@ -1,5 +1,5 @@
 // Front-end/src/context/AdminInfoContext.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "../axios.config";
 
 import { AdminInfoContext } from "../hooks/useAdminInfo";
@@ -44,11 +44,6 @@ export const AdminInfoProvider = ({ children }) => {
       window.location.href = '/login';
     }
   }, [currentPage]);
-
-  const paginatedAdmins = admins.slice(
-    (currentPage - 1) * adminsPerPage,
-    currentPage * adminsPerPage
-  );
 
   const changePage = (page) => {
     setCurrentPage(page);
@@ -106,7 +101,8 @@ export const AdminInfoProvider = ({ children }) => {
   return (
     <AdminInfoContext.Provider 
       value={{ 
-        admins, totalPages, 
+        admins: admins.slice(0, 10), 
+        totalPages, 
         changePage, 
         addAdmin, 
         updateAdmin, 
@@ -116,11 +112,6 @@ export const AdminInfoProvider = ({ children }) => {
       {children}
     </AdminInfoContext.Provider>
   );
-};
-
-// Hook to use the AdminInfoContext
-export const useAdminInfo = () => {
-  return useContext(AdminInfoContext);
 };
 
 export default AdminInfoProvider;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "../axios.config";
 import { StudentInfoContext } from "../hooks/useStudentInfo";
 
@@ -41,11 +41,6 @@ export const StudentInfoProvider = ({ children }) => {
       window.location.href = '/login';
     }
   }, [currentPage]);
-
-  const paginatedStudents = students.slice(
-    (currentPage - 1) * studentsPerPage,
-    currentPage * studentsPerPage
-  );
 
   const changePage = (page) => {
     setCurrentPage(page);
@@ -99,7 +94,7 @@ export const StudentInfoProvider = ({ children }) => {
   return (
     <StudentInfoContext.Provider 
       value={{ 
-        students: paginatedStudents, 
+        students: students.slice(0, 10), 
         totalPages, 
         changePage, 
         addStudent, 
@@ -111,10 +106,3 @@ export const StudentInfoProvider = ({ children }) => {
     </StudentInfoContext.Provider>
   );
 };
-
-// Hook to use the AdminInfoContext
-export const useStudentInfo = () => {
-  return useContext(StudentInfoContext);
-};
-
-export default StudentInfoProvider;
