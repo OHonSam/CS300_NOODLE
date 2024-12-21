@@ -66,3 +66,18 @@ export const verifyOTP = async (username, otp) => {
     }
     return data;
   };
+
+  export const logOut = async () => {
+    const response = await fetch(`${BASE_URL}/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Logout failed');
+    }
+    return data;
+  };

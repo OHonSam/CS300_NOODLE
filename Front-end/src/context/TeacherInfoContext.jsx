@@ -1,5 +1,5 @@
 // Front-end/src/context/TeacherInfoContext.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "../axios.config";
 import { TeacherInfoContext } from "../hooks/useTeacherInfo";
 
@@ -83,7 +83,7 @@ export const TeacherInfoProvider = ({ children }) => {
   return (
     <TeacherInfoContext.Provider 
       value={{ 
-        teachers, 
+        teachers: teachers.slice(0, 10), 
         totalPages, 
         changePage, 
         addTeacher, 

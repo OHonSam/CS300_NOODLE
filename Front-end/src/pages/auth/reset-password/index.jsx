@@ -12,13 +12,22 @@ const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
+  // Get username and temporary token from location state
   const username = location.state?.username;
-  const tempToken = getTempToken();
+  const tempToken = localStorage.getItem('tempToken');
 
   const [formData, setFormData] = useState({
     newPassword: '',
     confirmPassword: ''
   });
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
