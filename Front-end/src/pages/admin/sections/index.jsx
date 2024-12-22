@@ -14,12 +14,12 @@ const AdminManageSections = () => {
 
   const headings = [
     { id: 'sectionId', label: 'Section ID' },
-    { id: 'sectionName', label: 'Course name' },
-    { id: 'credits', label: 'Credits' },
-    { id: 'year', label: 'Year' },
+    { id: 'courseName', label: 'Course Name' },
+    { id: 'courseCredit', label: 'Credits' },
+    { id: 'schoolYear', label: 'Year' },
     { id: 'semester', label: 'Semester' },
-    { id: 'maxStudents', label: 'Max Students' },
-    { id: 'noOfStudents', label: 'No. of Students' },
+    { id: 'capacity', label: 'Capacity' },
+    { id: 'currentEnrollment', label: 'No. of Students' },
   ];
 
   useEffect(() => {
@@ -35,18 +35,18 @@ const AdminManageSections = () => {
     fetchSections();
   }, [currentPage]);
 
-  const data = Array.from({ length: 100 }, (_, index) => {
-    const maxStudents = Math.floor(Math.random() * 50 + 10);
-    return {
-      sectionId: index + 1,
-      sectionName: `Section ${index + 1}`,
-      credits: Math.floor(Math.random() * 4 + 1),
-      year: 2020 + Math.floor(Math.random() * 4 + 1),
-      semester: Math.floor(Math.random() * 2 + 1),
-      maxStudents: maxStudents,
-      noOfStudents: Math.floor(Math.random() * maxStudents),
-    }
-  });
+  // const data = Array.from({ length: 100 }, (_, index) => {
+  //   const maxStudents = Math.floor(Math.random() * 50 + 10);
+  //   return {
+  //     sectionId: index + 1,
+  //     sectionName: `Section ${index + 1}`,
+  //     credits: Math.floor(Math.random() * 4 + 1),
+  //     year: 2020 + Math.floor(Math.random() * 4 + 1),
+  //     semester: Math.floor(Math.random() * 2 + 1),
+  //     maxStudents: maxStudents,
+  //     noOfStudents: Math.floor(Math.random() * maxStudents),
+  //   }
+  // });
 
   const handleCreateSection = async (sectionData) => {
     try {
@@ -55,6 +55,8 @@ const AdminManageSections = () => {
       setToast('Section created successfully');
     } catch (error) {
       console.error("Error creating section:", error);
+      const message = error.response?.data?.message || 'Error creating section';
+      console.log(message);
     }
   };
 

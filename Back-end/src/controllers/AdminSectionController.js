@@ -50,6 +50,7 @@ class AdminSectionController {
       await newSection.save();
       res.status(201).json(newSection);
     } catch (error) {
+      console.error('Section creation error:', error);
       res.status(500).json({ 
         error: 'Server error',
         message: error.message 
@@ -59,5 +60,33 @@ class AdminSectionController {
 
   // Update and delete methods can be added similarly
 }
+
+// async createSection(req, res) {
+//     try {
+//         const { sectionId, courseName, courseCredit, schoolYear, semester, capacity } = req.body;
+        
+//         const newSection = new Section({
+//             sectionId,
+//             courseName,
+//             courseCredit: Number(courseCredit),
+//             schoolYear,
+//             semester: Number(semester),
+//             capacity: Number(capacity),
+//             students: ["None"],
+//             teacher: ["None"]
+//         });
+
+//         const savedSection = await newSection.save();
+//         res.status(201).json(savedSection);
+
+//     } catch (error) {
+//         console.error('Section creation error:', error);
+//         if (error.code === 11000) {
+//             return res.status(400).json({ message: 'Section ID already exists' });
+//         }
+//         res.status(500).json({ message: error.message });
+//     }
+//   }
+// }
 
 module.exports = new AdminSectionController();
