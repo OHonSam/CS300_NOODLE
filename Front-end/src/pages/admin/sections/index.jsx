@@ -37,19 +37,6 @@ const AdminManageSections = () => {
     fetchSections();
   }, [currentPage]);
 
-  // const data = Array.from({ length: 100 }, (_, index) => {
-  //   const maxStudents = Math.floor(Math.random() * 50 + 10);
-  //   return {
-  //     sectionId: index + 1,
-  //     sectionName: `Section ${index + 1}`,
-  //     credits: Math.floor(Math.random() * 4 + 1),
-  //     year: 2020 + Math.floor(Math.random() * 4 + 1),
-  //     semester: Math.floor(Math.random() * 2 + 1),
-  //     maxStudents: maxStudents,
-  //     noOfStudents: Math.floor(Math.random() * maxStudents),
-  //   }
-  // });
-
   const handleCreateSection = async (sectionData) => {
     try {
       const response = await axios.post('/api/admin/sections', sectionData);
