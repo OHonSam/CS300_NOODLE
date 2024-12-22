@@ -29,17 +29,11 @@ export const StudentInfoProvider = ({ children }) => {
           setTotalPages(response.data.totalPages);
         }
       } catch (error) {
-        if (error.response?.status === 401) {
-          window.location.href = '/login';
-        }
+        console.error("Error fetching admins:", error);
       }
     };
 
-    if (localStorage.getItem("token")) {
-      fetchStudents();
-    } else {
-      window.location.href = '/login';
-    }
+    fetchStudents();
   }, [currentPage]);
 
   const changePage = (page) => {

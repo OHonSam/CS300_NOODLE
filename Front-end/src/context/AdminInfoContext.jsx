@@ -31,18 +31,11 @@ export const AdminInfoProvider = ({ children }) => {
           setTotalPages(response.data.totalPages);
         }
       } catch (error) {
-        if (error.response?.status === 401) {
-          // Handle unauthorized access - redirect to login
-          window.location.href = '/login';
-        }
+        console.error("Error fetching admins:", error);
       }
     };
 
-    if (localStorage.getItem("token")) {
-      fetchAdmins();
-    } else {
-      window.location.href = '/login';
-    }
+    fetchAdmins();
   }, [currentPage]);
 
   const changePage = (page) => {

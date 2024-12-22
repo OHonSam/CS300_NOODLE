@@ -18,17 +18,11 @@ export const TeacherInfoProvider = ({ children }) => {
           setTotalPages(response.data.totalPages);
         }
       } catch (error) {
-        if (error.response?.status === 401) {
-          window.location.href = '/login';
-        }
+        console.error("Error fetching admins:", error);
       }
     };
 
-    if (localStorage.getItem("token")) {
-      fetchTeachers();
-    } else {
-      window.location.href = '/login';
-    }
+    fetchTeachers();
   }, [currentPage]);
 
   const changePage = (page) => {
