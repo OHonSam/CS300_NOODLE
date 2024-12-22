@@ -6,8 +6,9 @@ class AdminSectionController {
   async getAllSections(req, res) {
     const { page = 1, limit = 10 } = req.query;
     try {
-      const sections = await Section.find().skip((page - 1) * limit)   
-      .limit(parseInt(limit));
+      const sections = await Section.find()
+        .skip((page - 1) * limit)   
+        .limit(parseInt(limit));
 
       const totalSections = await Section.countDocuments();
 
@@ -44,13 +45,15 @@ class AdminSectionController {
 
   // Create a new section
   async createSection(req, res) {
-    const sectionData = req.body;
     try {
-      const newSection = new Section(sectionData);
+      const newSection = new Section(req.body);
       await newSection.save();
       res.status(201).json(newSection);
     } catch (error) {
-      res.status(500).json({ error: 'Server error' });
+      res.status(500).json({ 
+        error: 'Server error',
+        message: error.message 
+      });
     }
   }
 

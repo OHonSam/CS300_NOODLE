@@ -15,7 +15,7 @@ export const AdminInfoContext = createContext(initialAdminContext);
 export const useAdminInfo = () => {
   const context = useContext(AdminInfoContext);
   if (!context) {
-    throw new Error('useStudentInfo must be used within StudentInfoProvider.');
+    throw new Error('useAdminInfo must be used within AdminInfoProvider.');
   }
   return context;
 };
