@@ -3,12 +3,12 @@ import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
 import { useStudentInfo } from "../../../hooks/useStudentInfo";
-import ToastSuccess from "../../../components/toast";
+import Toast from "../../../components/toast";
 
 const StudentAccountView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
-  const [toast, setToast] = useState('');
+  const [toast, setToast] = useState([]);
   const { students, totalPages, changePage } = useStudentInfo();
 
   const headings = [
@@ -34,8 +34,8 @@ const StudentAccountView = () => {
           studentData={currentStudentDialog}
           isOpen={studentInfoDialogVisible}
           onClose={() => setStudentInfoDialogVisible(false)}
-          onUpdate={() => setToast('Student updated successfully.')}
-          onDelete={() => setToast('Student deleted successfully.')}
+          onUpdate={() => {}}
+          onDelete={() => {}}
         />
       </Table>
       {totalPages > 1 && <Pager
@@ -43,7 +43,7 @@ const StudentAccountView = () => {
         onPageChange={changePage}
         className="w-full flex justify-center mt-2" />
       }
-      {toast && <ToastSuccess message={toast} onClick={() => setToast('')} className={'m-auto -top-32'}/>}
+      {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );
 };

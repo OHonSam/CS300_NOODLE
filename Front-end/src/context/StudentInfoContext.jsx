@@ -48,8 +48,10 @@ export const StudentInfoProvider = ({ children }) => {
       setTotalPages(newTotalPages);
       return true;
     } catch (error) {
-      console.error("Error adding student:", error);
-      return false;
+      console.error("Error adding student:", error.response);
+      throw {
+        message: error.response.data.message,
+      };
     }
   };
 
@@ -59,7 +61,7 @@ export const StudentInfoProvider = ({ children }) => {
         `/api/admin/students/${updatedStudent.studentId}`,
         updatedStudent
       );
-      
+
       if (response.data) {
         setStudents(prev =>
           prev.map(student =>
@@ -86,14 +88,14 @@ export const StudentInfoProvider = ({ children }) => {
   };
 
   return (
-    <StudentInfoContext.Provider 
-      value={{ 
-        students: students.slice(0, 10), 
-        totalPages, 
-        changePage, 
-        addStudent, 
-        updateStudent, 
-        deleteStudent 
+    <StudentInfoContext.Provider
+      value={{
+        students: students.slice(0, 10),
+        totalPages,
+        changePage,
+        addStudent,
+        updateStudent,
+        deleteStudent
       }}
     >
       {children}

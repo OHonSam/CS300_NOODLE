@@ -43,9 +43,20 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let message = null;
     if (dialogFor === 'create') {
-      onCreate(formData);
-      addStudent(formData);
+      try {
+        await addStudent(formData);
+      } catch (error) {
+        message = error.message;
+      }
+
+      if (message) {
+        onCreate(message, false);
+      } else {
+        onCreate('Student created successfully!', true);
+        clearForm();
+      }
     } else {
       onUpdate(formData);
       updateStudent(formData);

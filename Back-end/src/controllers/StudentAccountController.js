@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Student = require('../models/StudentModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt= require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 class StudentAccountController {
   // Get page number and items per page from request query
@@ -49,10 +49,17 @@ class StudentAccountController {
         account: newAccount,
       });
     } catch (error) {
-      res.status(500).json({ 
-        error: 'Server error',
-        message: error.message 
-      });
+      if (error.code === 11000) {
+        res.status(400).json({
+          error: 'Bad request',
+          message: 'Student existed already!',
+        });
+      } else {
+        res.status(500).json({
+          error: 'Server error',
+          message: error.message,
+        });
+      }
     }
   }
 
@@ -67,9 +74,10 @@ class StudentAccountController {
     try {
 
       const updatedStudent = await Student.findOneAndUpdate(
-        { studentId: studentId }, 
+        { studentId: studentId },
         { $set: updateData },
-        { new: true,
+        {
+          new: true,
           runValidators: true
         }
       );
@@ -79,7 +87,7 @@ class StudentAccountController {
       if (!updatedStudent) {
         console.log('Student not found');
         return res.status(404).json({ error: 'Student not found' });
-      } 
+      }
 
       // If email was updated, also update the associated account
       if (updateData.email) {
@@ -92,9 +100,9 @@ class StudentAccountController {
       res.json(updatedStudent);
     } catch (error) {
       console.error('Update student error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Server error',
-        message: error.message 
+        message: error.message
       });
     }
   }
@@ -129,8 +137,8 @@ class StudentAccountController {
       // 4. Check if account was deleted
       if (!deletedAccount) {
         await session.abortTransaction();
-        return res.status(500).json({ 
-          error: 'Failed to delete associated account' 
+        return res.status(500).json({
+          error: 'Failed to delete associated account'
         });
       }
 
@@ -138,7 +146,7 @@ class StudentAccountController {
       await session.commitTransaction();
 
       // 6. Send success response
-      res.json({ 
+      res.json({
         message: 'Student and associated account deleted successfully',
         deletedAdmin: deletedStudent
       });
@@ -146,9 +154,9 @@ class StudentAccountController {
       // 7. Handle errors
       await session.abortTransaction();
       console.error('Delete student error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Server error',
-        message: error.message 
+        message: error.message
       });
     } finally {
       // 8. End the session

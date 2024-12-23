@@ -37,8 +37,10 @@ export const TeacherInfoProvider = ({ children }) => {
       setTotalPages(newTotalPages);
       return true;
     } catch (error) {
-      console.error("Error adding teacher:", error);
-      return false;
+      console.error("Error adding teacher:", error.response);
+      throw {
+        message: error.response.data.message,
+      };
     }
   };
 
@@ -48,7 +50,7 @@ export const TeacherInfoProvider = ({ children }) => {
         `/api/admin/teachers/${updatedTeacher.teacherId}`,
         updatedTeacher
       );
-      
+
       if (response.data) {
         setTeachers(prev =>
           prev.map(teacher =>
@@ -75,14 +77,14 @@ export const TeacherInfoProvider = ({ children }) => {
   };
 
   return (
-    <TeacherInfoContext.Provider 
-      value={{ 
-        teachers: teachers.slice(0, 10), 
-        totalPages, 
-        changePage, 
-        addTeacher, 
-        updateTeacher, 
-        deleteTeacher 
+    <TeacherInfoContext.Provider
+      value={{
+        teachers: teachers.slice(0, 10),
+        totalPages,
+        changePage,
+        addTeacher,
+        updateTeacher,
+        deleteTeacher
       }}
     >
       {children}

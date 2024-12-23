@@ -16,7 +16,7 @@ export const AdminInfoProvider = ({ children }) => {
       try {
         const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`);
         if (response.data.admins.length === 0) {
-          setAdmins([    
+          setAdmins([
             {
               adminId: '22125009',
               fullName: 'Ngo Thien Bao',
@@ -54,29 +54,31 @@ export const AdminInfoProvider = ({ children }) => {
       // setCurrentPage(newTotalPages);
       return true;
     } catch (error) {
-      console.error("Error adding admin:", error);
-      return false;
+      console.error("Error adding admin:", error.response);
+      throw {
+        message: error.response.data.message,
+      };
     }
   };
 
   const updateAdmin = async (updatedAdmin) => {
     try {
       const response = await axios.put(
-          `/api/admin/admins/${updatedAdmin.adminId}`,
-          updatedAdmin
+        `/api/admin/admins/${updatedAdmin.adminId}`,
+        updatedAdmin
       );
-      
+
       if (response.data) {
-          setAdmins(prev =>
-              prev.map(admin =>
-                  admin.adminId === updatedAdmin.adminId ? response.data : admin
-              )
-          );
-          return true;
+        setAdmins(prev =>
+          prev.map(admin =>
+            admin.adminId === updatedAdmin.adminId ? response.data : admin
+          )
+        );
+        return true;
       }
     } catch (error) {
-        console.error("Error updating admin:", error);
-        return false;
+      console.error("Error updating admin:", error);
+      return false;
     }
   };
 
@@ -92,14 +94,14 @@ export const AdminInfoProvider = ({ children }) => {
   };
 
   return (
-    <AdminInfoContext.Provider 
-      value={{ 
-        admins: admins.slice(0, 10), 
-        totalPages, 
-        changePage, 
-        addAdmin, 
-        updateAdmin, 
-        deleteAdmin 
+    <AdminInfoContext.Provider
+      value={{
+        admins: admins.slice(0, 10),
+        totalPages,
+        changePage,
+        addAdmin,
+        updateAdmin,
+        deleteAdmin
       }}
     >
       {children}
