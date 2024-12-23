@@ -43,9 +43,20 @@ const TeacherInfoDialog = ({ teacherData, isOpen, dialogFor, onCreate, onUpdate,
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let message = null;
     if (dialogFor === 'create') {
-      onCreate(formData);
-      addTeacher(formData);
+      try {
+        await addTeacher(formData);
+      } catch (error) {
+        message = error.message;
+      }
+
+      if (message) {
+        onCreate(message, false);
+      } else {
+        onCreate('Teacher created successfully!', true);
+        clearForm();
+      }
     } else {
       onUpdate(formData);
       updateTeacher(formData);

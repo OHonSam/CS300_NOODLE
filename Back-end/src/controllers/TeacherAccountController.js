@@ -41,10 +41,17 @@ class TeacherAccountController {
         account: newAccount,
       });
     } catch (error) {
-      res.status(500).json({ 
-        error: 'Server error',
-        message: error.message 
-      });
+      if (error.code === 11000) {
+        res.status(400).json({
+          error: 'Bad request',
+          message: 'Teacher existed already!',
+        });
+      } else {
+        res.status(500).json({
+          error: 'Server error',
+          message: error.message,
+        });
+      }
     }
   }
 
@@ -72,9 +79,9 @@ class TeacherAccountController {
 
       res.json(updatedTeacher);
     } catch (error) {
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Server error',
-        message: error.message 
+        message: error.message
       });
     }
   }
@@ -102,21 +109,21 @@ class TeacherAccountController {
 
       if (!deletedAccount) {
         await session.abortTransaction();
-        return res.status(500).json({ 
-          error: 'Failed to delete associated account' 
+        return res.status(500).json({
+          error: 'Failed to delete associated account'
         });
       }
 
       await session.commitTransaction();
-      res.json({ 
+      res.json({
         message: 'Teacher and associated account deleted successfully',
-        deletedTeacher 
+        deletedTeacher
       });
     } catch (error) {
       await session.abortTransaction();
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Server error',
-        message: error.message 
+        message: error.message
       });
     } finally {
       session.endSession();

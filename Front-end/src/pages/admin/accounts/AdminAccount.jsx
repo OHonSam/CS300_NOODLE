@@ -1,14 +1,14 @@
 import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
-import ToastSuccess from "../../../components/toast";
+import Toast from "../../../components/toast";
 import { useAdminInfo } from "../../../hooks/useAdminInfo";
 import AdminInfoDialog from "../../../components/dialog/AdminInfoDialog";
 
 const AdminAccountView = () => {
   const [adminInfoDialogVisible, setAdminInfoDialogVisible] = useState(false);
   const [currentAdminDialog, setCurrentAdminDialog] = useState(null);
-  const [toast, setToast] = useState('');
+  const [toast, setToast] = useState([]);
   const { admins, totalPages, changePage } = useAdminInfo();
 
   const headings = [
@@ -33,22 +33,23 @@ const AdminAccountView = () => {
           adminData={currentAdminDialog}
           isOpen={adminInfoDialogVisible}
           onClose={() => setAdminInfoDialogVisible(false)}
-          onUpdate={() => setToast('Admin updated successfully.')}
-          onDelete={() => setToast('Admin deleted successfully.')}
+          onUpdate={() => {}}
+          onDelete={() => {}}
         />
       </Table>
       {totalPages > 1 && (
-        <Pager 
+        <Pager
           numberOfPages={totalPages}
           onPageChange={changePage}
           className="w-full flex justify-center mt-2"
         />
       )}
-      {toast && (
-        <ToastSuccess 
-          message={toast} 
-          onClick={() => setToast('')} 
-          className={'m-auto -top-32'} 
+      {toast.length > 0 && (
+        <Toast
+          message={toast[0]}
+          onClick={() => setToast([])}
+          className={'m-auto -top-32'}
+          isAccepted={toast[1]}
         />
       )}
     </div>

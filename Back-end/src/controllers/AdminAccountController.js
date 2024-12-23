@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Admin = require('../models/AdminModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt= require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 class AdminAccountController {
   // Get page number and items per page from request query
@@ -49,10 +49,18 @@ class AdminAccountController {
         account: newAccount,
       });
     } catch (error) {
-      res.status(500).json({ 
-        error: 'Server error',
-        message: error.message 
-      });
+      // Duplicate account error
+      if (error.code === 11000) {
+        res.status(400).json({
+          error: 'Bad request',
+          message: 'Administrator existed already!',
+        });
+      } else {
+        res.status(500).json({
+          error: 'Server error',
+          message: error.message,
+        });
+      }
     }
   }
 
@@ -67,9 +75,10 @@ class AdminAccountController {
     try {
 
       const updatedAdmin = await Admin.findOneAndUpdate(
-        { adminId: adminId }, 
+        { adminId: adminId },
         { $set: updateData },
-        { new: true,
+        {
+          new: true,
           runValidators: true
         }
       );
@@ -79,7 +88,7 @@ class AdminAccountController {
       if (!updatedAdmin) {
         console.log('Admin not found');
         return res.status(404).json({ error: 'Admin not found' });
-      } 
+      }
 
       // If email was updated, also update the associated account
       if (updateData.email) {
@@ -92,9 +101,9 @@ class AdminAccountController {
       res.json(updatedAdmin);
     } catch (error) {
       console.error('Update admin error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Server error',
-        message: error.message 
+        message: error.message
       });
     }
   }
@@ -129,8 +138,8 @@ class AdminAccountController {
       // 4. Check if account was deleted
       if (!deletedAccount) {
         await session.abortTransaction();
-        return res.status(500).json({ 
-          error: 'Failed to delete associated account' 
+        return res.status(500).json({
+          error: 'Failed to delete associated account'
         });
       }
 
@@ -138,7 +147,7 @@ class AdminAccountController {
       await session.commitTransaction();
 
       // 6. Send success response
-      res.json({ 
+      res.json({
         message: 'Admin and associated account deleted successfully',
         deletedAdmin
       });
@@ -146,9 +155,9 @@ class AdminAccountController {
       // 7. Handle errors
       await session.abortTransaction();
       console.error('Delete admin error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Server error',
-        message: error.message 
+        message: error.message
       });
     } finally {
       // 8. End the session
