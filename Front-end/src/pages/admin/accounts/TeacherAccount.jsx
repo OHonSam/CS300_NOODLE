@@ -27,7 +27,7 @@ const TeacherAccountView = () => {
 
   return (
     <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}>
+      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={teachersPerPage}>
         <TeacherInfoDialog
           key={currentTeacherDialog?.teacherId}
           dialogFor={'info'}

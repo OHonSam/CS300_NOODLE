@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "../../../axios.config";
 import Header from "../../../components/tab";
+import Tab from "../../../components/tab";
 import Table from "../../../components/table";
 import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";
 import Toast from "../../../components/toast";
+import { FiPlusCircle } from "react-icons/fi";
 
 const AdminManageSections = () => {
   const [sectionDialogVisible, setSectionDialogVisible] = useState(false);
@@ -68,13 +70,14 @@ const AdminManageSections = () => {
   return (
     <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
       <div className="flex justify-between items-center">
-        <Header title="Sections" />
-        <button
-          onClick={() => setSectionDialogVisible(true)}
-          className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 font-bold"
-        >
-          Create section
+        <Tab title="Sections" />
+        <button 
+            onClick={() => setSectionDialogVisible(true)}
+            className="flex items-center space-x-2 px-4 py-2 rounded-md text-sm tracking-wide text-white bg-blue-600 hover:bg-blue-700 font-medium">
+          <FiPlusCircle className="text-lg"/>
+          <p>Create Section</p>
         </button>
+          
       </div>
       <Table
         headings={headings}

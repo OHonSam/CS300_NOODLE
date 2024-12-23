@@ -26,7 +26,7 @@ const AdminAccountView = () => {
 
   return (
     <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}>
+      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={adminsPerPage}>
         <AdminInfoDialog
           key={currentAdminDialog?.adminId}
           dialogFor={'info'}
