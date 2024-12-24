@@ -41,7 +41,8 @@ function App() {
             <Route path="dashboard" element={<AdminDashboardLayout />} />
             <Route path="accounts" element={<AdminManageAccountLayout />} />
             <Route path="sections" element={<AdminManageSections />} />
-            <Route path="announcements" element={<AdminAnnouncements />} />
+            <Route path="announcements" element={<AdminAnnouncements />}>
+            </Route>
           </Route>
         </Route>
 

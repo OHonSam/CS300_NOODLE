@@ -27,9 +27,8 @@ const StudentAccountView = () => {
 
   return (
     <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={studentsPerPage}>
-        <StudentInfoDialog
-          key={currentStudentDialog?.studentId}
+      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={studentsPerPage}/>
+      <StudentInfoDialog
           dialogFor={'info'}
           studentData={currentStudentDialog}
           isOpen={studentInfoDialogVisible}
@@ -37,7 +36,6 @@ const StudentAccountView = () => {
           onUpdate={() => {}}
           onDelete={() => {}}
         />
-      </Table>
       {totalPages > 1 && <Pager
         numberOfPages={totalPages}
         onPageChange={changePage}

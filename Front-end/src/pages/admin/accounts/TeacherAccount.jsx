@@ -27,9 +27,8 @@ const TeacherAccountView = () => {
 
   return (
     <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={teachersPerPage}>
-        <TeacherInfoDialog
-          key={currentTeacherDialog?.teacherId}
+      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={teachersPerPage} />
+      <TeacherInfoDialog
           dialogFor={'info'}
           teacherData={currentTeacherDialog}
           isOpen={teacherDialogVisible}
@@ -37,7 +36,6 @@ const TeacherAccountView = () => {
           onUpdate={() => {}}
           onDelete={() => {}}
         />
-      </Table>
       {totalPages > 1 && <Pager
         numberOfPages={totalPages}
         onPageChange={changePage}
