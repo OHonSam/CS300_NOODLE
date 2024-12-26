@@ -1,10 +1,10 @@
-import { SectionInfoProvider } from "../../../context/SectionInfoContext"
+import { SectionStatisticProvider } from "../../../context/SectionStatisticContext"
 
 const DashboardInfoProvider = ({ children }) => {
   return (
-    <SectionInfoProvider>
+    <SectionStatisticProvider>
       {children}
-    </SectionInfoProvider>
+    </SectionStatisticProvider>
   )
 }
 

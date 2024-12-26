@@ -1,24 +1,14 @@
 import { useContext } from 'react';
-import { SectionInfoContext } from '../context/SectionInfoContext';
+import { SectionStatisticContext } from '../context/SectionStatisticContext';
 
-export const useSectionInfo = () => {
-  const context = useContext(SectionInfoContext);
+export const useSectionStatisticInfo = () => {
+  const context = useContext(SectionStatisticContext);
   
   if (!context) {
     throw new Error('useSectionInfo must be used within SectionInfoProvider');
   }
 
-  const {
-    // Original section management values
-    sections,
-    totalPages,
-    currentPage,
-    changePage,
-    addSection,
-    getSection,
-    updateSection,
-    deleteSection,
-    
+  const {    
     // New dashboard values
     stats,
     selectedYear,
@@ -30,17 +20,7 @@ export const useSectionInfo = () => {
     getSchoolYearLabel
   } = context;
 
-  return {
-    // Original section management values
-    sections,
-    totalPages,
-    currentPage,
-    changePage,
-    addSection,
-    getSection,
-    updateSection,
-    deleteSection,
-    
+  return {  
     // New dashboard values
     stats,
     selectedYear,
@@ -57,4 +37,4 @@ export const useSectionInfo = () => {
   };
 };
 
-export default useSectionInfo;
+export default useSectionStatisticInfo;

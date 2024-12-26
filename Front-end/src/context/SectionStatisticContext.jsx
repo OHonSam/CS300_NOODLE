@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "../axios.config";
 
-const initialSectionContext = {
+const initialSectionStatisticContext = {
   // Original section management
   sections: [],
   totalPages: 0,
@@ -28,9 +28,9 @@ const initialSectionContext = {
   getSchoolYearLabel: () => {}
 };
 
-export const SectionInfoContext = createContext(initialSectionContext);
+export const SectionStatisticContext = createContext(initialSectionStatisticContext);
 
-export const SectionInfoProvider = ({ children }) => {
+export const SectionStatisticProvider = ({ children }) => {
   // Original section management state
   const [sections, setSections] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -50,7 +50,7 @@ export const SectionInfoProvider = ({ children }) => {
 
   const [selectedYear, setSelectedYear] = useState(currentYear.toString());
   const [selectedSemester, setSelectedSemester] = useState('1');
-  const [stats, setStats] = useState(initialSectionContext.stats);
+  const [stats, setStats] = useState(initialSectionStatisticContext.stats);
   const [loading, setLoading] = useState(true);
 
   // Original section management functions
@@ -146,7 +146,7 @@ export const SectionInfoProvider = ({ children }) => {
   }, [selectedYear, selectedSemester]);
 
   return (
-    <SectionInfoContext.Provider
+    <SectionStatisticContext.Provider
       value={{
         // Original section management values
         sections: sections.slice(0, 10),
@@ -170,8 +170,8 @@ export const SectionInfoProvider = ({ children }) => {
       }}
     >
       {children}
-    </SectionInfoContext.Provider>
+    </SectionStatisticContext.Provider>
   );
 };
 
-export default SectionInfoProvider;
+export default SectionStatisticProvider;

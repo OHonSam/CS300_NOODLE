@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { useSectionInfo } from '../../../hooks/useSectionInfo';
+import { useSectionStatisticInfo } from '../../../hooks/useSectionStatisticInfo';
 
 const AdminDashboard = () => {
   const {
@@ -12,7 +12,7 @@ const AdminDashboard = () => {
     loading,
     schoolYears,
     gradeData
-  } = useSectionInfo();
+  } = useSectionStatisticInfo();
 
   return (
     <div className="p-8">
