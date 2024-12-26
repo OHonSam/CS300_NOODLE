@@ -33,8 +33,8 @@ const AdminAccountView = () => {
           adminData={currentAdminDialog}
           isOpen={adminInfoDialogVisible}
           onClose={() => setAdminInfoDialogVisible(false)}
-          onUpdate={() => {}}
-          onDelete={() => {}}
+          onUpdate={() => { }}
+          onDelete={() => { }}
         />
       </Table>
       {totalPages > 1 && (

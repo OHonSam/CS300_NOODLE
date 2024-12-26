@@ -9,16 +9,15 @@ const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
   const userData = getStoredToken();
   const decodedData = decryptToken(userData);
-  const userName =  decodedData?.username
+  const userName = decodedData?.username
 
-return (
+  return (
     <div
-      className={`${
-        isOpen ? "w-80" : "w-20"
-      } bg-gray-900 h-screen duration-300 flex flex-col relative py-4`}
+      className={`${isOpen ? "w-80" : "w-20"
+        } bg-gray-900 h-screen duration-300 flex flex-col relative py-4`}
     >
       {/* Logo */}
-      <div className={`flex items-center gap-4 p-4 ${isOpen? 'justify-between' : 'justify-center'}`}>
+      <div className={`flex items-center gap-4 p-4 ${isOpen ? 'justify-between' : 'justify-center'}`}>
         {isOpen && (
           <div className="flex items-center gap-4">
             <div className="bg-blue-500 h-8 w-8 rounded-full"></div>
@@ -26,7 +25,7 @@ return (
           </div>
         )}
 
-      {/* Toggle Button */}
+        {/* Toggle Button */}
         <button
           className="bg-gray-800 text-white rounded-full p-2 shadow-md hover:bg-gray-700"
           onClick={() => setIsOpen(!isOpen)}
@@ -55,18 +54,18 @@ return (
       <div className={`p-4 flex items-center justify-between gap-4 ${!isOpen && 'justify-center'}`}>
         <div className="flex items-center gap-4">
           <img
-            src="https://via.placeholder.com/40"
+            src="https://i.pinimg.com/736x/00/9b/d4/009bd4387dd350c408f0193e25eee090.jpg"
             alt="User Profile"
             className="h-10 w-10 rounded-full"
           />
           {isOpen && <span className="text-grey-100">Hi, {userName}</span>}
         </div>
-        {isOpen && 
+        {isOpen &&
           <button onClick={() => {
             removeStoredToken();
-            navigate("/auth/login", { 
-              state: { successMessage: "Log out successfully. Thanks for using our application!" } 
-            });       
+            navigate("/auth/login", {
+              state: { successMessage: "Log out successfully. Thanks for using our application!" }
+            });
           }}
             className="bg-gray-800 text-error-400 rounded-full p-2 shadow-md hover:bg-gray-700">
             <GrLogout />

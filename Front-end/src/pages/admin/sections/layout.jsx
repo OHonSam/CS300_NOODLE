@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../../../axios.config";
 import Header from "../../../components/tab";
 import Tab from "../../../components/tab";
@@ -8,6 +9,7 @@ import Toast from "../../../components/toast";
 import { FiPlusCircle } from "react-icons/fi";
 
 const AdminManageSections = () => {
+  const navigate = useNavigate();
   const [sectionDialogVisible, setSectionDialogVisible] = useState(false);
   const [sections, setSections] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -50,8 +52,7 @@ const AdminManageSections = () => {
 
 
   const handleRowClicked = (row) => {
-    console.log(row);
-    // TODO: Implement edit section functionality
+    navigate(`/admin/sections/${row.schoolYear}/${row.semester}/${row.sectionId}`, { state: { courseId: row.sectionId, courseName: row.courseName, schoolYear: row.schoolYear, semester: row.semester } });
   };
 
   return (

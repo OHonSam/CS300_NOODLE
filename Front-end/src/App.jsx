@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AdminDashboardLayout from './pages/admin/dashboard/layout'
 import AdminLayout from './pages/admin/layout'
 import AdminManageAccountLayout from './pages/admin/accounts/layout'
-import AdminManageSections from './pages/admin/sections'
+import AdminManageSections from './pages/admin/sections/layout'
+import AdminSectionDetails from './pages/admin/sections/SectionDetails'
 import AdminAnnouncements from './pages/admin/announcements'
 import TeacherLayout from './pages/teacher/layout'
 import TeacherDashboard from './pages/teacher/dashboard'
@@ -41,8 +42,8 @@ function App() {
             <Route path="dashboard" element={<AdminDashboardLayout />} />
             <Route path="accounts" element={<AdminManageAccountLayout />} />
             <Route path="sections" element={<AdminManageSections />} />
-            <Route path="announcements" element={<AdminAnnouncements />}>
-            </Route>
+            <Route path="sections/:schoolYear/:semester/:sectionId" element={<AdminSectionDetails />} />
+            <Route path="announcements" element={<AdminAnnouncements />} />
           </Route>
         </Route>
 
