@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Pager from '../footer/pager';
 
-const Table = ({ children, onRowClicked, headings, data, readOnly = true, rowsPerPage = 0, className }) => {
+const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0, className }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
@@ -92,8 +92,6 @@ const Table = ({ children, onRowClicked, headings, data, readOnly = true, rowsPe
           </div>
         )}
       </div>
-
-      {children}
     </div>
   );
 };
