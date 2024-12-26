@@ -13,16 +13,6 @@ export const StudentInfoProvider = ({ children }) => {
       try {
         const response = await axios.get(`/api/admin/students?page=${currentPage}&limit=${studentsPerPage}`);
         if (response.data.students.length === 0) {
-          setStudents([
-            {
-              studentId: "No students found",
-              fullName: "No students found",
-              email: "No students found",
-              class: "No students found",
-              gender: 'Male',
-              dob: '2004-01-01',
-            }
-          ]);
           setTotalPages(1);
         } else {
           setStudents(response.data.students);
