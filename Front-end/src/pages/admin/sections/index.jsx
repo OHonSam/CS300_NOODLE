@@ -3,7 +3,7 @@ import axios from "../../../axios.config";
 import Header from "../../../components/tab";
 import Table from "../../../components/table";
 import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";
-import ToastSuccess from "../../../components/toast";
+import Toast from "../../../components/toast";
 
 const AdminManageSections = () => {
   const [sectionDialogVisible, setSectionDialogVisible] = useState(false);
@@ -69,7 +69,7 @@ const AdminManageSections = () => {
     <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
       <div className="flex justify-between items-center">
         <Header title="Sections" />
-        <button 
+        <button
           onClick={() => setSectionDialogVisible(true)}
           className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 font-bold"
         >
@@ -89,7 +89,7 @@ const AdminManageSections = () => {
         onClose={() => setSectionDialogVisible(false)}
         onCreate={handleCreateSection}
       />
-      {toast.length > 0 && <ToastSuccess message={toast[0]} onClick={() => setToast([])} className={'m-auto top-6'} Icon={
+      {toast.length > 0 && <Toast message={toast[0]} isAccepted={toast[1]} onClick={() => setToast([])} className={'m-auto top-6'} Icon={
         <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
         </svg>

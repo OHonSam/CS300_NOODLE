@@ -1,7 +1,7 @@
 import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
-import ToastSuccess from "../../../components/toast";
+import Toast from "../../../components/toast";
 import TeacherInfoDialog from "../../../components/dialog/TeacherInfoDialog";
 import { useTeacherInfo } from "../../../hooks/useTeacherInfo";
 
@@ -43,7 +43,11 @@ const TeacherAccountView = () => {
         onPageChange={changePage}
         className="w-full flex justify-center mt-2" />
       }
-      {toast.length > 0 && <ToastSuccess message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} />}
+      {toast.length > 0 && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <Toast message={toast[0]} isAccepted={toast[1]} onClick={() => setToast([])} className={'m-auto -top-32'} />
+        </div>
+      )}
     </div>
   );
 };
