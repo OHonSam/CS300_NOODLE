@@ -16,15 +16,6 @@ export const AdminInfoProvider = ({ children }) => {
       try {
         const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`);
         if (response.data.admins.length === 0) {
-          setAdmins([
-            {
-              adminId: '22125009',
-              fullName: 'Ngo Thien Bao',
-              email: 'ntbao22@apcs.fitus.edu.vn',
-              gender: 'Male',
-              dob: '2004-12-04',
-            }
-          ]);
           setTotalPages(1);
         } else {
           setAdmins(response.data.admins);

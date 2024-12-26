@@ -8,6 +8,7 @@ class AdminAccountController {
   async getAdmins(req, res) {
     const { page = 1, limit = 10 } = req.query;
     try {
+      
       // Find admins with pagination
       const admins = await Admin.find()
         .skip((page - 1) * limit)   // Skip previous pages
