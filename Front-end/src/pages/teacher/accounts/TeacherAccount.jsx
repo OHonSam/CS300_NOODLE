@@ -8,7 +8,7 @@ import { useTeacherInfo } from "../../../hooks/useTeacherInfo";
 const TeacherAccountView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
   const [currentTeacherDialog, setCurrentTeacherDialog] = useState(null);
-  const [toast, setToast] = useState('');
+  const [toast, setToast] = useState([]);
   const { teachers, totalPages, changePage } = useTeacherInfo();
 
   const headings = [
@@ -34,8 +34,8 @@ const TeacherAccountView = () => {
           teacherData={currentTeacherDialog}
           isOpen={teacherDialogVisible}
           onClose={() => setTeacherDialogVisible(false)}
-          onUpdate={() => setToast('Teacher updated successfully.')}
-          onDelete={() => setToast('Teacher deleted successfully.')}
+          onUpdate={() => setToast(['Teacher updated successfully.', true])}
+          onDelete={() => setToast(['Teacher deleted successfully.', true])}
         />
       </Table>
       {totalPages > 1 && <Pager
@@ -43,7 +43,7 @@ const TeacherAccountView = () => {
         onPageChange={changePage}
         className="w-full flex justify-center mt-2" />
       }
-      {toast && <ToastSuccess message={toast} onClick={() => setToast('')} className={'m-auto -top-32'} />}
+      {toast.length > 0 && <ToastSuccess message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} />}
     </div>
   );
 };

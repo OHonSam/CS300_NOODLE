@@ -7,6 +7,7 @@ export const SectionInfoProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const sectionsPerPage = 20;
+  
 
   useEffect(() => {
     const fetchSections = async () => {

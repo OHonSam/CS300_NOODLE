@@ -8,7 +8,7 @@ import ToastSuccess from "../../../components/toast";
 const StudentAccountView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
-  const [toast, setToast] = useState('');
+  const [toast, setToast] = useState([]);
   const { students, totalPages, changePage } = useStudentInfo();
 
   const headings = [
@@ -34,8 +34,8 @@ const StudentAccountView = () => {
           studentData={currentStudentDialog}
           isOpen={studentInfoDialogVisible}
           onClose={() => setStudentInfoDialogVisible(false)}
-          onUpdate={() => setToast('Student updated successfully.')}
-          onDelete={() => setToast('Student deleted successfully.')}
+          onUpdate={() => setToast(['Student updated successfully.', true])}
+          onDelete={() => setToast(['Student deleted successfully.', true])}
         />
       </Table>
       {totalPages > 1 && <Pager
@@ -43,7 +43,7 @@ const StudentAccountView = () => {
         onPageChange={changePage}
         className="w-full flex justify-center mt-2" />
       }
-      {toast && <ToastSuccess message={toast} onClick={() => setToast('')} className={'m-auto -top-32'}/>}
+      {toast.length > 0 && <ToastSuccess message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'}/>}
     </div>
   );
 };
