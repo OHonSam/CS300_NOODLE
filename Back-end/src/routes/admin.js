@@ -8,8 +8,12 @@ const authMiddleware = require('../middleware/AuthMiddleware');
 
 router.use(authMiddleware.verifyToken);
 
-router.get('/sections', adminSectionController.getSections);
+// Admin section management routes
+router.get('/section_statistic', adminSectionController.filterSectionsByTime);
+router.get('/sections', adminSectionController.getAllSections);
 router.post('/sections', adminSectionController.createSection);
+router.put('/sections/:sectionId', adminSectionController.updateSection);
+router.delete('/sections/:sectionId', adminSectionController.deleteSection);
 
 // Admin account management routes
 router.get('/admins', adminAccountController.getAdmins);

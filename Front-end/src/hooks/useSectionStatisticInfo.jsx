@@ -9,7 +9,6 @@ export const useSectionStatisticInfo = () => {
   }
 
   const {    
-    // New dashboard values
     stats,
     selectedYear,
     setSelectedYear,

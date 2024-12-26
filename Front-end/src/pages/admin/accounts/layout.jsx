@@ -78,7 +78,7 @@ const AdminManageAccountLayout = () => {
 
   return (
     <AccountProvider>
-      <div className="relative flex flex-col items-center justify-center p-8 bg-gray-100 w-full h-full">
+      <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
         <Tab title="Accounts" tabs={tabs} configs={configs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="student" role="tabpanel" aria-labelledby="student-tab">
             <StudentAccountView />

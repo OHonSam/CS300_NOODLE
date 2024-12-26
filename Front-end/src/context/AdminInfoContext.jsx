@@ -41,7 +41,7 @@ export const AdminInfoProvider = ({ children }) => {
       // Recalculate total pages
       const newTotalPages = Math.ceil((admins.length + 1) / adminsPerPage);
       setTotalPages(newTotalPages);
-      // // Optionally switch to the last page to see the new admin
+
       // setCurrentPage(newTotalPages);
       return true;
     } catch (error) {
@@ -84,6 +84,7 @@ export const AdminInfoProvider = ({ children }) => {
     }
   };
 
+  // Provide all the admin-related data and functions to any child component that needs them
   return (
     <AdminInfoContext.Provider
       value={{
