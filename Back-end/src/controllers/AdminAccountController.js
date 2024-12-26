@@ -70,8 +70,8 @@ class AdminAccountController {
     const adminId = req.params.adminId;
     const updateData = req.body;
 
-    console.log('Updating admin with ID:', adminId);
-    console.log('Update data:', updateData);
+    // console.log('Updating admin with ID:', adminId);
+    // console.log('Update data:', updateData);
 
     try {
 
@@ -84,11 +84,13 @@ class AdminAccountController {
         }
       );
 
-      console.log('Updated admin:', updatedAdmin);
+      // console.log('Updated admin:', updatedAdmin);
 
       if (!updatedAdmin) {
         console.log('Admin not found');
-        return res.status(404).json({ error: 'Admin not found' });
+        return res.status(404).json({ 
+          message: 'Admin not found' 
+        });
       }
 
       // If email was updated, also update the associated account

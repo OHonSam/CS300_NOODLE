@@ -59,34 +59,69 @@ class AdminSectionController {
   }
 
   // Update and delete methods can be added similarly
+  async updateSection(req, res) {
+    const sectionId = req.params.sectionId;
+    const updateData = req.body;
+
+    try {
+      const updatedSection = await Section.findOneAndUpdate(
+        { sectionId: sectionId },
+        { $set: updateData },
+        { new: true,
+          runValidators: true
+        }
+      );
+
+      if (!updatedSection) {
+        return res.status(404).json({ 
+          message: 'Section not found' 
+        });
+      }
+
+      res.json(updatedSection); 
+    } catch (error) {
+      console.error('Update section error:', error);
+      res.status(500).json({ 
+        error: 'Server error',
+        message: error.message 
+      });
+    }
+  }
+
+  async deleteSection(req, res) {
+    const sectionId = req.params.sectionId;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const deletedSection = await Section.findOneAndDelete(        
+        { sectionId: sectionId },
+        { session }
+      );
+
+      if (!deletedSection) {
+        await session.abortTransaction();
+        return res.status(404).json({ error: 'Section not found' });
+      }
+
+      await session.commitTransaction();
+      
+      res.json({
+        message: 'Section deleted successfully',
+        deletedAdmin
+      });
+    } catch (error) {
+      await session.abortTransaction();
+      console.error('Delete section error:', error);
+      res.status(500).json({ 
+        error: 'Server error',
+        message: error.message 
+      }); 
+    } finally {
+      session.endSession();
+    }
+  }
 }
-
-// async createSection(req, res) {
-//     try {
-//         const { sectionId, courseName, courseCredit, schoolYear, semester, capacity } = req.body;
-        
-//         const newSection = new Section({
-//             sectionId,
-//             courseName,
-//             courseCredit: Number(courseCredit),
-//             schoolYear,
-//             semester: Number(semester),
-//             capacity: Number(capacity),
-//             students: ["None"],
-//             teacher: ["None"]
-//         });
-
-//         const savedSection = await newSection.save();
-//         res.status(201).json(savedSection);
-
-//     } catch (error) {
-//         console.error('Section creation error:', error);
-//         if (error.code === 11000) {
-//             return res.status(400).json({ message: 'Section ID already exists' });
-//         }
-//         res.status(500).json({ message: error.message });
-//     }
-//   }
-// }
 
 module.exports = new AdminSectionController();
