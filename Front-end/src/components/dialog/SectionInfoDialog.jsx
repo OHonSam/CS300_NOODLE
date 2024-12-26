@@ -55,7 +55,7 @@ const SectionInfoDialog = ({ isOpen, onClose, onCreate }) => {
         <form onSubmit={handleSubmit}>
             <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <label htmlFor="sectionId" className="block mb-2 text-sm font-medium text-gray-900">Section ID</label>
+                <label htmlFor="sectionId" className="block mb-2 text-sm font-medium text-gray-900">Course ID</label>
                 <input type="text" id="sectionId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="CSC10001" required
                 value={formData.sectionId}
                 onChange={handleChange}/>

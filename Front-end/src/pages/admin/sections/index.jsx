@@ -13,7 +13,7 @@ const AdminManageSections = () => {
   const [toast, setToast] = useState('');
 
   const headings = [
-    { id: 'sectionId', label: 'Section ID' },
+    { id: 'sectionId', label: 'Course ID' },
     { id: 'courseName', label: 'Course Name' },
     { id: 'courseCredit', label: 'Credits' },
     { id: 'schoolYear', label: 'Year' },
