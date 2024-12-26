@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import AdminDashboard from './pages/admin/dashboard'
+import AdminDashboardLayout from './pages/admin/dashboard/layout'
 import AdminLayout from './pages/admin/layout'
 import AdminManageAccountLayout from './pages/admin/accounts/layout'
 import AdminManageSections from './pages/admin/sections'
@@ -38,7 +38,7 @@ function App() {
         <Route element={<PrivateRoute allowedRoles={[RoleId.ADMIN]} />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboardLayout />} />
             <Route path="accounts" element={<AdminManageAccountLayout />} />
             <Route path="sections" element={<AdminManageSections />} />
             <Route path="announcements" element={<AdminAnnouncements />} />
