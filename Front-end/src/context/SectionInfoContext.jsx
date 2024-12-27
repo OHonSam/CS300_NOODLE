@@ -22,7 +22,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
   const updateSection = async (updatedSection) => {
     try {
       const response = await axios.put(
-        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}`, 
+        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}`,
         updatedSection
       );
       if (response.data) {
@@ -30,8 +30,10 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
         return true;
       }
     } catch (error) {
-      console.error("Error updating section:", error);
-      return false;
+      console.error("Error updating section:", error.response);
+      throw {
+        message: error.response.data.message,
+      };
     }
   };
 

@@ -73,7 +73,7 @@ const TeacherManageAccountLayout = () => {
         <StudentInfoDialog
           dialogFor={'create'}
           isOpen={studentCreationDialogVisible}
-          onCreate={() => setToast(['Student created successfully', true])}
+          onCreate={() => setToast(['Student created successfully!', true])}
           onClose={() => setStudentCreationDialogVisible(false)}
         />
         <FileUploadDialog
@@ -81,7 +81,7 @@ const TeacherManageAccountLayout = () => {
           isOpen={studentFileUploadDialogVisible}
           onSubmit={(file) => {
             console.log('Call backend API to submit file', file);
-            setToast(['Student imported successfully', true]);
+            setToast(['Student imported successfully!', true]);
           }}
           onClose={() => setStudentFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
@@ -90,7 +90,7 @@ const TeacherManageAccountLayout = () => {
         <TeacherInfoDialog
           dialogFor={'create'}
           isOpen={teacherCreationDialogVisible}
-          onCreate={() => setToast(['Teacher created successfully', true])}
+          onCreate={() => setToast(['Teacher created successfully!', true])}
           onClose={() => setTeacherCreationDialogVisible(false)}
         />
         <FileUploadDialog
@@ -98,7 +98,7 @@ const TeacherManageAccountLayout = () => {
           isOpen={teacherFileUploadDialogVisible}
           onSubmit={(file) => {
             console.log('Call backend API to sumbit file', file);
-            setToast(['Teacher imported successfully', true]);
+            setToast(['Teacher imported successfully!', true]);
           }}
           onClose={() => setTeacherFileUploadVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}

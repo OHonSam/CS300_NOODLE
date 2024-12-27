@@ -146,7 +146,7 @@ class AdminSectionController {
       await session.commitTransaction();
 
       res.json({
-        message: 'Section deleted successfully',
+        message: 'Section deleted successfully!',
         deletedSection
       });
     } catch (error) {

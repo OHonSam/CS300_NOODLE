@@ -147,7 +147,7 @@ class StudentAccountController {
 
       // 6. Send success response
       res.json({
-        message: 'Student and associated account deleted successfully',
+        message: 'Student and associated account deleted successfully!',
         deletedAdmin: deletedStudent
       });
     } catch (error) {

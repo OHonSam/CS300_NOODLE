@@ -34,8 +34,8 @@ const TeacherAccountView = () => {
           teacherData={currentTeacherDialog}
           isOpen={teacherDialogVisible}
           onClose={() => setTeacherDialogVisible(false)}
-          onUpdate={() => setToast(['Teacher updated successfully.', true])}
-          onDelete={() => setToast(['Teacher deleted successfully.', true])}
+          onUpdate={() => setToast(['Teacher updated successfully!', true])}
+          onDelete={() => setToast(['Teacher deleted successfully!', true])}
         />
       </Table>
       {totalPages > 1 && <Pager

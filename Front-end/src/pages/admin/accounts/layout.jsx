@@ -103,7 +103,7 @@ const AdminManageAccountsLayout = () => {
           isOpen={studentFileUploadDialogVisible}
           onSubmit={(file) => {
             console.log('Call backend API to submit file', file);
-            // setToast(['Student imported successfully', true]);
+            // setToast(['Student imported successfully!', true]);
           }}
           onClose={() => setStudentFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
@@ -120,7 +120,7 @@ const AdminManageAccountsLayout = () => {
           isOpen={teacherFileUploadDialogVisible}
           onSubmit={(file) => {
             console.log('Call backend API to sumbit file', file);
-            // setToast(['Teacher imported successfully', true]);
+            // setToast(['Teacher imported successfully!', true]);
           }}
           onClose={() => setTeacherFileUploadVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
@@ -137,7 +137,7 @@ const AdminManageAccountsLayout = () => {
           isOpen={adminFileUploadDialogVisible}
           onSubmit={(file) => {
             console.log('Call backend API to sumbit file', file);
-            // setToast(['Administrator imported successfully', true]);
+            // setToast(['Administrator imported successfully!', true]);
           }}
           onClose={() => setAdminFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}

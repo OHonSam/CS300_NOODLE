@@ -32,7 +32,7 @@ const SectionInfoView = () => {
     try {
       const success = await deleteSection();
       if (success) {
-        setToast(['Section deleted successfully', true]);
+        setToast(['Section deleted successfully!', true]);
         navigate('/admin/sections');
       } else {
         setError('Failed to delete section');
@@ -49,14 +49,19 @@ const SectionInfoView = () => {
       if (!window.confirm('Are you sure you want to update this section information?')) {
         return
       }
-      const success = await updateSection(formData);
-      console.log(success);
-      if (success) {
-        setIsEditing(false);
-        setToast(['Section edited successfully', true]);
-      } else {
-        const message = error.response?.data?.message || 'Error editing section';
+
+      let message = null
+      try {
+        const _ = await updateSection(formData);
+      } catch (error) {
+        message = error.message || 'Error editing section';
+      }
+
+      if (message) {
         setToast([message, false]);
+      } else {
+        setIsEditing(false);
+        setToast(['Section edited successfully!', true]);
       }
     } else {
       setIsEditing(true);
@@ -146,13 +151,13 @@ const SectionInfoView = () => {
       </div>
       <div className="flex justify-center items-center mt-4">
         <div className="flex space-x-4">
-          <button 
+          <button
             className="bg-red-500 hover:bg-red-600 font-bold text-white px-6 py-2 rounded-md w-64"
             onClick={handleDeleteClick}
           >
             Delete
           </button>
-          <button 
+          <button
             className="bg-blue-500 hover:bg-blue-600 font-bold text-white px-6 py-2 rounded-md w-64"
             onClick={handleEditClick}
           >
