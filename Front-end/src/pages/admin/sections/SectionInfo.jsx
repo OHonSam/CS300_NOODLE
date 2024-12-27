@@ -1,40 +1,18 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSectionInfo } from "../../../hooks/useSectionInfo";
 
 const SectionInfoView = () => {
-  // const [localCourseId, setLocalCourseId] = useState(null);
-  // const [localCourseName, setLocalCourseName] = useState(null);
-  // const [localCredits, setLocalCredits] = useState(null);
-  // const [localSchoolYear, setLocalSchoolYear] = useState(null);
-  // const [localSemester, setLocalSemester] = useState(null);
-  // const [localCapacity, setLocalCapacity] = useState(null);
-
   const navigate = useNavigate();
-  const { state } = useLocation();  // Get the passed state from the navigation
   const { section, updateSection, deleteSection } = useSectionInfo();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    sectionId: '',
-    courseName: '',
-    courseCredit: '',
-    schoolYear: '',
-    semester: '',
-    capacity: '',
-  });
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    if (state) {
-      setFormData({
-        sectionId: state.sectionId,
-        courseName: state.courseName,
-        courseCredit: state.courseCredit,
-        schoolYear: state.schoolYear,
-        semester: state.semester,
-        capacity: state.capacity
-      });
+    if (section) {
+      setFormData(section);
     }
-  }, [state]);
+  }, [section]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;

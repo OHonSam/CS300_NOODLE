@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Section = require('../models/SectionModel');
 
 class AdminSectionController {
-  // Get all sections
   async getAllSections(req, res) {
     const { page = 1, limit = 10 } = req.query;
     try {

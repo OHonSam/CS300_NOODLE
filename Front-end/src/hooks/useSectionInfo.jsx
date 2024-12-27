@@ -1,14 +1,9 @@
 import { createContext, useContext } from "react";
 
 const initialSectionInfoContext = {
-    sectionId: null,
-    courseName: null,
-    credits: null,
-    schoolYear: null,
-    semester: null,
-    capacity: null,
+    section: null,
     updateSection: async () => false,
-    deleteSection: async () => false
+    deleteSection: async () => false,
 };
 
 export const SectionInfoContext = createContext(initialSectionInfoContext);

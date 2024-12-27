@@ -8,7 +8,7 @@ import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";
 import Toast from "../../../components/toast";
 import { FiPlusCircle } from "react-icons/fi";
 
-const AdminManageSections = () => {
+const AdminManageSectionsLayout = () => {
   const navigate = useNavigate();
   const [sectionDialogVisible, setSectionDialogVisible] = useState(false);
   const [sections, setSections] = useState([]);
@@ -97,4 +97,4 @@ const AdminManageSections = () => {
   );
 };
 
-export default AdminManageSections;
+export default AdminManageSectionsLayout;
