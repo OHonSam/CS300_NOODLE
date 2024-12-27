@@ -32,8 +32,9 @@ const SectionInfoView = () => {
     try {
       const success = await deleteSection();
       if (success) {
-        setToast(['Section deleted successfully!', true]);
         navigate('/admin/sections');
+        // TODO: toast didn't work here as the toast was destroyed when the page navigated away
+        setToast(['Section deleted successfully!', true]);
       } else {
         setError('Failed to delete section');
         setToast(['Failed to delete section', false]);
