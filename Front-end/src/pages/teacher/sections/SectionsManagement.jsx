@@ -52,6 +52,7 @@ const SectionsManagement = () => {
         currentPage={currentPage}
         rowsPerPage={2}
         className="mt-4"
+        userType="teacher"
       />
     </div>
   );
