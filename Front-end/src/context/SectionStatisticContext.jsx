@@ -45,7 +45,7 @@ export const SectionStatisticProvider = ({ children }) => {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/admin/section_statistic', {
+      const response = await axios.get('/api/admin/section/statistic', {
         params: {
           semester: selectedSemester,
           schoolYear: getSchoolYearLabel(selectedYear)

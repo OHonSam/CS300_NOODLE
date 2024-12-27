@@ -12,7 +12,7 @@ import TeacherAccountView from "./TeacherAccount";
 import AdminInfoDialog from "../../../components/dialog/AdminInfoDialog";
 import AdminAccountView from "./AdminAccount";
 
-const AdminManageAccountLayout = () => {
+const AdminManageAccountsLayout = () => {
   const [studentCreationDialogVisible, setStudentCreationDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
   const [teacherCreationDialogVisible, setTeacherCreationDialogVisible] = useState(false);
@@ -153,4 +153,4 @@ const AdminManageAccountLayout = () => {
   );
 };
 
-export default AdminManageAccountLayout;
+export default AdminManageAccountsLayout;

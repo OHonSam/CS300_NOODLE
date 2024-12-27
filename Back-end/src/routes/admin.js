@@ -9,11 +9,12 @@ const authMiddleware = require('../middleware/AuthMiddleware');
 router.use(authMiddleware.verifyToken);
 
 // Admin section management routes
-router.get('/section_statistic', adminSectionController.filterSectionsByTime);
+router.get('/section/statistic', adminSectionController.filterSectionsByTime);
 router.get('/sections', adminSectionController.getAllSections);
+router.get('/section/:schoolYear/:semester/:sectionId', adminSectionController.getSection);
 router.post('/sections', adminSectionController.createSection);
-router.put('/sections/:sectionId', adminSectionController.updateSection);
-router.delete('/sections/:sectionId', adminSectionController.deleteSection);
+router.put('/sections/:schoolYear/:semester/:sectionId', adminSectionController.updateSection);
+router.delete('/sections/:schoolYear/:semester/:sectionId', adminSectionController.deleteSection);
 
 // Admin account management routes
 router.get('/admins', adminAccountController.getAdmins);

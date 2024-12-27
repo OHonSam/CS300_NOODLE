@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../../../axios.config";
 import Header from "../../../components/tab";
 import Tab from "../../../components/tab";
@@ -7,7 +8,8 @@ import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";
 import Toast from "../../../components/toast";
 import { FiPlusCircle } from "react-icons/fi";
 
-const AdminManageSections = () => {
+const AdminManageSectionsLayout = () => {
+  const navigate = useNavigate();
   const [sectionDialogVisible, setSectionDialogVisible] = useState(false);
   const [sections, setSections] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -37,19 +39,6 @@ const AdminManageSections = () => {
     fetchSections();
   }, [currentPage]);
 
-  // const data = Array.from({ length: 100 }, (_, index) => {
-  //   const maxStudents = Math.floor(Math.random() * 50 + 10);
-  //   return {
-  //     sectionId: index + 1,
-  //     sectionName: `Section ${index + 1}`,
-  //     credits: Math.floor(Math.random() * 4 + 1),
-  //     year: 2020 + Math.floor(Math.random() * 4 + 1),
-  //     semester: Math.floor(Math.random() * 2 + 1),
-  //     maxStudents: maxStudents,
-  //     noOfStudents: Math.floor(Math.random() * maxStudents),
-  //   }
-  // });
-
   const handleCreateSection = async (sectionData) => {
     try {
       const response = await axios.post('/api/admin/sections', sectionData);
@@ -61,10 +50,17 @@ const AdminManageSections = () => {
     }
   };
 
-
   const handleRowClicked = (row) => {
-    console.log(row);
-    // TODO: Implement edit section functionality
+    navigate(`/admin/sections/${row.schoolYear}/${row.semester}/${row.sectionId}`, 
+      { state: 
+        { sectionId: row.sectionId, 
+          courseName: row.courseName, 
+          schoolYear: row.schoolYear, 
+          semester: row.semester,
+          capacity: row.capacity,
+          courseCredit: row.courseCredit, 
+        } 
+      });
   };
 
   return (
@@ -101,4 +97,4 @@ const AdminManageSections = () => {
   );
 };
 
-export default AdminManageSections;
+export default AdminManageSectionsLayout;

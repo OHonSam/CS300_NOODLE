@@ -100,5 +100,3 @@ export const AdminInfoProvider = ({ children }) => {
     </AdminInfoContext.Provider>
   );
 };
-
-export default AdminInfoProvider;

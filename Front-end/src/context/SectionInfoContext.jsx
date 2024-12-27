@@ -2,50 +2,55 @@ import { useState, useEffect } from "react";
 import axios from "../axios.config";
 import { SectionInfoContext } from "../hooks/useSectionInfo";
 
-export const SectionInfoProvider = ({ children }) => {
-  const [sections, setSections] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const sectionsPerPage = 20;
-  
+// TODO: remove courseId, schoolYear, semester if not using them
+export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester }) => {
+  const [section, setSection] = useState(null);
+
+  const fetchSection = async () => {
+    try {
+      const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
+      setSection(response.data);
+    } catch (error) {
+      console.error("Error fetching section:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchSections = async () => {
-      try {
-        const response = await axios.get(`/api/admin/sections?page=${currentPage}&limit=${sectionsPerPage}`);
-        setSections(response.data.sections);
-        setTotalPages(response.data.totalPages);
-      } catch (error) {
-        console.error("Error fetching sections:", error);
-      }
-    };
+    fetchSection();
+  }, [sectionId, schoolYear, semester]);
 
-    fetchSections();
-  }, [currentPage]);
-
-  const addSection = async (newSection) => {
+  const updateSection = async (updatedSection) => {
     try {
-      const response = await axios.post('/api/admin/sections', newSection);
-      setSections(prev => [...prev, response.data]);
-      return true;
+      const response = await axios.put(
+        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}`, 
+        updatedSection
+      );
+      if (response.data) {
+        setSection(response.data);
+        return true;
+      }
     } catch (error) {
-      console.error("Error adding section:", error);
+      console.error("Error updating section:", error);
       return false;
     }
   };
 
-  const changePage = (page) => {
-    setCurrentPage(page);
+  const deleteSection = async () => {
+    try {
+      await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}`);
+      return true;
+    } catch (error) {
+      console.error("Error deleting section:", error);
+      return false;
+    }
   };
 
   return (
     <SectionInfoContext.Provider
       value={{
-        sections: sections.slice(0, 10),
-        totalPages,
-        currentPage,
-        changePage,
-        addSection
+        section,
+        updateSection,
+        deleteSection
       }}
     >
       {children}

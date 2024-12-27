@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AdminDashboardLayout from './pages/admin/dashboard/layout'
 import AdminLayout from './pages/admin/layout'
-import AdminManageAccountLayout from './pages/admin/accounts/layout'
-import AdminManageSections from './pages/admin/sections'
+import AdminManageAccountsLayout from './pages/admin/accounts/layout'
+import AdminManageSectionsLayout from './pages/admin/sections/SectionsManagement'
+import AdminSectionDetails from './pages/admin/sections/SectionDetails'
 import AdminAnnouncements from './pages/admin/announcements'
 import TeacherLayout from './pages/teacher/layout'
 import TeacherDashboard from './pages/teacher/dashboard'
@@ -39,10 +40,10 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboardLayout />} />
-            <Route path="accounts" element={<AdminManageAccountLayout />} />
-            <Route path="sections" element={<AdminManageSections />} />
-            <Route path="announcements" element={<AdminAnnouncements />}>
-            </Route>
+            <Route path="accounts" element={<AdminManageAccountsLayout />} />
+            <Route path="sections" element={<AdminManageSectionsLayout />} />
+            <Route path="sections/:schoolYear/:semester/:sectionId" element={<AdminSectionDetails />} />
+            <Route path="announcements" element={<AdminAnnouncements />} />
           </Route>
         </Route>
 

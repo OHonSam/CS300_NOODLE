@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Section = require('../models/SectionModel');
 
 class AdminSectionController {
-  // Get all sections
   async getAllSections(req, res) {
     const { page = 1, limit = 10 } = req.query;
     try {
@@ -43,6 +42,25 @@ class AdminSectionController {
     }
   }
 
+  async getSection(req, res) {
+    const { sectionId, schoolYear, semester } = req.params;
+    try {
+      const section = await Section.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester)
+      });
+  
+      if (!section) {
+        return res.status(404).json({ message: 'Section not found' });
+      }
+  
+      res.json(section);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
   // Create a new section
   async createSection(req, res) {
     try {
@@ -72,7 +90,11 @@ class AdminSectionController {
 
     try {
       const updatedSection = await Section.findOneAndUpdate(
-        { sectionId: sectionId },
+        {
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
         { $set: updateData },
         {
           new: true,
