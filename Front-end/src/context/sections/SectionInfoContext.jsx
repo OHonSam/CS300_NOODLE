@@ -9,7 +9,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     try {
       const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
       setSection(response.data);
-    } catch (errors) {
+    } catch (error) {
       console.error("Error fetching section:", error);
     }
   };

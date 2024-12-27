@@ -4,37 +4,25 @@ import axios from "../../axios.config";
 import { TeacherInfoContext } from "../../hooks/accounts/useTeacherInfo";
 
 export const TeacherInfoProvider = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [teachers, setTeachers] = useState([]);
-  const teachersPerPage = 10;
-  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get(`/api/admin/teachers?`);
+      setTeachers(response.data.teachers);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const response = await axios.get(`/api/admin/teachers?page=${currentPage}&limit=${teachersPerPage}`);
-        if (response.data.teachers && response.data.teachers.length > 0) {
-          setTeachers(response.data.teachers);
-          setTotalPages(response.data.totalPages);
-        }
-      } catch (error) {
-        console.error("Error fetching admins:", error);
-      }
-    };
-
     fetchTeachers();
-  }, [currentPage]);
-
-  const changePage = (page) => {
-    setCurrentPage(page);
-  };
+  }, []);
 
   const addTeacher = async (newTeacher) => {
     try {
       const response = await axios.post('/api/admin/teachers', newTeacher);
       setTeachers((prev) => [...prev, response.data.teacher]);
-      const newTotalPages = Math.ceil((teachers.length + 1) / teachersPerPage);
-      setTotalPages(newTotalPages);
       return true;
     } catch (error) {
       console.error("Error adding teacher:", error.response);
@@ -79,9 +67,8 @@ export const TeacherInfoProvider = ({ children }) => {
   return (
     <TeacherInfoContext.Provider
       value={{
-        teachers: teachers.slice(0, 10),
-        totalPages,
-        changePage,
+        teachers,
+        fetchTeachers,
         addTeacher,
         updateTeacher,
         deleteTeacher

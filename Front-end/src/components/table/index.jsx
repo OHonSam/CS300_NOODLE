@@ -14,14 +14,20 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
   );
 
   useEffect(() => {
-    console.log("Filter", filters);
-
     let filteredData = data.filter((row) =>
       headings.every(
         (heading) =>
           !filters[heading.id] || row[heading.id]?.toString().toLowerCase().includes(filters[heading.id].toLowerCase())
       )
     );
+
+    if (rowsPerPage > 0) {
+      setNumberOfPages(Math.max(1, Math.ceil(filteredData.length / rowsPerPage)));
+    }
+
+    if (currentPage > numberOfPages) {
+      setCurrentPage(numberOfPages);
+    }
 
     if (sortConfig.key) {
       filteredData.sort((a, b) => {
@@ -42,11 +48,7 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
     } else {
       setPaginatedData(filteredData);
     }
-
-    if (rowsPerPage > 0) {
-      setNumberOfPages(Math.ceil(filteredData.length / rowsPerPage));
-    }
-  }, [data, currentPage, rowsPerPage, sortConfig, filters, headings]);
+  }, [data, currentPage, sortConfig, filters]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -94,7 +96,7 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
       <div className="flex flex-col flex-grow">
         <div>
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead className="text-m text-gray-700 bg-gray-200 sticky top-0">
+            <thead className="text-m text-gray-700 bg-gray-200 top-0">
               <tr>
                 {headings.map((heading, index) => (
                   <th key={index} className="px-6 py-3 relative">
@@ -157,9 +159,9 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
           </table>
         </div>
 
-        {rowsPerPage > 0 && numberOfPages > 1 && (
+        {rowsPerPage > 0 && (
           <div className="flex justify-center pt-4">
-            <Pager currentPage={currentPage} numberOfPages={numberOfPages} onPageChange={handlePageChange} />
+            <Pager startPage={currentPage} numberOfPages={numberOfPages} onPageChange={handlePageChange} />
           </div>
         )}
       </div>

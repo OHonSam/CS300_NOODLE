@@ -9,14 +9,14 @@ const AdminAccountView = () => {
   const [adminInfoDialogVisible, setAdminInfoDialogVisible] = useState(false);
   const [currentAdminDialog, setCurrentAdminDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const { admins, totalPages, changePage } = useAdminInfo();
+  const { admins } = useAdminInfo();
 
   const headings = [
     { id: 'adminId', label: 'Admin ID' },
     { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
-    { id: 'dob', label: 'Date Of Birth' },
+    { id: 'dob', label: 'Date of Birth' },
   ];
 
   const handleRowClicked = (row) => {
@@ -26,7 +26,7 @@ const AdminAccountView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
+      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       <AdminInfoDialog
         key={currentAdminDialog?.adminId}
         dialogFor={'info'}
@@ -36,13 +36,6 @@ const AdminAccountView = () => {
         onUpdate={() => { }}
         onDelete={() => { }}
       />
-      {totalPages > 1 && (
-        <Pager
-          numberOfPages={totalPages}
-          onPageChange={changePage}
-          className="w-full flex justify-center mt-4"
-        />
-      )}
       {toast.length > 0 && (
         <Toast
           message={toast[0]}

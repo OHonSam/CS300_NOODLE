@@ -2,15 +2,14 @@ import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
 import Table from "../../../components/table";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useSectionInfo } from "../../../hooks/sections/useSectionInfo";
-import axios from "../../../axios.config";
+import { useSectionStudents } from "../../../hooks/sections/useSectionStudents";
 
 export const SectionStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
   const [enrolledStudents, setEnrolledStudents] = useState([]);
-  const { section } = useSectionInfo();
+  const { students } = useSectionStudents();
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
@@ -18,25 +17,8 @@ export const SectionStudentsView = () => {
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
     { id: 'class', label: 'Class' },
-    { id: 'dob', label: 'Date Of Birth' },
+    { id: 'dob', label: 'Date of Birth' },
   ];
-
-  const fetchEnrolledStudents = async () => {
-    if (section?.students && section.students.length > 0) {
-      try {
-        const response = await axios.get(`/api/admin/sections/${section.schoolYear}/${section.semester}/${section.sectionId}/enrolledStudents`);
-        const studentDetails = response.data;
-        setEnrolledStudents(studentDetails);
-      } catch (error) {
-        console.error("Error fetching enrolled students:", error);
-        setToast(["Failed to fetch enrolled students", false]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchEnrolledStudents();
-  }, [section]);
 
   const handleRowClicked = (row) => {
     setCurrentStudentDialog(row);
@@ -45,8 +27,8 @@ export const SectionStudentsView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col h-full w-full">
-      <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
-      <StudentInfoDialog
+      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
+      {/* <StudentInfoDialog
         key={currentStudentDialog?.studentId}
         dialogFor={'info'}
         studentData={currentStudentDialog}
@@ -54,7 +36,7 @@ export const SectionStudentsView = () => {
         onClose={() => setStudentInfoDialogVisible(false)}
         onUpdate={() => { }}
         onDelete={() => { }}
-      />
+      /> */}
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );

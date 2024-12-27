@@ -4,17 +4,11 @@ const { Account, RoleId } = require('../models/AccountModel');
 
 class TeacherAccountController {
   async getTeachers(req, res) {
-    const { page = 1, limit = 10 } = req.query;
     try {
       const teachers = await Teacher.find()
-        .skip((page - 1) * limit)
-        .limit(parseInt(limit));
-
-      const totalTeachers = await Teacher.countDocuments();
 
       res.json({
         teachers,
-        totalPages: Math.ceil(totalTeachers / limit),
       });
     } catch (error) {
       res.status(500).json({ error: 'Server error' });

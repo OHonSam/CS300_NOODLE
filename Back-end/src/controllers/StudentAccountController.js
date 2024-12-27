@@ -5,20 +5,13 @@ const { Account, RoleId } = require('../models/AccountModel');
 class StudentAccountController {
   // Get page number and items per page from request query
   async getStudents(req, res) {
-    const { page = 1, limit = 10 } = req.query;
     try {
       // Find students with pagination
       const students = await Student.find()
-        .skip((page - 1) * limit)   // Skip previous pages
-        .limit(parseInt(limit));    // Get only the requested number of items
-
-      // Count total students for pagination
-      const totalStudents = await Student.countDocuments();
 
       // Send response
       res.json({
         students,
-        totalPages: Math.ceil(totalStudents / limit),
       });
 
     } catch (error) {
@@ -27,7 +20,7 @@ class StudentAccountController {
   }
 
   // Get a student by studentId
-  async getStudentByStudentId(req, res) { 
+  async getStudentByStudentId(req, res) {
     const studentId = req.params.studentId;
     try {
       const student = await Student

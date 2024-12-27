@@ -1,12 +1,6 @@
 import { createContext, useContext } from "react";
 
-const initialSectionInfoContext = {
-    section: null,
-    updateSection: async () => false,
-    deleteSection: async () => false,
-};
-
-export const SectionInfoContext = createContext(initialSectionInfoContext);
+export const SectionInfoContext = createContext();
 
 export const useSectionInfo = () => {
     const context = useContext(SectionInfoContext);
