@@ -116,7 +116,7 @@ class TeacherAccountController {
 
       await session.commitTransaction();
       res.json({
-        message: 'Teacher and associated account deleted successfully',
+        message: 'Teacher and associated account deleted successfully!',
         deletedTeacher
       });
     } catch (error) {

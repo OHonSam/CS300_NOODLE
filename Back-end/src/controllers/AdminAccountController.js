@@ -8,7 +8,7 @@ class AdminAccountController {
   async getAdmins(req, res) {
     const { page = 1, limit = 10 } = req.query;
     try {
-      
+
       // Find admins with pagination
       const admins = await Admin.find()
         .skip((page - 1) * limit)   // Skip previous pages
@@ -88,8 +88,8 @@ class AdminAccountController {
 
       if (!updatedAdmin) {
         console.log('Admin not found');
-        return res.status(404).json({ 
-          message: 'Admin not found' 
+        return res.status(404).json({
+          message: 'Admin not found'
         });
       }
 
@@ -151,7 +151,7 @@ class AdminAccountController {
 
       // 6. Send success response
       res.json({
-        message: 'Admin and associated account deleted successfully',
+        message: 'Admin and associated account deleted successfully!',
         deletedAdmin
       });
     } catch (error) {

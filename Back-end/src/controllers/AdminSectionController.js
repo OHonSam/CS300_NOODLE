@@ -50,26 +50,25 @@ class AdminSectionController {
         schoolYear: schoolYear,
         semester: Number(semester)
       });
-  
+
       if (!section) {
         return res.status(404).json({ message: 'Section not found' });
       }
-  
+
       res.json(section);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }
   }
 
-  // Create a new section
   async createSection(req, res) {
     try {
       const newSection = new Section(req.body);
       await newSection.save();
       res.status(201).json(newSection);
     } catch (error) {
-       // Duplicate account error
-       if (error.code === 11000) {
+      // Duplicate account error
+      if (error.code === 11000) {
         res.status(400).json({
           error: 'Bad request',
           message: 'Section existed already!',
@@ -83,9 +82,8 @@ class AdminSectionController {
     }
   }
 
-  // Update and delete methods can be added similarly
   async updateSection(req, res) {
-    const sectionId = req.params.sectionId;
+    const { sectionId, schoolYear, semester } = req.params;
     const updateData = req.body;
 
     try {
@@ -110,23 +108,33 @@ class AdminSectionController {
 
       res.json(updatedSection);
     } catch (error) {
-      console.error('Update section error:', error);
-      res.status(500).json({
-        error: 'Server error',
-        message: error.message
-      });
+      if (error.code === 11000) {
+        res.status(400).json({
+          error: 'Bad request',
+          message: 'Section existed already!',
+        });
+      } else {
+        res.status(500).json({
+          error: 'Server error',
+          message: error.message
+        });
+      }
     }
   }
 
   async deleteSection(req, res) {
-    const sectionId = req.params.sectionId;
+    const { sectionId, schoolYear, semester } = req.params;
 
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
       const deletedSection = await Section.findOneAndDelete(
-        { sectionId: sectionId },
+        {
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
         { session }
       );
 
@@ -138,11 +146,13 @@ class AdminSectionController {
       await session.commitTransaction();
 
       res.json({
-        message: 'Section deleted successfully',
-        deletedAdmin
+        message: 'Section deleted successfully!',
+        deletedSection
       });
     } catch (error) {
-      await session.abortTransaction();
+      if (session.inTransaction()) {
+        await session.abortTransaction();
+      }
       console.error('Delete section error:', error);
       res.status(500).json({
         error: 'Server error',
