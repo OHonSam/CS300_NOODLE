@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import Header from "../../../components/tab";
 import SectionList from "../../../components/section/sectionlist";
-import { useSectionInfo } from "../../../hooks/useSectionInfo";
 import { getStoredToken, decryptToken } from "../../../services/auth/tokenService";
 import axios from "../../../axios.config";
 
 const TeacherAssignedSections = () => {
-  const {section, getSectionsByTeacher} = useSectionInfo();
   const [sections, setSections] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);

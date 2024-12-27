@@ -2,7 +2,7 @@ import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import Toast from "../../../components/toast";
-import { useAdminInfo } from "../../../hooks/useAdminInfo";
+import { useAdminInfo } from "../../../hooks/admin/useAdminInfo";
 import AdminInfoDialog from "../../../components/dialog/AdminInfoDialog";
 
 const AdminAccountView = () => {

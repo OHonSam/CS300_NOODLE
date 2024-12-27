@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSectionInfo } from "../../../hooks/useSectionInfo";
+import { useSectionInfo } from "../../../hooks/admin/useSectionInfo";
 import Toast from "../../../components/toast";
 
 const SectionInfoView = () => {

@@ -1,4 +1,4 @@
-import { SectionInfoProvider } from "../../../context/SectionInfoContext";
+import { SectionInfoProvider } from "../../../context/admin/SectionInfoContext";
 
 const SectionProvider = ({ children, sectionId, schoolYear, semester }) => {
   return (

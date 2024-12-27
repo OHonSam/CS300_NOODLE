@@ -1,8 +1,8 @@
 // Front-end/src/context/AdminInfoContext.jsx
 import { useState, useEffect } from "react";
-import axios from "../axios.config";
+import axios from "../../axios.config";
 
-import { AdminInfoContext } from "../hooks/useAdminInfo";
+import { AdminInfoContext } from "../../hooks/admin/useAdminInfo";
 
 export const AdminInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend
