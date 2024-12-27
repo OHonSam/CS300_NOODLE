@@ -26,6 +26,8 @@ const TeacherLayout = () => {
       <SideNavigationBar navlinks={navlinks} />
       <Outlet />
     </div>
+
+
   );
 };
 

@@ -7,7 +7,7 @@ import AdminSectionDetails from './pages/admin/sections/SectionDetails'
 import AdminAnnouncements from './pages/admin/announcements'
 import TeacherLayout from './pages/teacher/layout'
 import TeacherDashboard from './pages/teacher/dashboard'
-import TeacherAssignedSections from './pages/teacher/sections/AssignedSectionsManagement'
+import TeacherSectionsManagement from './pages/teacher/sections/layout'
 import TeacherAnnouncements from './pages/teacher/announcements'
 import SignIn from './pages/auth/login'
 import AuthLayout from './pages/auth/layout'
@@ -51,7 +51,7 @@ function App() {
           <Route path="/teacher" element={<TeacherLayout />}>
             <Route index element={<Navigate to="/teacher/dashboard" replace />} />
             <Route path="dashboard" element={<TeacherDashboard />} />
-            <Route path="sections" element={<TeacherAssignedSections />} />
+            <Route path="sections" element={<TeacherSectionsManagement />} />
             <Route path="announcements" element={<TeacherAnnouncements />} />
           </Route>
         </Route>

@@ -1,9 +1,11 @@
-import {SectionInfoProvider} from '../../../context/SectionInfoContext';
+import { SectionsManagementProvider } from "../../../context/teacher/SectionsManagementContext";
 
-const SectionProvider = ({children, sectionId, schoolYear, semester}) => {
+const SectionsProvider = ({children}) => {
   return (
-    <SectionInfoProvider sectionId={sectionId} schoolYear={schoolYear} semester={semester}>
+    <SectionsManagementProvider>
       {children}
-    </SectionInfoProvider>
+    </SectionsManagementProvider>
   );
-}
+};
+
+export default SectionsProvider

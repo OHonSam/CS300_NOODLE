@@ -47,19 +47,6 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     }
   };
 
-  const getSectionsByTeacher = async (teacherId, page) => {
-    try {
-      return response = await axios.get(`/api/teacher/sections`, {
-        params: {
-          teacherId,
-          page,
-        },
-      });
-    } catch (error) {
-      console.error("Error getting sections by teacher:", error);
-      return false;
-    }
-  }
 
   return (
     <SectionInfoContext.Provider
@@ -67,7 +54,6 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
         section,
         updateSection,
         deleteSection,
-        getSectionsByTeacher
       }}
     >
       {children}
