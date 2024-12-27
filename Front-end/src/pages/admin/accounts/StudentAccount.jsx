@@ -2,7 +2,7 @@ import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useStudentInfo } from "../../../hooks/admin/useStudentInfo";
+import { useStudentInfo } from "../../../hooks/accounts/useStudentInfo";
 import Toast from "../../../components/toast";
 
 const StudentAccountView = () => {
@@ -13,7 +13,7 @@ const StudentAccountView = () => {
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
-    { id: 'fullName', label: 'Full name' },
+    { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
     { id: 'class', label: 'Class' },

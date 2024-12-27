@@ -3,7 +3,7 @@ import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import Toast from "../../../components/toast";
 import TeacherInfoDialog from "../../../components/dialog/TeacherInfoDialog";
-import { useTeacherInfo } from "../../../hooks/admin/useTeacherInfo";
+import { useTeacherInfo } from "../../../hooks/accounts/useTeacherInfo";
 
 const TeacherAccountView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
@@ -13,7 +13,7 @@ const TeacherAccountView = () => {
 
   const headings = [
     { id: 'teacherId', label: 'Teacher ID' },
-    { id: 'fullName', label: 'Full name' },
+    { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
     { id: 'department', label: 'Department' },

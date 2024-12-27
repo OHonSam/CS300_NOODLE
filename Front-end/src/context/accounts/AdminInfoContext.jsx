@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "../../axios.config";
 
-import { AdminInfoContext } from "../../hooks/admin/useAdminInfo";
+import { AdminInfoContext } from "../../hooks/accounts/useAdminInfo";
 
 export const AdminInfoProvider = ({ children }) => {
   // Sample data, replace this with data fetched from backend

@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { SectionStatisticContext } from '../../context/admin/SectionStatisticContext';
+import { SectionStatisticContext } from '../../context/dashboard/SectionStatisticContext';
 
 export const useSectionStatisticInfo = () => {
   const context = useContext(SectionStatisticContext);
-  
+
   if (!context) {
     throw new Error('useSectionInfo must be used within SectionInfoProvider');
   }
 
-  const {    
+  const {
     stats,
     selectedYear,
     setSelectedYear,
@@ -19,7 +19,7 @@ export const useSectionStatisticInfo = () => {
     getSchoolYearLabel
   } = context;
 
-  return {  
+  return {
     // New dashboard values
     stats,
     selectedYear,

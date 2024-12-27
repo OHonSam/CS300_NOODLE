@@ -1,6 +1,6 @@
-import { SectionsManagementProvider } from "../../../context/teacher/SectionsManagementContext";
+import { SectionsManagementProvider } from "../../../context/sections/SectionsManagementContext";
 
-const SectionsProvider = ({children}) => {
+const SectionsProvider = ({ children }) => {
   return (
     <SectionsManagementProvider>
       {children}

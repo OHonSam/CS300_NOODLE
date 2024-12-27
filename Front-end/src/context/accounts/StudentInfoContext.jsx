@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "../../axios.config";
-import { StudentInfoContext } from "../../hooks/admin/useStudentInfo";
+import { StudentInfoContext } from "../../hooks/accounts/useStudentInfo";
 
 export const StudentInfoProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);

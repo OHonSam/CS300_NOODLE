@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
 import Table from "../../../components/table";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useSectionInfo } from "../../../hooks/admin/useSectionInfo";
+import { useSectionInfo } from "../../../hooks/sections/useSectionInfo";
 import axios from "../../../axios.config";
 
 export const SectionStudentsView = () => {
@@ -14,7 +14,7 @@ export const SectionStudentsView = () => {
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
-    { id: 'fullName', label: 'Full name' },
+    { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
     { id: 'class', label: 'Class' },
