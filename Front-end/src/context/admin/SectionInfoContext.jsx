@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "../axios.config";
-import { SectionInfoContext } from "../hooks/useSectionInfo";
+import axios from "../../axios.config";
+import { SectionInfoContext } from "../../hooks/admin/useSectionInfo";
 
 // TODO: remove courseId, schoolYear, semester if not using them
 export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester }) => {
@@ -10,7 +10,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     try {
       const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
       setSection(response.data);
-    } catch (error) {
+    } catch (errors) {
       console.error("Error fetching section:", error);
     }
   };
@@ -47,12 +47,13 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     }
   };
 
+
   return (
     <SectionInfoContext.Provider
       value={{
         section,
         updateSection,
-        deleteSection
+        deleteSection,
       }}
     >
       {children}

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Student = require('../models/StudentModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt = require('bcryptjs');
 
 class StudentAccountController {
   // Get page number and items per page from request query

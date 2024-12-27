@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Admin = require('../models/AdminModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt = require('bcryptjs');
 
 class AdminAccountController {
   // Get page number and items per page from request query

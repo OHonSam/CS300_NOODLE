@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
-import { useTeacherInfo } from "../../hooks/useTeacherInfo";
+import { useTeacherInfo } from "../../hooks/admin/useTeacherInfo";
 
 const TeacherInfoDialog = ({ teacherData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
   const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');

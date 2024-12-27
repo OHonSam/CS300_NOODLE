@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Teacher = require('../models/TeacherModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt = require('bcryptjs');
 
 class TeacherAccountController {
   async getTeachers(req, res) {
