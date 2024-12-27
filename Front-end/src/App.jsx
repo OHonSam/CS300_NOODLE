@@ -9,6 +9,10 @@ import TeacherLayout from './pages/teacher/layout'
 import TeacherDashboard from './pages/teacher/dashboard'
 import TeacherSectionsManagement from './pages/teacher/sections/layout'
 import TeacherAnnouncements from './pages/teacher/announcements'
+import StudentLayout from './pages/student/layout'
+import StudentDashboard from './pages/student/dashboard'
+import StudentSectionsManagement from './pages/student/sections/layout'
+import StudentAnnouncements from './pages/student/announcements'
 import SignIn from './pages/auth/login'
 import AuthLayout from './pages/auth/layout'
 import OtpConfirmation from './pages/auth/otp-confirmation'
@@ -55,6 +59,17 @@ function App() {
             <Route path="announcements" element={<TeacherAnnouncements />} />
           </Route>
         </Route>
+
+        {/* Protected Student Routes */}
+        <Route element={<PrivateRoute allowedRoles={[RoleId.STUDENT]} />}>
+          <Route path="/student" element={<StudentLayout />}>
+            <Route index element={<Navigate to="/student/dashboard" replace />} />
+            <Route path="dashboard" element={<StudentDashboard />} />
+            <Route path="sections" element={<StudentSectionsManagement />} />
+            <Route path="announcements" element={<StudentAnnouncements />} />
+          </Route>
+        </Route>
+        
 
         {/* Add an Unauthorized Route */}
         <Route path="/unauthorized" element={<div className="flex items-center justify-center h-screen w-screen">

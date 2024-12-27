@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Section from "./section";
 import Pager from "../footer/pager";
 
-const SectionList = ({ data, onSectionClicked, onPageChange, rowsPerPage = 0, className }) => {
+const SectionList = ({ data, onSectionClicked, onPageChange, rowsPerPage = 0, className, userType }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
 
@@ -28,15 +28,8 @@ const SectionList = ({ data, onSectionClicked, onPageChange, rowsPerPage = 0, cl
         {paginatedData.map((section, index) => (
           <Section
             key={index}
-            sectionId={section.sectionId}
-            sectionName={section.sectionName}
-            teachersName={section.teachersName}
-            credits={section.credits}
-            year={section.year}
-            semester={section.semester}
-            noOfStudents={section.noOfStudents}
-            gpa={section.gpa}
-            noOfFails={section.noOfFails}
+            {...section}
+            userType={userType}
           />
         ))}
 
