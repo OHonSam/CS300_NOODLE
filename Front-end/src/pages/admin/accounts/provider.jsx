@@ -1,6 +1,6 @@
-import { AdminInfoProvider } from "../../../context/AdminInfoContext"
-import { StudentInfoProvider } from "../../../context/StudentInfoContext"
-import { TeacherInfoProvider } from "../../../context/TeacherInfoContext"
+import { AdminInfoProvider } from "../../../context/admin/AdminInfoContext"
+import { StudentInfoProvider } from "../../../context/admin/StudentInfoContext"
+import { TeacherInfoProvider } from "../../../context/admin/TeacherInfoContext"
 
 const AccountProvider = ({ children }) => {
   return (

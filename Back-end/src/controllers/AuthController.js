@@ -22,15 +22,15 @@ class AuthController {
     try {
       const { username, password } = req.body;
       const { isValid, roleId } = await this.authService.checkCredential(username, password);
-      
+
       if (!isValid) {
         return res.status(401).json({ message: 'Incorrect Username or Password!' });
       }
 
-      const token = jwt.sign({ 
-        username, 
-        roleId, 
-      }, this.tokenSecretKey, { expiresIn: '24h'});
+      const token = jwt.sign({
+        username,
+        roleId,
+      }, this.tokenSecretKey, { expiresIn: '24h' });
 
       // encrypt token
       const encryptedToken = this.encryptToken(token);
@@ -59,16 +59,16 @@ class AuthController {
 
       await this.authService.changePassword(username, newPassword);
       await this.authService.removeResetPasswordToken(username);
-      
-      res.json({ message: 'Password changed successfully' });
+
+      res.json({ message: 'Password changed successfully!' });
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+      res.status(500).json({ message: 'Server error' });
     }
   }
 
   async resetPassword(req, res) {
     const { username } = req.body;
-    
+
     try {
       const account = await this.authService.Account.findOne({ username });
       if (!account) {
@@ -83,12 +83,12 @@ class AuthController {
 
       // Send OTP to account's email
       const emailSent = await this.mailService.sendOTP(account.email, tokenData.otp);
-      
+
       if (!emailSent) {
         return res.status(500).json({ message: 'Failed to send OTP email' });
       }
 
-      res.status(200).json({ message: 'OTP sent successfully' });
+      res.status(200).json({ message: 'OTP sent successfully!' });
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
@@ -96,10 +96,10 @@ class AuthController {
 
   async verifyOTP(req, res) {
     const { username, otp } = req.body;
-    
+
     try {
       const isValidOTP = await this.authService.verifyOTP(username, otp);
-      
+
       if (!isValidOTP) {
         return res.status(400).json({ message: 'Invalid or expired OTP' });
       }
@@ -108,16 +108,16 @@ class AuthController {
       const resetPasswordToken = account.resetPasswordToken;
 
       // Generate a temporary token for password reset
-      const tempToken = jwt.sign({ username, resetPasswordToken, passwordReset: true}, this.tokenSecretKey, { expiresIn: '15m' });
+      const tempToken = jwt.sign({ username, resetPasswordToken, passwordReset: true }, this.tokenSecretKey, { expiresIn: '15m' });
       res.status(200).json({ token: tempToken });
     } catch (error) {
       console.error('OTP verification error:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   }
-  
+
   async logout(req, res) {
-    res.json({ message: 'Logged out successfully' });
+    res.json({ message: 'Logged out successfully!' });
   }
 }
 

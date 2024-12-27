@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
 import Table from "../../../components/table";
-import Pager from "../../../components/footer/pager";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useStudentInfo } from "../../../hooks/useStudentInfo";
+import { useSectionInfo } from "../../../hooks/admin/useSectionInfo";
+import axios from "../../../axios.config";
 
-const SectionStudentsView = () => {
+export const SectionStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const { students, totalPages, changePage } = useStudentInfo();
+  const [enrolledStudents, setEnrolledStudents] = useState([]);
+  const { section } = useSectionInfo();
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
@@ -20,6 +21,23 @@ const SectionStudentsView = () => {
     { id: 'dob', label: 'Date Of Birth' },
   ];
 
+  const fetchEnrolledStudents = async () => {
+    if (section?.students && section.students.length > 0) {
+      try {
+        const response = await axios.get(`/api/admin/sections/${section.schoolYear}/${section.semester}/${section.sectionId}/enrolledStudents`);
+        const studentDetails = response.data;
+        setEnrolledStudents(studentDetails);
+      } catch (error) {
+        console.error("Error fetching enrolled students:", error);
+        setToast(["Failed to fetch enrolled students", false]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchEnrolledStudents();
+  }, [section]);
+
   const handleRowClicked = (row) => {
     setCurrentStudentDialog(row);
     setStudentInfoDialogVisible(true);
@@ -27,7 +45,7 @@ const SectionStudentsView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col overflow-y-auto h-full w-full">
-      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
+      <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
       <StudentInfoDialog
         key={currentStudentDialog?.studentId}
         dialogFor={'info'}
@@ -37,11 +55,6 @@ const SectionStudentsView = () => {
         onUpdate={() => { }}
         onDelete={() => { }}
       />
-      {totalPages > 1 && <Pager
-        numberOfPages={totalPages}
-        onPageChange={changePage}
-        className="w-full flex justify-center mt-2" />
-      }
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );

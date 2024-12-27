@@ -2,7 +2,7 @@ import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useStudentInfo } from "../../../hooks/useStudentInfo";
+import { useStudentInfo } from "../../../hooks/admin/useStudentInfo";
 import Toast from "../../../components/toast";
 
 const StudentAccountView = () => {

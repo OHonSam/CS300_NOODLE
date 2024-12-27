@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Teacher = require('../models/TeacherModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt = require('bcryptjs');
 
 class TeacherAccountController {
   async getTeachers(req, res) {
@@ -116,7 +115,7 @@ class TeacherAccountController {
 
       await session.commitTransaction();
       res.json({
-        message: 'Teacher and associated account deleted successfully',
+        message: 'Teacher and associated account deleted successfully!',
         deletedTeacher
       });
     } catch (error) {

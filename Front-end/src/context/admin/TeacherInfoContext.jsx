@@ -1,7 +1,7 @@
 // Front-end/src/context/TeacherInfoContext.jsx
 import { useState, useEffect } from "react";
-import axios from "../axios.config";
-import { TeacherInfoContext } from "../hooks/useTeacherInfo";
+import axios from "../../axios.config";
+import { TeacherInfoContext } from "../../hooks/admin/useTeacherInfo";
 
 export const TeacherInfoProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);

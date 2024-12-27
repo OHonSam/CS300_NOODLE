@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "../axios.config";
-import { SectionInfoContext } from "../hooks/useSectionInfo";
+import axios from "../../axios.config";
+import { SectionInfoContext } from "../../hooks/admin/useSectionInfo";
 
-// TODO: remove courseId, schoolYear, semester if not using them
 export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester }) => {
   const [section, setSection] = useState(null);
 
@@ -10,7 +9,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     try {
       const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
       setSection(response.data);
-    } catch (error) {
+    } catch (errors) {
       console.error("Error fetching section:", error);
     }
   };
@@ -22,7 +21,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
   const updateSection = async (updatedSection) => {
     try {
       const response = await axios.put(
-        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}`, 
+        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}`,
         updatedSection
       );
       if (response.data) {
@@ -30,8 +29,10 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
         return true;
       }
     } catch (error) {
-      console.error("Error updating section:", error);
-      return false;
+      console.error("Error updating section:", error.response);
+      throw {
+        message: error.response.data.message,
+      };
     }
   };
 
@@ -45,12 +46,13 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     }
   };
 
+
   return (
     <SectionInfoContext.Provider
       value={{
         section,
         updateSection,
-        deleteSection
+        deleteSection,
       }}
     >
       {children}

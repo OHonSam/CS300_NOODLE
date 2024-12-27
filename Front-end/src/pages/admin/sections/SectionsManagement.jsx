@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../axios.config";
-import Header from "../../../components/tab";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
 import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";
@@ -43,7 +42,7 @@ const AdminManageSectionsLayout = () => {
     try {
       const response = await axios.post('/api/admin/sections', sectionData);
       setSections(prev => [...prev, response.data]);
-      setToast(['Section created successfully', true]);
+      setToast(['Section created successfully!', true]);
     } catch (error) {
       const message = error.response?.data?.message || 'Error creating section';
       setToast([message, false]);

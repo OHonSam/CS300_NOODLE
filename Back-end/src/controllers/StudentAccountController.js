@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Student = require('../models/StudentModel');
 const { Account, RoleId } = require('../models/AccountModel');
-const bcrypt = require('bcryptjs');
 
 class StudentAccountController {
   // Get page number and items per page from request query
@@ -22,6 +21,24 @@ class StudentAccountController {
         totalPages: Math.ceil(totalStudents / limit),
       });
 
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  // Get a student by studentId
+  async getStudentByStudentId(req, res) { 
+    const studentId = req.params.studentId;
+    try {
+      const student = await Student
+        .findOne({ studentId: studentId })
+        .select('-_id -__v'); // Exclude _id and __v fields
+
+      if (!student) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+
+      res.json(student);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }
@@ -147,7 +164,7 @@ class StudentAccountController {
 
       // 6. Send success response
       res.json({
-        message: 'Student and associated account deleted successfully',
+        message: 'Student and associated account deleted successfully!',
         deletedAdmin: deletedStudent
       });
     } catch (error) {
