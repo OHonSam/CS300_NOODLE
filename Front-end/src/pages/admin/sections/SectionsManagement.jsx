@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../axios.config";
-import Header from "../../../components/tab";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
 import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";

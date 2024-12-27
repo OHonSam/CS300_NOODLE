@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSectionInfo } from "../../../hooks/useSectionInfo";
+import Toast from "../../../components/toast";
 
 const SectionInfoView = () => {
   const navigate = useNavigate();
   const { section, updateSection, deleteSection } = useSectionInfo();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [toast, setToast] = useState([]);
 
   useEffect(() => {
     if (section) {
@@ -30,12 +32,15 @@ const SectionInfoView = () => {
     try {
       const success = await deleteSection();
       if (success) {
+        setToast(['Section deleted successfully', true]);
         navigate('/admin/sections');
       } else {
         setError('Failed to delete section');
+        setToast(['Failed to delete section', false]);
       }
     } catch (error) {
       setError(error.message || 'Failed to delete section');
+      setToast(['Failed to delete section', false]);
     }
   };
 
@@ -45,8 +50,13 @@ const SectionInfoView = () => {
         return
       }
       const success = await updateSection(formData);
+      console.log(success);
       if (success) {
         setIsEditing(false);
+        setToast(['Section edited successfully', true]);
+      } else {
+        const message = error.response?.data?.message || 'Error editing section';
+        setToast([message, false]);
       }
     } else {
       setIsEditing(true);
@@ -55,6 +65,11 @@ const SectionInfoView = () => {
 
   return (
     <div className="relative pt-4 flex flex-col overflow-y-auto h-full w-full">
+      {toast.length > 0 && <Toast message={toast[0]} isAccepted={toast[1]} onClick={() => setToast([])} className={'m-auto top-6'} Icon={
+        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+        </svg>
+      } />}
       <div className="grid grid-cols-1 gap-4 w-full">
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold">Course ID</span>

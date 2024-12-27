@@ -50,11 +50,11 @@ class AdminSectionController {
         schoolYear: schoolYear,
         semester: Number(semester)
       });
-  
+
       if (!section) {
         return res.status(404).json({ message: 'Section not found' });
       }
-  
+
       res.json(section);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
@@ -67,8 +67,8 @@ class AdminSectionController {
       await newSection.save();
       res.status(201).json(newSection);
     } catch (error) {
-       // Duplicate account error
-       if (error.code === 11000) {
+      // Duplicate account error
+      if (error.code === 11000) {
         res.status(400).json({
           error: 'Bad request',
           message: 'Section existed already!',
@@ -108,11 +108,17 @@ class AdminSectionController {
 
       res.json(updatedSection);
     } catch (error) {
-      console.error('Update section error:', error);
-      res.status(500).json({
-        error: 'Server error',
-        message: error.message
-      });
+      if (error.code === 11000) {
+        res.status(400).json({
+          error: 'Bad request',
+          message: 'Section existed already!',
+        });
+      } else {
+        res.status(500).json({
+          error: 'Server error',
+          message: error.message
+        });
+      }
     }
   }
 
@@ -124,7 +130,7 @@ class AdminSectionController {
 
     try {
       const deletedSection = await Section.findOneAndDelete(
-        { 
+        {
           sectionId: sectionId,
           schoolYear: schoolYear,
           semester: Number(semester)
