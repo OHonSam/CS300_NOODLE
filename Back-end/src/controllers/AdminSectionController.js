@@ -83,7 +83,7 @@ class AdminSectionController {
   }
 
   async updateSection(req, res) {
-    const sectionId = req.params.sectionId;
+    const { sectionId, schoolYear, semester } = req.params;
     const updateData = req.body;
 
     try {

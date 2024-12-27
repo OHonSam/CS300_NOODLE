@@ -23,26 +23,27 @@ const SectionInfoView = () => {
   };
 
   const handleDeleteClick = async () => {
-    if (window.confirm('Are you sure you want to delete this section?')) {
-      try {
-        const success = await deleteSection();
-        if (success) {
-          navigate('/admin/sections');
-        } else {
-          setError('Failed to delete section');
-        }
-      } catch (error) {
-        setError(error.message || 'Failed to delete section');
+    if (!window.confirm('Are you sure you want to delete this section?')) {
+      return
+    }
+
+    try {
+      const success = await deleteSection();
+      if (success) {
+        navigate('/admin/sections');
+      } else {
+        setError('Failed to delete section');
       }
+    } catch (error) {
+      setError(error.message || 'Failed to delete section');
     }
   };
 
-  // const handleEditClick = () => {
-  //   setIsEditing((prev) => !prev);
-  // }
-
   const handleEditClick = async () => {
     if (isEditing) {
+      if (!window.confirm('Are you sure you want to update this section information?')) {
+        return
+      }
       const success = await updateSection(formData);
       if (success) {
         setIsEditing(false);
