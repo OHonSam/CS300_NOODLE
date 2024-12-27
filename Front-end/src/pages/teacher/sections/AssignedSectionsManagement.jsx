@@ -6,6 +6,7 @@ import { getStoredToken, decryptToken } from "../../../services/auth/tokenServic
 import axios from "../../../axios.config";
 
 const TeacherAssignedSections = () => {
+  const {section, getSectionsByTeacher} = useSectionInfo();
   const [sections, setSections] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);

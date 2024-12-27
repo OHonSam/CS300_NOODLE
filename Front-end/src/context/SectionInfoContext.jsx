@@ -10,7 +10,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     try {
       const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
       setSection(response.data);
-    } catch (error) {
+    } catch (errors) {
       console.error("Error fetching section:", error);
     }
   };
@@ -47,15 +47,14 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     }
   };
 
-  const changePage = (page) => {
-    setCurrentPage(page);
-  };
-
-  const getSectionsByTeacher = async (teacherId) => {
+  const getSectionsByTeacher = async (teacherId, page) => {
     try {
-      const response = await axios.get(`/api/teacher/sections?teacherId=${teacherId}`);
-      console.log(response.data);
-      return response.data;
+      return response = await axios.get(`/api/teacher/sections`, {
+        params: {
+          teacherId,
+          page,
+        },
+      });
     } catch (error) {
       console.error("Error getting sections by teacher:", error);
       return false;

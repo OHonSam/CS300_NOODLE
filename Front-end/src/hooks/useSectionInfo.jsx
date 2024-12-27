@@ -4,6 +4,7 @@ const initialSectionInfoContext = {
     section: null,
     updateSection: async () => false,
     deleteSection: async () => false,
+    getSectionsByTeacher: async () => [],
 };
 
 export const SectionInfoContext = createContext(initialSectionInfoContext);
