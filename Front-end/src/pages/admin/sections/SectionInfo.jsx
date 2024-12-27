@@ -24,9 +24,15 @@ const SectionInfoView = () => {
 
   const handleDeleteClick = async () => {
     if (window.confirm('Are you sure you want to delete this section?')) {
-      const success = await deleteSection();
-      if (success) {
-        navigate('/admin/sections');
+      try {
+        const success = await deleteSection();
+        if (success) {
+          navigate('/admin/sections');
+        } else {
+          setError('Failed to delete section');
+        }
+      } catch (error) {
+        setError(error.message || 'Failed to delete section');
       }
     }
   };

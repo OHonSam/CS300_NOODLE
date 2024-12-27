@@ -61,7 +61,6 @@ class AdminSectionController {
     }
   }
 
-  // Create a new section
   async createSection(req, res) {
     try {
       const newSection = new Section(req.body);
@@ -83,7 +82,6 @@ class AdminSectionController {
     }
   }
 
-  // Update and delete methods can be added similarly
   async updateSection(req, res) {
     const sectionId = req.params.sectionId;
     const updateData = req.body;
@@ -119,14 +117,18 @@ class AdminSectionController {
   }
 
   async deleteSection(req, res) {
-    const sectionId = req.params.sectionId;
+    const { sectionId, schoolYear, semester } = req.params;
 
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
       const deletedSection = await Section.findOneAndDelete(
-        { sectionId: sectionId },
+        { 
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
         { session }
       );
 
@@ -139,10 +141,12 @@ class AdminSectionController {
 
       res.json({
         message: 'Section deleted successfully',
-        deletedAdmin
+        deletedSection
       });
     } catch (error) {
-      await session.abortTransaction();
+      if (session.inTransaction()) {
+        await session.abortTransaction();
+      }
       console.error('Delete section error:', error);
       res.status(500).json({
         error: 'Server error',
