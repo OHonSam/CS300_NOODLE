@@ -70,7 +70,7 @@ const AdminManageSectionsLayout = () => {
         <Tab title="Sections" />
         <button
           onClick={() => setSectionDialogVisible(true)}
-          className="flex items-center space-x-2 px-4 py-2 rounded-md text-sm tracking-wide text-white bg-blue-500 hover:bg-blue-600 font-medium">
+          className="flex items-center space-x-2 px-4 py-2 rounded-md text-sm tracking-wide text-white bg-blue-600 hover:bg-blue-700 font-medium">
           <FiPlusCircle className="text-lg" />
           <p>Create Section</p>
         </button>

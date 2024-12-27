@@ -153,13 +153,13 @@ const SectionInfoView = () => {
       <div className="flex justify-center items-center mt-4">
         <div className="flex space-x-4">
           <button
-            className="bg-red-500 hover:bg-red-600 font-bold text-white px-6 py-2 rounded-md w-64"
+            className="bg-red-600 hover:bg-red-700 font-bold text-white px-6 py-2 rounded-md w-64"
             onClick={handleDeleteClick}
           >
             Delete
           </button>
           <button
-            className="bg-blue-500 hover:bg-blue-600 font-bold text-white px-6 py-2 rounded-md w-64"
+            className="bg-blue-600 hover:bg-blue-700 font-bold text-white px-6 py-2 rounded-md w-64"
             onClick={handleEditClick}
           >
             {isEditing ? "Save" : "Edit"}

@@ -29,7 +29,7 @@ export const SectionTeachersProvider = ({ children, sectionId, schoolYear, semes
 
       setTeachers(fakeTeachers);
     } catch (error) {
-      console.error("Error fetching section:", error);
+      console.error("Error fetching teachers:", error);
     }
   };
 
