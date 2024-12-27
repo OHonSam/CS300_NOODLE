@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from "../../../components/tab";
 import SectionList from "../../../components/section/sectionlist";
-import { useSectionsManagementInfo } from "../../../hooks/teacher/useSectionsManagementInfo";
+import { useSectionsManagementInfo } from "../../../hooks/student/useSectionsManagementInfo";
 
 const SectionsManagement = () => {
   const {
@@ -52,7 +52,7 @@ const SectionsManagement = () => {
         currentPage={currentPage}
         rowsPerPage={2}
         className="mt-4"
-        userType="teacher"
+        userType="student"
       />
     </div>
   );
