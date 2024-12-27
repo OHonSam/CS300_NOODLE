@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "../../axios.config";
 import { SectionInfoContext } from "../../hooks/admin/useSectionInfo";
 
-// TODO: remove courseId, schoolYear, semester if not using them
 export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester }) => {
   const [section, setSection] = useState(null);
 

@@ -26,6 +26,24 @@ class StudentAccountController {
     }
   }
 
+  // Get a student by studentId
+  async getStudentByStudentId(req, res) { 
+    const studentId = req.params.studentId;
+    try {
+      const student = await Student
+        .findOne({ studentId: studentId })
+        .select('-_id -__v'); // Exclude _id and __v fields
+
+      if (!student) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+
+      res.json(student);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
   // Create a new student with account
   async createStudent(req, res) {
     const studentData = req.body;
