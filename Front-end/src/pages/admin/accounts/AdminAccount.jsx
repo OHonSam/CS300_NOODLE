@@ -26,17 +26,16 @@ const AdminAccountView = () => {
 
   return (
     <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}>
-        <AdminInfoDialog
-          key={currentAdminDialog?.adminId}
-          dialogFor={'info'}
-          adminData={currentAdminDialog}
-          isOpen={adminInfoDialogVisible}
-          onClose={() => setAdminInfoDialogVisible(false)}
-          onUpdate={() => { }}
-          onDelete={() => { }}
-        />
-      </Table>
+      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}/>
+      <AdminInfoDialog
+        key={currentAdminDialog?.adminId}
+        dialogFor={'info'}
+        adminData={currentAdminDialog}
+        isOpen={adminInfoDialogVisible}
+        onClose={() => setAdminInfoDialogVisible(false)}
+        onUpdate={() => { }}
+        onDelete={() => { }}
+      />
       {totalPages > 1 && (
         <Pager
           numberOfPages={totalPages}
