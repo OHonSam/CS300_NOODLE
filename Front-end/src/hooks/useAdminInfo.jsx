@@ -4,12 +4,12 @@ const initialAdminContext = {
   admins: [],
   totalPages: 0,
   currentPage: 1,
-  changePage: () => {},
+  changePage: () => { },
   addAdmin: async () => false,
   updateAdmin: async () => false,
   deleteAdmin: async () => false
-  };
-  
+};
+
 export const AdminInfoContext = createContext(initialAdminContext);
 
 export const useAdminInfo = () => {

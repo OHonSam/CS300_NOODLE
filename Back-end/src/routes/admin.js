@@ -11,9 +11,10 @@ router.use(authMiddleware.verifyToken);
 // Admin section management routes
 router.get('/section_statistic', adminSectionController.filterSectionsByTime);
 router.get('/sections', adminSectionController.getAllSections);
+router.get('/sections/:schoolYear/:semester/:sectionId', adminSectionController.getSection);
 router.post('/sections', adminSectionController.createSection);
-router.put('/sections/:sectionId', adminSectionController.updateSection);
-router.delete('/sections/:sectionId', adminSectionController.deleteSection);
+router.put('/sections/:sectionId/:schoolYear/:semester', adminSectionController.updateSection);
+router.delete('/sections/:sectionId/:schoolYear/:semester', adminSectionController.deleteSection);
 
 // Admin account management routes
 router.get('/admins', adminAccountController.getAdmins);

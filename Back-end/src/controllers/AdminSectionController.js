@@ -43,6 +43,25 @@ class AdminSectionController {
     }
   }
 
+  async getSection(req, res) {
+    const { sectionId, schoolYear, semester } = req.params;
+    try {
+      const section = await Section.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester)
+      });
+  
+      if (!section) {
+        return res.status(404).json({ message: 'Section not found' });
+      }
+  
+      res.json(section);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
   // Create a new section
   async createSection(req, res) {
     try {
@@ -72,7 +91,11 @@ class AdminSectionController {
 
     try {
       const updatedSection = await Section.findOneAndUpdate(
-        { sectionId: sectionId },
+        {
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
         { $set: updateData },
         {
           new: true,
@@ -131,33 +154,5 @@ class AdminSectionController {
     }
   }
 }
-
-// async createSection(req, res) {
-//     try {
-//         const { sectionId, courseName, courseCredit, schoolYear, semester, capacity } = req.body;
-        
-//         const newSection = new Section({
-//             sectionId,
-//             courseName,
-//             courseCredit: Number(courseCredit),
-//             schoolYear,
-//             semester: Number(semester),
-//             capacity: Number(capacity),
-//             students: ["None"],
-//             teacher: ["None"]
-//         });
-
-//         const savedSection = await newSection.save();
-//         res.status(201).json(savedSection);
-
-//     } catch (error) {
-//         console.error('Section creation error:', error);
-//         if (error.code === 11000) {
-//             return res.status(400).json({ message: 'Section ID already exists' });
-//         }
-//         res.status(500).json({ message: error.message });
-//     }
-//   }
-// }
 
 module.exports = new AdminSectionController();

@@ -1,8 +1,12 @@
 import { SectionInfoProvider } from "../../../context/SectionInfoContext";
 
-const SectionProvider = ({ children, courseId, schoolYear, semester }) => {
+const SectionProvider = ({ children, sectionId, schoolYear, semester }) => {
   return (
-    <SectionInfoProvider courseId={courseId} schoolYear={schoolYear} semester={semester}>
+    <SectionInfoProvider 
+      sectionId={sectionId} 
+      schoolYear={schoolYear} 
+      semester={semester}
+    >
       {children}
     </SectionInfoProvider>
   );

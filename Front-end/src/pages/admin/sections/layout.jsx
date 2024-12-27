@@ -50,9 +50,17 @@ const AdminManageSections = () => {
     }
   };
 
-
   const handleRowClicked = (row) => {
-    navigate(`/admin/sections/${row.schoolYear}/${row.semester}/${row.sectionId}`, { state: { courseId: row.sectionId, courseName: row.courseName, schoolYear: row.schoolYear, semester: row.semester } });
+    navigate(`/admin/sections/${row.schoolYear}/${row.semester}/${row.sectionId}`, 
+      { state: 
+        { sectionId: row.sectionId, 
+          courseName: row.courseName, 
+          schoolYear: row.schoolYear, 
+          semester: row.semester,
+          capacity: row.capacity,
+          courseCredit: row.courseCredit, 
+        } 
+      });
   };
 
   return (

@@ -10,7 +10,7 @@ import SectionProvider from './provider';
 
 const AdminSectionDetails = () => {
   const location = useLocation();
-  const { courseId, courseName, schoolYear, semester } = location.state || {};
+  const { sectionId, courseName, schoolYear, semester } = location.state || {};
 
   useEffect(() => {
     initFlowbite();
@@ -40,9 +40,13 @@ const AdminSectionDetails = () => {
   ];
 
   return (
-    <SectionProvider courseId={courseId} schoolYear={schoolYear} semester={semester}>
+    <SectionProvider 
+      sectionId={sectionId} 
+      schoolYear={schoolYear} 
+      semester={semester}
+    >
       <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
-        <Tab title={courseId + ' - ' + courseName} tabs={tabs} className={'w-full h-full'}>
+        <Tab title={sectionId + ' - ' + courseName} tabs={tabs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="info" role="tabpanel" aria-labelledby="info-tab">
             <SectionInfoView />
           </div>

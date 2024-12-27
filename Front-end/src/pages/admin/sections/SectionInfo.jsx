@@ -1,120 +1,167 @@
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSectionInfo } from "../../../hooks/useSectionInfo";
 
 const SectionInfoView = () => {
-  const { courseId, courseName, credits, schoolYear, semester, capacity } = useSectionInfo();
-  const [localCourseId, setLocalCourseId] = useState(null);
-  const [localCourseName, setLocalCourseName] = useState(null);
-  const [localCredits, setLocalCredits] = useState(null);
-  const [localSchoolYear, setLocalSchoolYear] = useState(null);
-  const [localSemester, setLocalSemester] = useState(null);
-  const [localCapacity, setLocalCapacity] = useState(null);
+  // const [localCourseId, setLocalCourseId] = useState(null);
+  // const [localCourseName, setLocalCourseName] = useState(null);
+  // const [localCredits, setLocalCredits] = useState(null);
+  // const [localSchoolYear, setLocalSchoolYear] = useState(null);
+  // const [localSemester, setLocalSemester] = useState(null);
+  // const [localCapacity, setLocalCapacity] = useState(null);
 
-  const [isInitialised, setIsInitialised] = useState(false);
+  const navigate = useNavigate();
+  const { state } = useLocation();  // Get the passed state from the navigation
+  const { section, updateSection, deleteSection } = useSectionInfo();
   const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    sectionId: '',
+    courseName: '',
+    courseCredit: '',
+    schoolYear: '',
+    semester: '',
+    capacity: '',
+  });
 
   useEffect(() => {
-    if (!isInitialised && courseName) {
-      setLocalCourseId(courseId);
-      setLocalCourseName(courseName);
-      setLocalCredits(credits);
-      setLocalSchoolYear(schoolYear);
-      setLocalSemester(semester);
-      setLocalCapacity(capacity);
-      setIsInitialised(true);
+    if (state) {
+      setFormData({
+        sectionId: state.sectionId,
+        courseName: state.courseName,
+        courseCredit: state.courseCredit,
+        schoolYear: state.schoolYear,
+        semester: state.semester,
+        capacity: state.capacity
+      });
     }
-  }, [courseId, courseName, credits, schoolYear, semester, capacity, isInitialised]);
+  }, [state]);
 
-  const handleDeleteClick = () => {
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
 
-  }
+  const handleDeleteClick = async () => {
+    if (window.confirm('Are you sure you want to delete this section?')) {
+      const success = await deleteSection();
+      if (success) {
+        navigate('/admin/sections');
+      }
+    }
+  };
 
-  const handleEditClick = () => {
-    setIsEditing((prev) => !prev);
-  }
+  // const handleEditClick = () => {
+  //   setIsEditing((prev) => !prev);
+  // }
+
+  const handleEditClick = async () => {
+    if (isEditing) {
+      const success = await updateSection(formData);
+      if (success) {
+        setIsEditing(false);
+      }
+    } else {
+      setIsEditing(true);
+    }
+  };
 
   return (
     <div className="relative pt-4 flex flex-col overflow-y-auto h-full w-full">
-      <div class="grid grid-cols-1 gap-4 w-full">
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-bold">Course ID</span>
+      <div className="grid grid-cols-1 gap-4 w-full">
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold">Course ID</span>
           <input
             type="text"
-            class="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
-            placeholder="Enter value"
+            id="sectionId"
+            className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+            placeholder="Enter Course ID"
             disabled={!isEditing}
-            value={localCourseId}
-            onChange={(e) => setLocalCourseId(e.target.value)}
+            value={formData.sectionId}
+            onChange={handleChange}
           />
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-bold">Course Name</span>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold">Course Name</span>
           <input
             type="text"
-            class="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
-            placeholder="Enter value"
+            id="courseName"
+            className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+            placeholder="Enter Course Name"
             disabled={!isEditing}
-            value={localCourseName}
-            onChange={(e) => setLocalCourseName(e.target.value)}
+            value={formData.courseName}
+            onChange={handleChange}
           />
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-bold">Credits</span>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold">Credits</span>
           <input
-            type="text"
-            class="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
-            placeholder="Enter value"
+            type="number"
+            id="courseCredit"
+            className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+            placeholder="Enter Credits"
             disabled={!isEditing}
-            value={localCredits}
-            onChange={(e) => setLocalCredits(e.target.value)}
+            value={formData.courseCredit}
+            onChange={handleChange}
           />
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-bold">School Year</span>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold">School Year</span>
           <input
             type="text"
-            class="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
-            placeholder="Enter value"
+            id="schoolYear"
+            className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+            placeholder="Enter School Year"
             disabled={!isEditing}
-            value={localSchoolYear}
-            onChange={(e) => setLocalSchoolYear(e.target.value)}
+            value={formData.schoolYear}
+            onChange={handleChange}
           />
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-bold">Semster</span>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold">Semester</span>
           <input
-            type="text"
-            class="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
-            placeholder="Enter value"
+            type="number"
+            id="semester"
+            className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+            placeholder="Enter Semester"
             disabled={!isEditing}
-            value={localSemester}
-            onChange={(e) => setLocalSemester(e.target.value)}
+            value={formData.semester}
+            onChange={handleChange}
           />
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-lg font-bold">Capacity</span>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold">Capacity</span>
           <input
-            type="text"
-            class="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
-            placeholder="Enter value"
+            type="number"
+            id="capacity"
+            className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+            placeholder="Enter Capacity"
             disabled={!isEditing}
-            value={localCapacity}
-            onChange={(e) => setLocalCapacity(e.target.value)}
+            value={formData.capacity}
+            onChange={handleChange}
           />
         </div>
       </div>
-      <div class="flex justify-center items-center mt-4">
-        <div class="flex space-x-4">
-          <button class="bg-red-500 hover:bg-red-600 font-bold text-white px-6 py-2 rounded-md w-64" onClick={handleDeleteClick}>
+      <div className="flex justify-center items-center mt-4">
+        <div className="flex space-x-4">
+          <button 
+            className="bg-red-500 hover:bg-red-600 font-bold text-white px-6 py-2 rounded-md w-64"
+            onClick={handleDeleteClick}
+          >
             Delete
           </button>
-          <button class="bg-blue-500 hover:bg-blue-600 font-bold text-white px-6 py-2 rounded-md w-64" onClick={handleEditClick}>
+          <button 
+            className="bg-blue-500 hover:bg-blue-600 font-bold text-white px-6 py-2 rounded-md w-64"
+            onClick={handleEditClick}
+          >
             {isEditing ? "Save" : "Edit"}
           </button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SectionInfoView;

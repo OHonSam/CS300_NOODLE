@@ -2,35 +2,62 @@ import { useState, useEffect } from "react";
 import axios from "../axios.config";
 import { SectionInfoContext } from "../hooks/useSectionInfo";
 
-export const SectionInfoProvider = ({ children, courseId, schoolYear, semester }) => {
-  const [courseName, setCourseName] = useState(null);
-  const [credits, setCredits] = useState(null);
-  const [capacity, setCapacity] = useState(null);
+// TODO: remove courseId, schoolYear, semester if not using them
+export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester }) => {
+  // const [courseName, setCourseName] = useState(null);
+  // const [credits, setCredits] = useState(null);
+  // const [capacity, setCapacity] = useState(null);
+  const [section, setSection] = useState(null);
 
   useEffect(() => {
-    const fetchSections = async () => {
+    const fetchSection = async () => {
       try {
-        const response = null; // Replace this with the actual API call
-        setCourseName("Introduction to Kill Yourself");
-        setCredits(4);
-        setCapacity(69);
+        const response = await axios.get(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}`);
+        if (response.data) {
+          setSection(response.data);
+        }
       } catch (error) {
-        console.error("Error fetching sections:", error);
+        console.error("Error fetching section:", error);
       }
     };
 
-    fetchSections();
-  });
+    if (sectionId && schoolYear && semester) {
+      fetchSection();
+    }
+  }, [sectionId, schoolYear, semester]);
+
+  const updateSection = async (updatedSection) => {
+    try {
+      const response = await axios.put(
+        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}`, 
+        updatedSection
+      );
+      if (response.data) {
+        setSection(response.data);
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating section:", error);
+      return false;
+    }
+  };
+
+  const deleteSection = async () => {
+    try {
+      await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}`);
+      return true;
+    } catch (error) {
+      console.error("Error deleting section:", error);
+      return false;
+    }
+  };
 
   return (
     <SectionInfoContext.Provider
       value={{
-        courseId,
-        courseName,
-        credits,
-        schoolYear,
-        semester,
-        capacity
+        section,
+        updateSection,
+        deleteSection
       }}
     >
       {children}
