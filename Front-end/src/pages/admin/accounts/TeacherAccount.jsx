@@ -26,21 +26,21 @@ const TeacherAccountView = () => {
   };
 
   return (
-    <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}/>
+    <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
+      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
       <TeacherInfoDialog
         key={currentTeacherDialog?.teacherId}
         dialogFor={'info'}
         teacherData={currentTeacherDialog}
         isOpen={teacherDialogVisible}
         onClose={() => setTeacherDialogVisible(false)}
-        onUpdate={() => {}}
-        onDelete={() => {}}
+        onUpdate={() => { }}
+        onDelete={() => { }}
       />
       {totalPages > 1 && <Pager
         numberOfPages={totalPages}
         onPageChange={changePage}
-        className="w-full flex justify-center mt-2" />
+        className="w-full flex justify-center mt-4" />
       }
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>

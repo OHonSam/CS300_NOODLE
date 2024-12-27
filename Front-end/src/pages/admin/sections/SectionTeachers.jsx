@@ -26,7 +26,7 @@ const SectionTeachersView = () => {
   };
 
   return (
-    <div className="relative mt-8 flex flex-col items-center justify-between w-full">
+    <div className="relative mt-4 pb-8 flex flex-col items-center justify-between w-full">
       <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
       <TeacherInfoDialog
         key={currentTeacherDialog?.teacherId}

@@ -25,8 +25,8 @@ const AdminAccountView = () => {
   };
 
   return (
-    <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}/>
+    <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
+      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
       <AdminInfoDialog
         key={currentAdminDialog?.adminId}
         dialogFor={'info'}
@@ -40,7 +40,7 @@ const AdminAccountView = () => {
         <Pager
           numberOfPages={totalPages}
           onPageChange={changePage}
-          className="w-full flex justify-center mt-2"
+          className="w-full flex justify-center mt-4"
         />
       )}
       {toast.length > 0 && (
