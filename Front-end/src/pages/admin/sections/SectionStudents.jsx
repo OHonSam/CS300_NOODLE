@@ -24,9 +24,8 @@ export const SectionStudentsView = () => {
   const fetchEnrolledStudents = async () => {
     if (section?.students && section.students.length > 0) {
       try {
-        const response = await axios.get(`/api/admin/sections/${section.schoolYear}/${section.semester}/${section.sectionId}/enrolled`);
+        const response = await axios.get(`/api/admin/sections/${section.schoolYear}/${section.semester}/${section.sectionId}/enrolledStudents`);
         const studentDetails = response.data;
-        console.log(studentDetails)
         setEnrolledStudents(studentDetails);
       } catch (error) {
         console.error("Error fetching enrolled students:", error);

@@ -15,7 +15,8 @@ router.get('/section/:schoolYear/:semester/:sectionId', adminSectionController.g
 router.post('/sections', adminSectionController.createSection);
 router.put('/sections/:schoolYear/:semester/:sectionId', adminSectionController.updateSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId', adminSectionController.deleteSection);
-router.get('/sections/:schoolYear/:semester/:sectionId/enrolled', adminSectionController.getEnrolledStudents);
+router.get('/sections/:schoolYear/:semester/:sectionId/enrolledStudents', adminSectionController.getEnrolledStudents);
+router.get('/sections/:schoolYear/:semester/:sectionId/assignedTeachers', adminSectionController.getAssignedTeachers);
 
 // Admin account management routes
 router.get('/admins', adminAccountController.getAdmins);

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Section = require('../models/SectionModel');
 const Student = require('../models/StudentModel');
+const Teacher = require('../models/TeacherModel');
 
 class AdminSectionController {
   async getAllSections(req, res) {
@@ -182,6 +183,29 @@ class AdminSectionController {
       const students = await Student.find({ studentId: { $in: studentIds } });
       
       res.json(students);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  async getAssignedTeachers(req, res) { 
+    const { sectionId, schoolYear, semester } = req.params;
+    console.log(sectionId, schoolYear, semester);
+    try {
+      const section = await Section.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester)
+      });
+
+      if (!section) {
+        return res.status(404).json({ message: 'Section not found' });
+      }
+
+      const teacherIds = section.teachers;
+      const teachers = await Teacher.find({ teacherId: { $in: teacherIds } });
+
+      res.json(teachers);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }
