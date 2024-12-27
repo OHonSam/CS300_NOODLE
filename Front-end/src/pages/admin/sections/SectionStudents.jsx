@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
 import Table from "../../../components/table";
-import Pager from "../../../components/footer/pager";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-// import { useStudentInfo } from "../../../hooks/useStudentInfo";
-import { useSectionInfo } from "../../../hooks/useSectionInfo";
+import { useSectionInfo } from "../../../hooks/admin/useSectionInfo";
 import axios from "../../../axios.config";
 
 export const SectionStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  // const { students, totalPages, changePage } = useStudentInfo();
   const [enrolledStudents, setEnrolledStudents] = useState([]);
   const { section } = useSectionInfo();
 
