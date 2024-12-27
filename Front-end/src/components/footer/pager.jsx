@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const Pager = ({ numberOfPages, onPageChange, className }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Pager = ({ startPage = 1, numberOfPages, onPageChange, className }) => {
+  const [currentPage, setCurrentPage] = useState(startPage);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {

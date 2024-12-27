@@ -44,7 +44,7 @@ export const SectionStudentsView = () => {
   };
 
   return (
-    <div className="relative pt-4 pb-8 flex flex-col overflow-y-auto h-full w-full">
+    <div className="relative pt-4 pb-8 flex flex-col h-full w-full">
       <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20} />
       <StudentInfoDialog
         key={currentStudentDialog?.studentId}
