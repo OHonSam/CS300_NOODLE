@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const teacherSectionController = require('../controllers/TeacherSectionController');
+const teacherSectionController = require('../controllers/teacher/TeacherSectionController');
 const authMiddleware = require('../middleware/AuthMiddleware');
 
 router.use(authMiddleware.verifyToken);
