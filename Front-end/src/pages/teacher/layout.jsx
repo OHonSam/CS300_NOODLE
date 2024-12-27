@@ -11,11 +11,6 @@ const TeacherLayout = () => {
       icon: FaChartBar
     },
     {
-      name: 'Accounts',
-      link: '/teacher/accounts',
-      icon: FaUser
-    },
-    {
       name: 'Sections',
       link: '/teacher/sections',
       icon: FaBook

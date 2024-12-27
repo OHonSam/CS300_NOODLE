@@ -47,12 +47,28 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     }
   };
 
+  const changePage = (page) => {
+    setCurrentPage(page);
+  };
+
+  const getSectionsByTeacher = async (teacherId) => {
+    try {
+      const response = await axios.get(`/api/teacher/sections?teacherId=${teacherId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error getting sections by teacher:", error);
+      return false;
+    }
+  }
+
   return (
     <SectionInfoContext.Provider
       value={{
         section,
         updateSection,
-        deleteSection
+        deleteSection,
+        getSectionsByTeacher
       }}
     >
       {children}
