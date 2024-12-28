@@ -34,6 +34,35 @@ export const AdminInfoProvider = ({ children }) => {
     }
   };
 
+  const addAdminFromFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post('/api/admin/fileAdmins', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important!
+        }
+      });
+
+      if (response.data.success) {
+        setAdmins((prev) => [...prev, ...response.data.users]);
+      }
+      return response.data.message;
+    } catch (error) {
+      console.error("Error adding admins from file:", error);
+      if (error.code == "ERR_BAD_RESPONSE") {
+        throw {
+          message: "Data import failed: Duplicate admin ID or email. Try again.",  
+        };
+      } else {
+        throw {
+          message: error.response.data.message,
+        };
+      }
+    }
+  }
+
   const updateAdmin = async (updatedAdmin) => {
     try {
       const response = await axios.put(
@@ -73,7 +102,8 @@ export const AdminInfoProvider = ({ children }) => {
         admins,
         addAdmin,
         updateAdmin,
-        deleteAdmin
+        deleteAdmin,
+        addAdminFromFile,
       }}
     >
       {children}

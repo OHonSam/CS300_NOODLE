@@ -31,6 +31,35 @@ export const StudentInfoProvider = ({ children }) => {
     }
   };
 
+  const addStudentFromFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post('/api/admin/fileStudents', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important!
+        }
+      });
+
+      if (response.data.success) {
+        setStudents((prev) => [...prev, ...response.data.users]);
+      }
+      return response.data.message;
+    } catch (error) {
+      console.error("Error adding students from file:", error);
+      if (error.code == "ERR_BAD_RESPONSE") {
+        throw {
+          message: "Data is invalid. Duplicate student ID/email or missing fields. Try again.",  
+        };
+      } else {
+        throw {
+          message: error.response.data.message,
+        };
+      }
+    }
+  }
+
   const updateStudent = async (updatedStudent) => {
     try {
       const response = await axios.put(
@@ -69,7 +98,8 @@ export const StudentInfoProvider = ({ children }) => {
         students,
         addStudent,
         updateStudent,
-        deleteStudent
+        deleteStudent,
+        addStudentFromFile,
       }}
     >
       {children}

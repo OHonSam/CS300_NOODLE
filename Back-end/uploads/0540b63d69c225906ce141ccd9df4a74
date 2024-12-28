@@ -1,0 +1,4 @@
+userId, fullName, gender, dob, phone, address, email
+U001, John Doe, Male, 1990-01-15, 1234567890, 123 Main St, john.doe@example.com
+U002, Jane Smith, Female, 1985-06-25, 0987654321, 456 Elm St, jane.smith@example.com
+U003, Bob Johnson, Male, 1978-09-12, 1122334455, 789 Oak St, bob.johnson@example.com

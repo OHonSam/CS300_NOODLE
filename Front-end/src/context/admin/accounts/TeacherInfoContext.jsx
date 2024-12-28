@@ -32,6 +32,35 @@ export const TeacherInfoProvider = ({ children }) => {
     }
   };
 
+  const addTeacherFromFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post('/api/admin/fileTeachers', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important!
+        }
+      });
+
+      if (response.data.success) {
+        setTeachers((prev) => [...prev, ...response.data.users]);
+      }
+      return response.data.message;
+    } catch (error) {
+      console.error("Error adding teachers from file:", error);
+      if (error.code == "ERR_BAD_RESPONSE") {
+        throw {
+          message: "Data is invalid. Duplicate Teacher ID/email or missing fields. Try again.",  
+        };
+      } else {
+        throw {
+          message: error.response.data.message,
+        };
+      }
+    }
+  }
+
   const updateTeacher = async (updatedTeacher) => {
     try {
       const response = await axios.put(
@@ -70,7 +99,8 @@ export const TeacherInfoProvider = ({ children }) => {
         teachers,
         addTeacher,
         updateTeacher,
-        deleteTeacher
+        deleteTeacher,
+        addTeacherFromFile
       }}
     >
       {children}

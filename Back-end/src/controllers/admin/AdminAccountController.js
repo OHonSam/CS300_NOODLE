@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Admin = require('../../models/AdminModel');
 const { Account, RoleId } = require('../../models/AccountModel');
+const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FileProcessing');
 
 class AdminAccountController {
   // Get page number and items per page from request query
@@ -18,6 +19,27 @@ class AdminAccountController {
     }
   }
 
+  async addAdminsFromFile(req, res) {
+    try {
+      const requiredFields = ['adminId', 'fullName', 'email', 'gender', 'dob', 'address', 'phone' ];
+      const userData = await FileProcessingUtil.processFile(req.file, requiredFields);
+
+      const result = await BulkUserCreationUtil.createUsers(userData, {
+        UserModel: Admin,
+        roleId: RoleId.ADMIN,
+        userIdField: 'adminId',
+      });
+  
+      res.status(201).json(result);
+    } catch (error) {
+      console.error('Error processing file:', error);
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message,
+      });
+    }
+  }
+  
   // Create a new admin with account
   async createAdmin(req, res) {
     const adminData = req.body;

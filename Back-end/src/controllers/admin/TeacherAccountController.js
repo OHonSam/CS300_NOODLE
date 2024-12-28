@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Teacher = require('../../models/TeacherModel');
 const Section = require('../../models/SectionModel');
 const { Account, RoleId } = require('../../models/AccountModel');
+const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FileProcessing');
 
 class TeacherAccountController {
   async getTeachers(req, res) {
@@ -46,6 +47,27 @@ class TeacherAccountController {
           message: error.message,
         });
       }
+    }
+  }
+
+  async addTeachersFromFile(req, res) {
+    try {
+      const requiredFields = ['teacherId', 'fullName', 'email', 'department', 'gender', 'dob', 'address', 'phone' ];
+      const userData = await FileProcessingUtil.processFile(req.file, requiredFields);
+
+      const result = await BulkUserCreationUtil.createUsers(userData, {
+        UserModel: Teacher,
+        roleId: RoleId.TEACHER,
+        userIdField: 'teacherId',
+      });
+  
+      res.status(201).json(result);
+    } catch (error) {
+      console.error('Error processing file:', error);
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message,
+      });
     }
   }
 
