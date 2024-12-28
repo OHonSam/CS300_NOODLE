@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { useSectionStatisticInfo } from '../../../hooks/dashboard/useSectionStatisticInfo';
+import { useSectionStatisticInfo } from '../../../hooks/admin/dashboard/useSectionStatisticInfo';
 
 const AdminDashboard = () => {
   const {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "../../axios.config";
-import { SectionTeachersContext } from "../../hooks/sections/useSectionTeachers";
+import axios from "../../../axios.config";
+import { SectionTeachersContext } from "../../../hooks/admin/sections/useSectionTeachers";
 
 export const SectionTeachersProvider = ({ children, sectionId, schoolYear, semester }) => {
   const [assignedTeachers, setTeachers] = useState([]);

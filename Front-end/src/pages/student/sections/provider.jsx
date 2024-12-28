@@ -1,4 +1,4 @@
-import { SectionsManagementProvider } from "../../../context/sections/SectionsManagementContext";
+import { SectionsManagementProvider } from "../../../context/student/SectionsManagementContext";
 
 const SectionsProvider = ({ children }) => {
   return (

@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
-import { useAdminInfo } from "../../hooks/accounts/useAdminInfo";
+import { useAdminInfo } from "../../hooks/admin/accounts/useAdminInfo";
 
 const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
   const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');
