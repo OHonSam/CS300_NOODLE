@@ -47,10 +47,11 @@ class AdminSectionController {
         else if (grade10 >= 8.0) acc.B++;
         else if (grade10 >= 7.0) acc.C++;
         else if (grade10 >= 6.0) acc.D++;
+        else if (grade10 >= 5.0) acc.E++;
         else acc.F++;
 
         return acc;
-      }, { A: 0, B: 0, C: 0, D: 0, F: 0 });
+      }, { A: 0, B: 0, C: 0, D: 0, E:0, F: 0 });
       
       console.log(gradeDistribution);
 
@@ -178,6 +179,16 @@ class AdminSectionController {
         await session.abortTransaction();
         return res.status(404).json({ error: 'Section not found' });
       }
+
+      // Delete all associated ParticipationReports within the same transaction
+      await ParticipationReport.deleteMany(
+        {
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
+        { session }
+      );
 
       await session.commitTransaction();
 
