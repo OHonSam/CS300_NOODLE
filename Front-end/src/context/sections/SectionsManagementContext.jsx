@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SectionsManagementContext } from "../../hooks/student/useSectionsManagementInfo";
+import { SectionsManagementContext } from "../../hooks/sections/useSectionsManagementInfo";
 import { getStoredToken, decryptToken } from "../../services/auth/tokenService";
 
 export const SectionsManagementProvider = ({ children }) => {
@@ -13,9 +13,9 @@ export const SectionsManagementProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = decryptToken(getStoredToken());
-      const studentId = token.username;
-      
-      const response = await axios.get(`/api/student/sections?studentId=${studentId}&page=${page}&limit=10`);
+      const teacherId = token.username;
+
+      const response = await axios.get(`/api/teacher/sections?teacherId=${teacherId}&page=${page}&limit=10`);
 
       if (response.data.sections.length === 0) {
         setSections([]);

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../../axios.config";
-import { SectionInfoContext } from "../../hooks/admin/useSectionInfo";
+import { SectionInfoContext } from "../../hooks/sections/useSectionInfo";
 
-// TODO: remove courseId, schoolYear, semester if not using them
 export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester }) => {
   const [section, setSection] = useState(null);
 
@@ -10,7 +9,7 @@ export const SectionInfoProvider = ({ children, sectionId, schoolYear, semester 
     try {
       const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
       setSection(response.data);
-    } catch (errors) {
+    } catch (error) {
       console.error("Error fetching section:", error);
     }
   };

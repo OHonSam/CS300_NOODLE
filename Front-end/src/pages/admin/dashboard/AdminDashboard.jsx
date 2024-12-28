@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { useSectionStatisticInfo } from '../../../hooks/admin/useSectionStatisticInfo';
+import { useSectionStatisticInfo } from '../../../hooks/dashboard/useSectionStatisticInfo';
 
 const AdminDashboard = () => {
   const {
@@ -19,7 +19,7 @@ const AdminDashboard = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="flex gap-4">
-          <select 
+          <select
             className="p-2 rounded-lg border border-gray-300"
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
               </option>
             ))}
           </select>
-          <select 
+          <select
             className="p-2 rounded-lg border border-gray-300"
             value={selectedSemester}
             onChange={(e) => setSelectedSemester(e.target.value)}

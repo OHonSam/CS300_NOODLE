@@ -2,47 +2,29 @@
 import { useState, useEffect } from "react";
 import axios from "../../axios.config";
 
-import { AdminInfoContext } from "../../hooks/admin/useAdminInfo";
+import { AdminInfoContext } from "../../hooks/accounts/useAdminInfo";
 
 export const AdminInfoProvider = ({ children }) => {
-  // Sample data, replace this with data fetched from backend
-  const [currentPage, setCurrentPage] = useState(1);
   const [admins, setAdmins] = useState([]);
-  const adminsPerPage = 10;
-  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchAdmins = async () => {
+    try {
+      const response = await axios.get(`/api/admin/admins?`);
+      setAdmins(response.data.admins);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchAdmins = async () => {
-      try {
-        const response = await axios.get(`/api/admin/admins?page=${currentPage}&limit=${adminsPerPage}`);
-        if (response.data.admins.length === 0) {
-          setTotalPages(1);
-        } else {
-          setAdmins(response.data.admins);
-          setTotalPages(response.data.totalPages);
-        }
-      } catch (error) {
-        console.error("Error fetching admins:", error);
-      }
-    };
-
     fetchAdmins();
-  }, [currentPage]);
-
-  const changePage = (page) => {
-    setCurrentPage(page);
-  };
+  }, []);
 
   const addAdmin = async (newAdmin) => {
     try {
       const response = await axios.post('/api/admin/admins', newAdmin);
       // Optionally, fetch the updated list or update the state
       setAdmins((prev) => [...prev, response.data.admin]);
-      // Recalculate total pages
-      const newTotalPages = Math.ceil((admins.length + 1) / adminsPerPage);
-      setTotalPages(newTotalPages);
-
-      // setCurrentPage(newTotalPages);
       return true;
     } catch (error) {
       console.error("Error adding admin:", error.response);
@@ -88,9 +70,8 @@ export const AdminInfoProvider = ({ children }) => {
   return (
     <AdminInfoContext.Provider
       value={{
-        admins: admins.slice(0, 10),
-        totalPages,
-        changePage,
+        admins,
+        fetchAdmins,
         addAdmin,
         updateAdmin,
         deleteAdmin

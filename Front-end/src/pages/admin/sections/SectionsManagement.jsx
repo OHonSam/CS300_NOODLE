@@ -74,7 +74,6 @@ const AdminManageSectionsLayout = () => {
           <FiPlusCircle className="text-lg" />
           <p>Create Section</p>
         </button>
-
       </div>
       <Table
         headings={headings}

@@ -5,22 +5,33 @@ const { Account, RoleId } = require('../models/AccountModel');
 class StudentAccountController {
   // Get page number and items per page from request query
   async getStudents(req, res) {
-    const { page = 1, limit = 10 } = req.query;
     try {
       // Find students with pagination
       const students = await Student.find()
-        .skip((page - 1) * limit)   // Skip previous pages
-        .limit(parseInt(limit));    // Get only the requested number of items
-
-      // Count total students for pagination
-      const totalStudents = await Student.countDocuments();
 
       // Send response
       res.json({
         students,
-        totalPages: Math.ceil(totalStudents / limit),
       });
 
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  // Get a student by studentId
+  async getStudentByStudentId(req, res) {
+    const studentId = req.params.studentId;
+    try {
+      const student = await Student
+        .findOne({ studentId: studentId })
+        .select('-_id -__v'); // Exclude _id and __v fields
+
+      if (!student) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+
+      res.json(student);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }

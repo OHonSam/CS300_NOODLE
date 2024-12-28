@@ -2,22 +2,22 @@ import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useStudentInfo } from "../../../hooks/admin/useStudentInfo";
+import { useStudentInfo } from "../../../hooks/accounts/useStudentInfo";
 import Toast from "../../../components/toast";
 
 const StudentAccountView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const { students, totalPages, changePage } = useStudentInfo();
+  const { students } = useStudentInfo();
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
-    { id: 'fullName', label: 'Full name' },
+    { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
     { id: 'class', label: 'Class' },
-    { id: 'dob', label: 'Date Of Birth' },
+    { id: 'dob', label: 'Date of Birth' },
   ];
 
   const handleRowClicked = (row) => {
@@ -26,22 +26,17 @@ const StudentAccountView = () => {
   };
 
   return (
-    <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}/>
+    <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
+      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       <StudentInfoDialog
         key={currentStudentDialog?.studentId}
         dialogFor={'info'}
         studentData={currentStudentDialog}
         isOpen={studentInfoDialogVisible}
         onClose={() => setStudentInfoDialogVisible(false)}
-        onUpdate={() => {}}
-        onDelete={() => {}}
+        onUpdate={() => { }}
+        onDelete={() => { }}
       />
-      {totalPages > 1 && <Pager
-        numberOfPages={totalPages}
-        onPageChange={changePage}
-        className="w-full flex justify-center mt-2" />
-      }
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );

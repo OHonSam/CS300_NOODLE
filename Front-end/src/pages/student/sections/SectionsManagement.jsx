@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from "../../../components/tab";
 import SectionList from "../../../components/section/sectionlist";
-import { useSectionsManagementInfo } from "../../../hooks/student/useSectionsManagementInfo";
+import { useSectionsManagementInfo } from "../../../hooks/sections/useSectionsManagementInfo";
 
 const SectionsManagement = () => {
   const {
@@ -12,7 +12,7 @@ const SectionsManagement = () => {
     error,
     setCurrentPage,
   } = useSectionsManagementInfo();
-  
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -44,8 +44,8 @@ const SectionsManagement = () => {
       <div className="flex justify-between items-center mb-6">
         <Header title="Your Sections" />
       </div>
-      
-      <SectionList 
+
+      <SectionList
         data={sections || []}
         onSectionClicked={handleRowClicked}
         onPageChange={handlePageChange}

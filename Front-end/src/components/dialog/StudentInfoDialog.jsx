@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
-import { useStudentInfo } from "../../hooks/admin/useStudentInfo";
+import { useStudentInfo } from "../../hooks/accounts/useStudentInfo";
 
 const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
   const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');
@@ -40,7 +40,7 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
       [id]: value,
     }));
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let message = null;
@@ -71,7 +71,7 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
   };
 
   const handleClose = (updated) => {
-    if (dialogFor === 'create') 
+    if (dialogFor === 'create')
       clearForm();
     else if (dialogFor === 'info' && !updated) {
       setFormData(studentData);
@@ -80,7 +80,7 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
   };
 
   return (
-    <Dialog open={isOpen} onClose={() => handleClose(false)} 
+    <Dialog open={isOpen} onClose={() => handleClose(false)}
       className={`absolute top-0 left-0 w-screen h-screen backdrop-blur-sm`}>
       <DialogPanel className={`absolute w-[700px] bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
         <div className="mt-4 mb-8 flex items-center justify-between">
@@ -93,16 +93,16 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label htmlFor="studentId" className="block mb-2 text-sm font-medium text-gray-900">Student ID</label>
-              <input type="text" id="studentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:text-gray-300" placeholder="22125009" required 
+              <input type="text" id="studentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:text-gray-300" placeholder="22125009" required
                 value={formData.studentId}
                 disabled={dialogFor === 'info'}
-                onChange={handleChange}/>
+                onChange={handleChange} />
             </div>
             <div>
               <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900">Full name</label>
-              <input type="text" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" required 
+              <input type="text" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" required
                 value={formData.fullName}
-                onChange={handleChange}/>
+                onChange={handleChange} />
             </div>
             <div>
               <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900">Gender</label>
@@ -120,41 +120,41 @@ const StudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate,
             </div>
             <div>
               <label htmlFor="dob" className="block mb-2 text-sm font-medium text-gray-900">Date of Birth</label>
-              <input type="date" id="dob" className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${datePickerPlaceHolder ? 'text-gray-400' : 'text-gray-900'}`} required 
+              <input type="date" id="dob" className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${datePickerPlaceHolder ? 'text-gray-400' : 'text-gray-900'}`} required
                 value={formData.dob}
                 max='2024-01-01'
                 min='1940-01-01'
                 onChange={(e) => {
-                  setDatePickerPlaceholder(false) 
+                  setDatePickerPlaceholder(false)
                   handleChange(e)
-                }}/>
+                }} />
             </div>
             <div>
               <label htmlFor="class" className="block mb-2 text-sm font-medium text-gray-900">Class</label>
-              <input type="text" id="class" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22TT2" required 
+              <input type="text" id="class" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22TT2" required
                 value={formData.class}
-                onChange={handleChange}/>
-            </div>  
+                onChange={handleChange} />
+            </div>
             <div>
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
-              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required 
+              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required
                 value={formData.phone}
-                onChange={handleChange}/>
+                onChange={handleChange} />
             </div>
           </div>
           <div className="mb-6">
             <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900">Home address</label>
-            <input type="text" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City" required 
+            <input type="text" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City" required
               value={formData.address}
-              onChange={handleChange}/>
-          </div> 
+              onChange={handleChange} />
+          </div>
           <div className="mb-6">
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email address</label>
-            <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required 
+            <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required
               value={formData.email}
-              onChange={handleChange}/>
-          </div>  
-          {dialogFor === 'info' ? (  
+              onChange={handleChange} />
+          </div>
+          {dialogFor === 'info' ? (
             <div className="flex">
               <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                 Save

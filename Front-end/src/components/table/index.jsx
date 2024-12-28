@@ -4,13 +4,33 @@ import Pager from '../footer/pager';
 const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0, className }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
+  const [numberOfPages, setNumberOfPages] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
+  const [filters, setFilters] = useState(() =>
+    headings.reduce((acc, heading) => ({ ...acc, [heading.id]: '' }), {})
+  );
+  const [filterVisible, setFilterVisible] = useState(() =>
+    headings.reduce((acc, heading) => ({ ...acc, [heading.id]: false }), {})
+  );
 
   useEffect(() => {
-    let sortedData = [...data];
+    let filteredData = data.filter((row) =>
+      headings.every(
+        (heading) =>
+          !filters[heading.id] || row[heading.id]?.toString().toLowerCase().includes(filters[heading.id].toLowerCase())
+      )
+    );
+
+    if (rowsPerPage > 0) {
+      setNumberOfPages(Math.max(1, Math.ceil(filteredData.length / rowsPerPage)));
+    }
+
+    if (currentPage > numberOfPages) {
+      setCurrentPage(numberOfPages);
+    }
 
     if (sortConfig.key) {
-      sortedData.sort((a, b) => {
+      filteredData.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? -1 : 1;
         }
@@ -24,15 +44,15 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
     if (rowsPerPage > 0) {
       const start = (currentPage - 1) * rowsPerPage;
       const end = start + rowsPerPage;
-      setPaginatedData(sortedData.slice(start, end));
+      setPaginatedData(filteredData.slice(start, end));
     } else {
-      setPaginatedData(sortedData);
+      setPaginatedData(filteredData);
     }
-  }, [data, currentPage, rowsPerPage, sortConfig]);
+  }, [data, currentPage, sortConfig, filters]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-  }
+  };
 
   const handleSort = (columnId) => {
     let direction = 'asc';
@@ -42,27 +62,79 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
     setSortConfig({ key: columnId, direction });
   };
 
-  const numberOfPages = rowsPerPage > 0 ? Math.ceil(data.length / rowsPerPage) : 1;
+  const toggleFilterBox = (columnId) => {
+    setFilterVisible((prev) => ({
+      ...prev,
+      [columnId]: !prev[columnId],
+    }));
+  };
 
+  const handleFilterChange = (columnId, value) => {
+    setFilters((prevFilters) => ({ ...prevFilters, [columnId]: value }));
+    setCurrentPage(1);
+  };
+
+  const SortIcon = ({ direction }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-4 h-4 inline-block"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      {direction === 'asc' ? (
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      )}
+    </svg>
+  );
 
   return (
     <div className={`w-full ${className}`}>
       <div className="flex flex-col flex-grow">
-        <div className="overflow-y-auto">
+        <div>
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead className="text-m text-gray-700 bg-gray-200 sticky top-0">
+            <thead className="text-m text-gray-700 bg-gray-200 top-0">
               <tr>
                 {headings.map((heading, index) => (
-                  <th
-                    key={index}
-                    scope="col"
-                    className="px-6 py-3 cursor-pointer"
-                    onClick={() => handleSort(heading.id)}
-                  >
-                    {heading.label}
-                    {sortConfig.key === heading.id ? (
-                      sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'
-                    ) : null}
+                  <th key={index} className="px-6 py-3 relative">
+                    <div className="flex justify-between items-center">
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => handleSort(heading.id)}
+                      >
+                        {heading.label}
+                        <div className="inline-block ml-1" />
+                        {sortConfig.key === heading.id && <SortIcon direction={sortConfig.direction} />}
+                      </span>
+                      <button
+                        className={`absolute right-2 top-1/2 transform -translate-y-1/2  ${filters[heading.id] ? 'text-blue-500' : 'text-gray-500'
+                          }`}
+                        onClick={() => toggleFilterBox(heading.id)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          height="16"
+                        >
+                          <path d="M6 10.6V15l4-2v-2.4l5.802-6.4A1 1 0 0 0 15 1H1a1 1 0 0 0-.802 1.6L6 10.6z" />
+                        </svg>
+                      </button>
+                    </div>
+                    {filterVisible[heading.id] && (
+                      <div className="mt-2 absolute right-2 top-full z-10 bg-white shadow-lg border rounded-md p-2">
+                        <input
+                          type="text"
+                          placeholder={`Filter ${heading.label}`}
+                          value={filters[heading.id]}
+                          onChange={(e) => handleFilterChange(heading.id, e.target.value)}
+                          className="w-full text-sm border rounded-md px-2 py-1"
+                        />
+                      </div>
+                    )}
                   </th>
                 ))}
               </tr>
@@ -86,9 +158,9 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
           </table>
         </div>
 
-        {rowsPerPage > 0 && numberOfPages > 1 && (
+        {rowsPerPage > 0 && (
           <div className="flex justify-center pt-4">
-            <Pager numberOfPages={numberOfPages} onPageChange={handlePageChange} />
+            <Pager currentPage={currentPage} numberOfPages={numberOfPages} onPageChange={handlePageChange} />
           </div>
         )}
       </div>
@@ -96,4 +168,4 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
   );
 };
 
-export default Table
+export default Table;

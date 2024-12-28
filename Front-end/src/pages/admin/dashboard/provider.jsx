@@ -1,4 +1,4 @@
-import { SectionStatisticProvider } from "../../../context/admin/SectionStatisticContext"
+import { SectionStatisticProvider } from "../../../context/dashboard/SectionStatisticContext"
 
 const DashboardInfoProvider = ({ children }) => {
   return (

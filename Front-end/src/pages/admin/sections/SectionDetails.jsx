@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { initFlowbite } from 'flowbite'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Tab from '../../../components/tab';
 import SectionInfoView from './SectionInfo';
 import SectionMaterialView from './SectionMaterial';
@@ -9,10 +9,16 @@ import SectionStudentsView from './SectionStudents';
 import SectionProvider from './provider';
 
 const AdminSectionDetails = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
 
   useEffect(() => {
+    if (!sectionId) {
+      navigate('/notfound');
+      return;
+    }
+
     initFlowbite();
   }, []);
 
@@ -40,9 +46,9 @@ const AdminSectionDetails = () => {
   ];
 
   return (
-    <SectionProvider 
-      sectionId={sectionId} 
-      schoolYear={schoolYear} 
+    <SectionProvider
+      sectionId={sectionId}
+      schoolYear={schoolYear}
       semester={semester}
     >
       <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">

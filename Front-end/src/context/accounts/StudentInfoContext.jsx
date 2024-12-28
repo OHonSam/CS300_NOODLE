@@ -1,41 +1,27 @@
 import { useState, useEffect } from "react";
 import axios from "../../axios.config";
-import { StudentInfoContext } from "../../hooks/admin/useStudentInfo";
+import { StudentInfoContext } from "../../hooks/accounts/useStudentInfo";
 
 export const StudentInfoProvider = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [students, setStudents] = useState([]);
-  const studentsPerPage = 10;
-  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchStudents = async () => {
+    try {
+      const response = await axios.get(`/api/admin/students`);
+      setStudents(response.data.students);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get(`/api/admin/students?page=${currentPage}&limit=${studentsPerPage}`);
-        if (response.data.students.length === 0) {
-          setTotalPages(1);
-        } else {
-          setStudents(response.data.students);
-          setTotalPages(response.data.totalPages);
-        }
-      } catch (error) {
-        console.error("Error fetching admins:", error);
-      }
-    };
-
     fetchStudents();
-  }, [currentPage]);
-
-  const changePage = (page) => {
-    setCurrentPage(page);
-  };
+  }, []);
 
   const addStudent = async (newStudent) => {
     try {
       const response = await axios.post('/api/admin/students', newStudent);
       setStudents((prev) => [...prev, response.data.student]);
-      const newTotalPages = Math.ceil((students.length + 1) / studentsPerPage);
-      setTotalPages(newTotalPages);
       return true;
     } catch (error) {
       console.error("Error adding student:", error.response);
@@ -80,9 +66,8 @@ export const StudentInfoProvider = ({ children }) => {
   return (
     <StudentInfoContext.Provider
       value={{
-        students: students.slice(0, 10),
-        totalPages,
-        changePage,
+        students,
+        fetchStudents,
         addStudent,
         updateStudent,
         deleteStudent

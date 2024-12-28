@@ -2,21 +2,21 @@ import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import Toast from "../../../components/toast";
-import { useAdminInfo } from "../../../hooks/admin/useAdminInfo";
+import { useAdminInfo } from "../../../hooks/accounts/useAdminInfo";
 import AdminInfoDialog from "../../../components/dialog/AdminInfoDialog";
 
 const AdminAccountView = () => {
   const [adminInfoDialogVisible, setAdminInfoDialogVisible] = useState(false);
   const [currentAdminDialog, setCurrentAdminDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const { admins, totalPages, changePage } = useAdminInfo();
+  const { admins } = useAdminInfo();
 
   const headings = [
     { id: 'adminId', label: 'Admin ID' },
-    { id: 'fullName', label: 'Full name' },
+    { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
     { id: 'gender', label: 'Gender' },
-    { id: 'dob', label: 'Date Of Birth' },
+    { id: 'dob', label: 'Date of Birth' },
   ];
 
   const handleRowClicked = (row) => {
@@ -25,24 +25,17 @@ const AdminAccountView = () => {
   };
 
   return (
-    <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={20}/>
+    <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
+      <Table headings={headings} data={admins} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       <AdminInfoDialog
         key={currentAdminDialog?.adminId}
         dialogFor={'info'}
         adminData={currentAdminDialog}
         isOpen={adminInfoDialogVisible}
         onClose={() => setAdminInfoDialogVisible(false)}
-        onUpdate={() => {}}
-        onDelete={() => {}}
+        onUpdate={() => { }}
+        onDelete={() => { }}
       />
-      {totalPages > 1 && (
-        <Pager
-          numberOfPages={totalPages}
-          onPageChange={changePage}
-          className="w-full flex justify-center mt-2"
-        />
-      )}
       {toast.length > 0 && (
         <Toast
           message={toast[0]}

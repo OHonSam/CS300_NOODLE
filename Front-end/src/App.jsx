@@ -72,9 +72,24 @@ function App() {
         
 
         {/* Add an Unauthorized Route */}
-        <Route path="/unauthorized" element={<div>Unauthorized Access</div>} />
+        <Route path="/unauthorized" element={<div className="flex items-center justify-center h-screen w-screen">
+          <div className="text-3xl font-bold">401 | Unauthorized</div>
+        </div>} />
+
+        {/* Add a Not Found Route */}
+        <Route path="/notfound" element={<div className="flex items-center justify-center h-screen w-screen flex-col">
+          <div className="text-3xl font-bold">404 | Not Found</div>
+          <p className="pt-2">
+            <button className="text-blue-500 hover:underline" onClick={() => window.location.href = "/"}>Go home</button>
+            <span> | </span>
+            <button className="text-blue-500 hover:underline" onClick={() => window.open("https://slither.io")}>Relax and play slither.io</button>
+          </p>
+        </div>} />
+
+        {/* Catch All Route */}
+        <Route path="*" element={<Navigate to="/notfound" />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   )
 }
 

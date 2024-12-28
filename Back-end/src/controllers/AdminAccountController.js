@@ -5,21 +5,12 @@ const { Account, RoleId } = require('../models/AccountModel');
 class AdminAccountController {
   // Get page number and items per page from request query
   async getAdmins(req, res) {
-    const { page = 1, limit = 10 } = req.query;
     try {
-
       // Find admins with pagination
       const admins = await Admin.find()
-        .skip((page - 1) * limit)   // Skip previous pages
-        .limit(parseInt(limit));    // Get only the requested number of items
-
-      // Count total admins for pagination
-      const totalAdmins = await Admin.countDocuments();
-
       // Send response
       res.json({
         admins,
-        totalPages: Math.ceil(totalAdmins / limit),
       });
 
     } catch (error) {
