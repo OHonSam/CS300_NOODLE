@@ -32,8 +32,6 @@ class AdminSectionController {
         semester: Number(semester) 
       });
       
-      // console.log(sections);
-
       const reports = await ParticipationReport.find({ 
         schoolYear: schoolYear, 
         semester: Number(semester) 
