@@ -1,26 +1,17 @@
-import { useState } from "react";
-
-const Pager = ({ startPage = 1, numberOfPages, onPageChange, className }) => {
-  const [currentPage, setCurrentPage] = useState(startPage);
-
+const Pager = ({ currentPage, numberOfPages, onPageChange, className }) => {
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      const newPage = currentPage - 1;
-      setCurrentPage(newPage);
-      onPageChange(newPage);
+      onPageChange(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < numberOfPages) {
-      const newPage = currentPage + 1;
-      setCurrentPage(newPage);
-      onPageChange(newPage);
+      onPageChange(currentPage + 1);
     }
   };
 
   const handlePageClick = (page) => {
-    setCurrentPage(page);
     onPageChange(page);
   };
 

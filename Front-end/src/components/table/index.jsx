@@ -74,7 +74,6 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
     setCurrentPage(1);
   };
 
-
   const SortIcon = ({ direction }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +160,7 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
 
         {rowsPerPage > 0 && (
           <div className="flex justify-center pt-4">
-            <Pager startPage={currentPage} numberOfPages={numberOfPages} onPageChange={handlePageChange} />
+            <Pager currentPage={currentPage} numberOfPages={numberOfPages} onPageChange={handlePageChange} />
           </div>
         )}
       </div>
