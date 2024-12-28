@@ -8,7 +8,7 @@ const SectionTeachersView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
   const [currentTeacherDialog, setCurrentTeacherDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const { teachers } = useSectionTeachers();
+  const { assignedTeachers } = useSectionTeachers();
 
   const headings = [
     { id: 'teacherId', label: 'Teacher ID' },
@@ -26,7 +26,7 @@ const SectionTeachersView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
-      <Table headings={headings} data={teachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
+      <Table headings={headings} data={assignedTeachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       {/* <TeacherInfoDialog
         key={currentTeacherDialog?.teacherId}
         dialogFor={'info'}

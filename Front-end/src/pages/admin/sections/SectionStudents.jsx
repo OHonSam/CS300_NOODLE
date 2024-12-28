@@ -8,8 +8,7 @@ export const SectionStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const [enrolledStudents, setEnrolledStudents] = useState([]);
-  const { students } = useSectionStudents();
+  const { enrolledStudents } = useSectionStudents();
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
@@ -27,7 +26,7 @@ export const SectionStudentsView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col h-full w-full">
-      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
+      <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       {/* <StudentInfoDialog
         key={currentStudentDialog?.studentId}
         dialogFor={'info'}
