@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Section = require('../models/SectionModel');
-const Student = require('../models/StudentModel');
-const Teacher = require('../models/TeacherModel');
+const Section = require('../../models/SectionModel');
+const Student = require('../../models/StudentModel');
+const Teacher = require('../../models/TeacherModel');
 
 class AdminSectionController {
   async getAllSections(req, res) {
