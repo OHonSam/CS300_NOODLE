@@ -21,11 +21,21 @@ export const SectionStudentsProvider = ({ children, sectionId, schoolYear, semes
     fetchEnrolledStudents();
   }, [sectionId, schoolYear, semester]);
 
+  const removeStudentFromSection = async (studentId) => {
+    try {
+      await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/${studentId}`);
+      setEnrolledStudents((prev) => prev.filter((student) => student.studentId !== studentId));
+    } catch (error) {
+      console.error("Error removing student from section:", error);
+      throw { message: error.response.data.message };
+    }
+  }
+
   return (
     <SectionStudentsContext.Provider
       value={{
         enrolledStudents,
-        fetchEnrolledStudents,
+        removeStudentFromSection,
       }}
     >
       {children}
