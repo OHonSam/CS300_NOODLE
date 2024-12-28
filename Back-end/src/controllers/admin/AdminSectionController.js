@@ -253,6 +253,49 @@ class AdminSectionController {
       session.endSession();
     }
   }
+
+  async removeTeacherFromSection(req, res) {
+    const { sectionId, schoolYear, semester, teacherId } = req.params;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const updatedSection = await Section.findOneAndUpdate(
+        {
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
+        { $pull: { teachers: teacherId } },
+        {
+          new: true,
+          runValidators: true,
+          session
+        }
+      );
+
+      if (!updatedSection) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Section not found' });
+      }
+
+      await session.commitTransaction();
+
+      res.json(updatedSection);
+    } catch (error) {
+      if (session.inTransaction()) {
+        await session.abortTransaction();
+      }
+      console.error('Remove teacher from section error:', error);
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message
+      });
+    } finally {
+      session.endSession();
+    }
+  }
 }
 
 module.exports = new AdminSectionController();
