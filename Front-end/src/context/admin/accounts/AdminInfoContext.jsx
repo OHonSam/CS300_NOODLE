@@ -71,7 +71,6 @@ export const AdminInfoProvider = ({ children }) => {
     <AdminInfoContext.Provider
       value={{
         admins,
-        fetchAdmins,
         addAdmin,
         updateAdmin,
         deleteAdmin

@@ -31,10 +31,32 @@ export const SectionTeachersProvider = ({ children, sectionId, schoolYear, semes
     }
   }
 
+  const updateTeacherFromSection = async (updatedTeacher) => {
+    try {
+      const response = await axios.put(
+        `/api/admin/teachers/${updatedTeacher.teacherId}`,
+        updatedTeacher
+      );
+
+      if (response.data) {
+        setAssignedTeachers(prev =>
+          prev.map(teacher =>
+            teacher.teacherId === updatedTeacher.teacherId ? response.data : teacher
+          )
+        );
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating teacher:", error);
+      return false;
+    }
+  }
+
   return (
     <SectionTeachersContext.Provider
       value={{
         assignedTeachers,
+        updateTeacherFromSection,
         removeTeacherFromSection,
       }}
     >

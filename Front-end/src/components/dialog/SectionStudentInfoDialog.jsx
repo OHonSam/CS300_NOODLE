@@ -1,14 +1,12 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
-import { useStudentInfo } from "../../hooks/admin/accounts/useStudentInfo";
 import { useSectionStudents } from "../../hooks/admin/sections/useSectionStudents";
 
 const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onRemove, onClose }) => {
   const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');
   const [datePickerPlaceHolder, setDatePickerPlaceholder] = useState(dialogFor === 'create');
-  const { addStudent, updateStudent, deleteStudent } = useStudentInfo();
-  const { removeStudentFromSection } = useSectionStudents();
+  const { updateStudentFromSection, removeStudentFromSection } = useSectionStudents();
   const [formData, setFormData] = useState(studentData ? studentData : {
     studentId: '',
     fullName: '',
@@ -61,7 +59,7 @@ const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, on
       }
     } else {
       onUpdate(formData);
-      updateStudent(formData);
+      updateStudentFromSection(formData);
     }
     handleClose(true);
   };

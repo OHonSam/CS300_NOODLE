@@ -68,7 +68,6 @@ export const TeacherInfoProvider = ({ children }) => {
     <TeacherInfoContext.Provider
       value={{
         teachers,
-        fetchTeachers,
         addTeacher,
         updateTeacher,
         deleteTeacher

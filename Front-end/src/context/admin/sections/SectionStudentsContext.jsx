@@ -31,10 +31,32 @@ export const SectionStudentsProvider = ({ children, sectionId, schoolYear, semes
     }
   }
 
+  const updateStudentFromSection = async (updatedStudent) => {
+    try {
+      const response = await axios.put(
+        `/api/admin/students/${updatedStudent.studentId}`,
+        updatedStudent
+      );
+
+      if (response.data) {
+        setEnrolledStudents(prev =>
+          prev.map(student =>
+            student.studentId === updatedStudent.studentId ? response.data : student
+          )
+        );
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating student:", error);
+      return false;
+    }
+  };
+
   return (
     <SectionStudentsContext.Provider
       value={{
         enrolledStudents,
+        updateStudentFromSection,
         removeStudentFromSection,
       }}
     >
