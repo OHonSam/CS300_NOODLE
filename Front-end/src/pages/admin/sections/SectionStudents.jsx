@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
 import Table from "../../../components/table";
-import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
 import { useSectionStudents } from "../../../hooks/admin/sections/useSectionStudents";
-import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import { StudentInfoProvider } from "../../../context/admin/accounts/StudentInfoContext";
+import SectionStudentInfoDialog from "../../../components/dialog/SectionStudentInfoDialog";
 
 export const SectionStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
@@ -30,15 +29,15 @@ export const SectionStudentsView = () => {
     <div className="relative pt-4 pb-8 flex flex-col h-full w-full">
       <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       <StudentInfoProvider>
-      <StudentInfoDialog
-        key={currentStudentDialog?.studentId}
-        dialogFor={'info'}
-        studentData={currentStudentDialog}
-        isOpen={studentInfoDialogVisible}
-        onClose={() => setStudentInfoDialogVisible(false)}
-        onUpdate={() => { }}
-        onDelete={() => { }}
-      />
+        <SectionStudentInfoDialog
+          key={currentStudentDialog?.studentId}
+          dialogFor={'info'}
+          studentData={currentStudentDialog}
+          isOpen={studentInfoDialogVisible}
+          onClose={() => setStudentInfoDialogVisible(false)}
+          onUpdate={() => { }}
+          onRemove={() => { }}
+        />
       </StudentInfoProvider>
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>

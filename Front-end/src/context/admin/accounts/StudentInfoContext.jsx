@@ -67,7 +67,6 @@ export const StudentInfoProvider = ({ children }) => {
     <StudentInfoContext.Provider
       value={{
         students,
-        fetchStudents,
         addStudent,
         updateStudent,
         deleteStudent

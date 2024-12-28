@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Teacher = require('../../models/TeacherModel');
+const Section = require('../../models/SectionModel');
 const { Account, RoleId } = require('../../models/AccountModel');
 
 class TeacherAccountController {
@@ -106,6 +107,12 @@ class TeacherAccountController {
           error: 'Failed to delete associated account'
         });
       }
+
+      await Section.updateMany(
+        { teachers: teacherId },
+        { $pull: { teachers: teacherId } },
+        { session }
+      );
 
       await session.commitTransaction();
       res.json({

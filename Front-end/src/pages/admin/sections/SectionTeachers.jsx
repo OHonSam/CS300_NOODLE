@@ -1,9 +1,9 @@
 import Table from "../../../components/table";
 import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
-import TeacherInfoDialog from "../../../components/dialog/TeacherInfoDialog";
 import { useSectionTeachers } from "../../../hooks/admin/sections/useSectionTeachers";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
+import SectionTeacherInfoDialog from "../../../components/dialog/SectionTeacherInfoDialog";
 
 const SectionTeachersView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
@@ -29,15 +29,15 @@ const SectionTeachersView = () => {
     <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
       <Table headings={headings} data={assignedTeachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       <TeacherInfoProvider>
-      <TeacherInfoDialog
-        key={currentTeacherDialog?.teacherId}
-        dialogFor={'info'}
-        teacherData={currentTeacherDialog}
-        isOpen={teacherDialogVisible}
-        onClose={() => setTeacherDialogVisible(false)}
-        onUpdate={() => { }}
-        onDelete={() => { }}
-      />
+        <SectionTeacherInfoDialog
+          key={currentTeacherDialog?.teacherId}
+          dialogFor={'info'}
+          teacherData={currentTeacherDialog}
+          isOpen={teacherDialogVisible}
+          onClose={() => setTeacherDialogVisible(false)}
+          onUpdate={() => { }}
+          onRemove={() => { }}
+        />
       </TeacherInfoProvider>
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>

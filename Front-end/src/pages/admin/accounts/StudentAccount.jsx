@@ -1,5 +1,4 @@
 import Table from "../../../components/table";
-import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
 import { useStudentInfo } from "../../../hooks/admin/accounts/useStudentInfo";

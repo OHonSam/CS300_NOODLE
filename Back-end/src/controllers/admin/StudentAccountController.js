@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Student = require('../../models/StudentModel');
+const Section = require('../../models/SectionModel');
 const { Account, RoleId } = require('../../models/AccountModel');
 
 class StudentAccountController {
@@ -152,13 +153,20 @@ class StudentAccountController {
         });
       }
 
+      // Delete the student from all sections
+      await Section.updateMany(
+        { students: studentId },
+        { $pull: { students: studentId } },
+        { session }
+      );
+
       // 5. Commit the transaction
       await session.commitTransaction();
 
       // 6. Send success response
       res.json({
         message: 'Student and associated account deleted successfully!',
-        deletedAdmin: deletedStudent
+        deletedStudent
       });
     } catch (error) {
       // 7. Handle errors
