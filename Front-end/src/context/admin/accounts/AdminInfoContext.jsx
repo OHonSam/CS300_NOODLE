@@ -1,8 +1,8 @@
 // Front-end/src/context/AdminInfoContext.jsx
 import { useState, useEffect } from "react";
-import axios from "../../axios.config";
+import axios from "../../../axios.config";
 
-import { AdminInfoContext } from "../../hooks/accounts/useAdminInfo";
+import { AdminInfoContext } from "../../../hooks/admin/accounts/useAdminInfo";
 
 export const AdminInfoProvider = ({ children }) => {
   const [admins, setAdmins] = useState([]);

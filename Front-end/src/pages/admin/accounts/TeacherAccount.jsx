@@ -3,7 +3,7 @@ import Pager from "../../../components/footer/pager";
 import { useState } from "react";
 import Toast from "../../../components/toast";
 import TeacherInfoDialog from "../../../components/dialog/TeacherInfoDialog";
-import { useTeacherInfo } from "../../../hooks/accounts/useTeacherInfo";
+import { useTeacherInfo } from "../../../hooks/admin/accounts/useTeacherInfo";
 
 const TeacherAccountView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);

@@ -2,14 +2,15 @@ import { useState, useEffect } from "react";
 import Toast from "../../../components/toast";
 import Table from "../../../components/table";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
-import { useSectionStudents } from "../../../hooks/sections/useSectionStudents";
+import { useSectionStudents } from "../../../hooks/admin/sections/useSectionStudents";
+import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
+import { StudentInfoProvider } from "../../../context/admin/accounts/StudentInfoContext";
 
 export const SectionStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const [enrolledStudents, setEnrolledStudents] = useState([]);
-  const { students } = useSectionStudents();
+  const { enrolledStudents } = useSectionStudents();
 
   const headings = [
     { id: 'studentId', label: 'Student ID' },
@@ -27,8 +28,9 @@ export const SectionStudentsView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col h-full w-full">
-      <Table headings={headings} data={students} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
-      {/* <StudentInfoDialog
+      <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
+      <StudentInfoProvider>
+      <StudentInfoDialog
         key={currentStudentDialog?.studentId}
         dialogFor={'info'}
         studentData={currentStudentDialog}
@@ -36,7 +38,8 @@ export const SectionStudentsView = () => {
         onClose={() => setStudentInfoDialogVisible(false)}
         onUpdate={() => { }}
         onDelete={() => { }}
-      /> */}
+      />
+      </StudentInfoProvider>
       {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );

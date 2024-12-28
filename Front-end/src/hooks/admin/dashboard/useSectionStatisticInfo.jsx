@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { SectionStatisticContext } from '../../context/dashboard/SectionStatisticContext';
+import { SectionStatisticContext } from '../../../context/admin/dashboard//SectionStatisticContext';
 
 export const useSectionStatisticInfo = () => {
   const context = useContext(SectionStatisticContext);

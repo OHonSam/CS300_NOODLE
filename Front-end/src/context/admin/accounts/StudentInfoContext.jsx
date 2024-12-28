@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "../../axios.config";
-import { StudentInfoContext } from "../../hooks/accounts/useStudentInfo";
+import axios from "../../../axios.config";
+import { StudentInfoContext } from "../../../hooks/admin/accounts/useStudentInfo";
 
 export const StudentInfoProvider = ({ children }) => {
   const [students, setStudents] = useState([]);

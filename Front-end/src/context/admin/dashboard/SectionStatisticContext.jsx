@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "../../axios.config";
+import axios from "../../../axios.config";
 
 const initialSectionStatisticContext = { 
   // New dashboard stats

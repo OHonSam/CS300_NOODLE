@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const adminSectionController = require('../controllers/AdminSectionController');
-const studentAccountController = require('../controllers/StudentAccountController');
-const teacherAccountController = require('../controllers/TeacherAccountController');
-const adminAccountController = require('../controllers/AdminAccountController');
+const adminSectionController = require('../controllers/admin/AdminSectionController');
+const studentAccountController = require('../controllers/admin/StudentAccountController');
+const teacherAccountController = require('../controllers/admin/TeacherAccountController');
+const adminAccountController = require('../controllers/admin/AdminAccountController');
 const authMiddleware = require('../middleware/AuthMiddleware');
 
 router.use(authMiddleware.verifyToken);
