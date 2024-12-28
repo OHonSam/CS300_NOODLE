@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Student = require('../../models/StudentModel');
 const Section = require('../../models/SectionModel');
+const ParticipationReport = require('../../models/ParticipationReportModel');
 const { Account, RoleId } = require('../../models/AccountModel');
 const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FileProcessing');
 
@@ -179,6 +180,12 @@ class StudentAccountController {
       await Section.updateMany(
         { students: studentId },
         { $pull: { students: studentId } },
+        { session }
+      );
+
+      // Delete associated ParticipationReport if deleting a student account 
+      await ParticipationReport.deleteMany(
+        { studentId: studentId },
         { session }
       );
 

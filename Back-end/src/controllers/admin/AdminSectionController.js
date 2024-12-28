@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Section = require('../../models/SectionModel');
 const Student = require('../../models/StudentModel');
 const Teacher = require('../../models/TeacherModel');
+const ParticipationReport = require('../../models/ParticipationReportModel');
 
 class AdminSectionController {
   async getAllSections(req, res) {
@@ -26,16 +27,39 @@ class AdminSectionController {
     const { semester, schoolYear } = req.query;
 
     try {
-      const sections = await Section.find({ schoolYear: schoolYear, semester: Number(semester) });
-      console.log(sections);
+      const sections = await Section.find({ 
+        schoolYear: schoolYear, 
+        semester: Number(semester) 
+      });
+      
+      const reports = await ParticipationReport.find({ 
+        schoolYear: schoolYear, 
+        semester: Number(semester) 
+      });
+
+      const uniqueTeachers = new Set(sections.flatMap(section => section.teachers)).size;
+      const uniqueStudents = new Set(sections.flatMap(section => section.students)).size;
+
+      const gradeDistribution = reports.reduce((acc, report) => {
+        const grade10 = report.grade10;
+
+        if (grade10 >= 9.0) acc.A++;
+        else if (grade10 >= 8.0) acc.B++;
+        else if (grade10 >= 7.0) acc.C++;
+        else if (grade10 >= 6.0) acc.D++;
+        else if (grade10 >= 5.0) acc.E++;
+        else acc.F++;
+
+        return acc;
+      }, { A: 0, B: 0, C: 0, D: 0, E:0, F: 0 });
+      
+      console.log(gradeDistribution);
 
       const stats = {
         totalSections: sections.length,
-        totalTeachers: sections.map(section => section.teacher).length,
-        totalStudents: sections.map(section => section.students).length,
-        gradeDistribution: {
-          A: 0, B: 0, C: 0, D: 0, F: 0
-        }
+        totalTeachers: uniqueTeachers,
+        totalStudents: uniqueStudents,
+        gradeDistribution: gradeDistribution
       }
 
       res.json({ sections, stats });
@@ -60,6 +84,17 @@ class AdminSectionController {
       res.json(section);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  async getParticipationReports(req, res) {
+    const { schoolYear, semester } = req.query;
+
+    try {
+      const reports = await ParticipationReport.find({ schoolYear, semester });
+      res.json(reports);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error', message: error.message });
     }
   }
 
@@ -144,6 +179,16 @@ class AdminSectionController {
         await session.abortTransaction();
         return res.status(404).json({ error: 'Section not found' });
       }
+
+      // Delete all associated ParticipationReports within the same transaction
+      await ParticipationReport.deleteMany(
+        {
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
+        { session }
+      );
 
       await session.commitTransaction();
 
