@@ -18,6 +18,7 @@ router.get('/section/:schoolYear/:semester/:sectionId', adminSectionController.g
 router.get('/sections/:schoolYear/:semester/:sectionId/enrolledStudents', adminSectionController.getEnrolledStudents);
 router.get('/sections/:schoolYear/:semester/:sectionId/assignedTeachers', adminSectionController.getAssignedTeachers);
 router.post('/sections', adminSectionController.createSection);
+router.post('/sections/:schoolYear/:semester/:sectionId/enrollStudents', upload.single('file'), adminSectionController.addEnrolledStudentsFromFile);
 router.put('/sections/:schoolYear/:semester/:sectionId', adminSectionController.updateSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId', adminSectionController.deleteSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId/removeEnrolled/:studentId/', adminSectionController.removeStudentFromSection);

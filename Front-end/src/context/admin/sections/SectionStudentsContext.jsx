@@ -13,8 +13,8 @@ export const SectionStudentsProvider = ({ children, sectionId, schoolYear, semes
 
     } catch (error) {
       console.error("Error fetching students:", error);
-      throw{ message: error.response.data.message};
-    } 
+      throw { message: error.response.data.message };
+    }
   };
 
   useEffect(() => {
@@ -52,12 +52,45 @@ export const SectionStudentsProvider = ({ children, sectionId, schoolYear, semes
     }
   };
 
+  const addEnrolledStudentsFromFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post(
+        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}/enrollStudents`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      if (response.data.success) {
+        setEnrolledStudents((prev) => [...prev, ...response.data.students]);
+      }
+      return response.data.message;
+    } catch (error) {
+      if (error.code == "ERR_BAD_RESPONSE") {
+        throw {
+          message: "Data import failed: Duplicate student ID or email. Try again.",
+        };
+      } else {
+        throw {
+          message: error.response?.data?.message || 'Failed to enroll students'
+        };
+      }
+    }
+  }
+
   return (
     <SectionStudentsContext.Provider
       value={{
         enrolledStudents,
         updateStudentFromSection,
         removeStudentFromSection,
+        addEnrolledStudentsFromFile,
       }}
     >
       {children}

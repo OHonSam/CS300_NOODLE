@@ -5,7 +5,7 @@ import Tab from '../../../components/tab';
 import SectionInfoView from './SectionInfo';
 import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
-import SectionStudentsView from './SectionStudents';
+import SectionEnrolledStudentsView from './SectionEnrolledStudents';
 import SectionProvider from './provider';
 import Breadcrumbs from "../../../components/breadcrumbs";
 import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
@@ -93,7 +93,7 @@ const AdminSectionDetails = () => {
             <SectionTeachersView />
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
-            <SectionStudentsView />
+            <SectionEnrolledStudentsView />
           </div>
         </Tab>
       </div>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
 import { useSectionStudents } from "../../hooks/admin/sections/useSectionStudents";
 
-const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onRemove, onClose }) => {
+export const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, onUpdate, onRemove, onClose }) => {
   const [selectPlaceHolder, setSelectPlaceHolder] = useState(dialogFor === 'create');
   const [datePickerPlaceHolder, setDatePickerPlaceholder] = useState(dialogFor === 'create');
   const { updateStudentFromSection, removeStudentFromSection } = useSectionStudents();
