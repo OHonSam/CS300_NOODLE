@@ -1,5 +1,4 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useSectionStatisticInfo } from '../../../hooks/admin/dashboard/useSectionStatisticInfo';
 import { StatsCard } from '../../../components/dashboard/StatsCard';
 import { GradeDistributionChart } from '../../../components/dashboard/GradeDistributionChart';
@@ -47,7 +46,7 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-2 gap-6">
         <GradeDistributionChart data={gradeData} />
       </div>
-      
+
     </div>
   );
 };

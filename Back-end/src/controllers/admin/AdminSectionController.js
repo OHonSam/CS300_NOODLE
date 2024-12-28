@@ -37,13 +37,11 @@ class AdminSectionController {
         semester: Number(semester) 
       });
 
-      console.log(reports);
+      const uniqueTeachers = new Set(sections.flatMap(section => section.teachers)).size;
+      const uniqueStudents = new Set(sections.flatMap(section => section.students)).size;
 
-      // Calculate grade distribution
       const gradeDistribution = reports.reduce((acc, report) => {
         const grade10 = report.grade10;
-        // Convert to grade10 scale (assuming grade is on 100-point scale)
-        // const grade10 = (grade / 10).toFixed(2);
 
         if (grade10 >= 9.0) acc.A++;
         else if (grade10 >= 8.0) acc.B++;
@@ -58,8 +56,8 @@ class AdminSectionController {
 
       const stats = {
         totalSections: sections.length,
-        totalTeachers: sections.map(section => section.teacher).length,
-        totalStudents: sections.map(section => section.students).length,
+        totalTeachers: uniqueTeachers,
+        totalStudents: uniqueStudents,
         gradeDistribution: gradeDistribution
       }
 
