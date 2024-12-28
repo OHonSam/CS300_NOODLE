@@ -5,6 +5,8 @@ const studentAccountController = require('../controllers/admin/StudentAccountCon
 const teacherAccountController = require('../controllers/admin/TeacherAccountController');
 const adminAccountController = require('../controllers/admin/AdminAccountController');
 const authMiddleware = require('../middleware/AuthMiddleware');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.use(authMiddleware.verifyToken);
 
@@ -22,6 +24,7 @@ router.delete('/sections/:schoolYear/:semester/:sectionId/removeAssigned/:teache
 
 // Admin account management routes
 router.get('/admins', adminAccountController.getAdmins);
+router.post('/fileAdmins', upload.single('file'), adminAccountController.addAdminsFromFile);
 router.post('/admins', adminAccountController.createAdmin);
 router.put('/admins/:adminId', adminAccountController.updateAdmin);
 router.delete('/admins/:adminId', adminAccountController.deleteAdmin);

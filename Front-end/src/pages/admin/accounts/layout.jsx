@@ -135,9 +135,9 @@ const AdminManageAccountsLayout = () => {
         <FileUploadDialog
           heading={'Import administrator file'}
           isOpen={adminFileUploadDialogVisible}
-          onSubmit={(file) => {
-            console.log('Call backend API to sumbit file', file);
-            // setToast(['Administrator imported successfully!', true]);
+          onSubmit={(message, isAccepted) => {
+            console.log("Hello")
+            setToast([message, isAccepted]);
           }}
           onClose={() => setAdminFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
