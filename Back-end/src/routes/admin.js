@@ -10,6 +10,7 @@ router.use(authMiddleware.verifyToken);
 
 // Admin section management routes
 router.get('/section/statistic', adminSectionController.filterSectionsByTime);
+router.get('/section/participation/report', adminSectionController.getParticipationReports);
 router.get('/sections', adminSectionController.getAllSections);
 router.get('/section/:schoolYear/:semester/:sectionId', adminSectionController.getSection);
 router.get('/sections/:schoolYear/:semester/:sectionId/enrolledStudents', adminSectionController.getEnrolledStudents);

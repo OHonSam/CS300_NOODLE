@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Section = require('../../models/SectionModel');
 const Student = require('../../models/StudentModel');
 const Teacher = require('../../models/TeacherModel');
+const ParticipationReport = require('../../models/ParticipationReportModel');
 
 class AdminSectionController {
   async getAllSections(req, res) {
@@ -26,16 +27,42 @@ class AdminSectionController {
     const { semester, schoolYear } = req.query;
 
     try {
-      const sections = await Section.find({ schoolYear: schoolYear, semester: Number(semester) });
-      console.log(sections);
+      const sections = await Section.find({ 
+        schoolYear: schoolYear, 
+        semester: Number(semester) 
+      });
+      
+      // console.log(sections);
+
+      const reports = await ParticipationReport.find({ 
+        schoolYear: schoolYear, 
+        semester: Number(semester) 
+      });
+
+      console.log(reports);
+
+      // Calculate grade distribution
+      const gradeDistribution = reports.reduce((acc, report) => {
+        const grade10 = report.grade10;
+        // Convert to grade10 scale (assuming grade is on 100-point scale)
+        // const grade10 = (grade / 10).toFixed(2);
+
+        if (grade10 >= 9.0) acc.A++;
+        else if (grade10 >= 8.0) acc.B++;
+        else if (grade10 >= 7.0) acc.C++;
+        else if (grade10 >= 6.0) acc.D++;
+        else acc.F++;
+
+        return acc;
+      }, { A: 0, B: 0, C: 0, D: 0, F: 0 });
+      
+      console.log(gradeDistribution);
 
       const stats = {
         totalSections: sections.length,
         totalTeachers: sections.map(section => section.teacher).length,
         totalStudents: sections.map(section => section.students).length,
-        gradeDistribution: {
-          A: 0, B: 0, C: 0, D: 0, F: 0
-        }
+        gradeDistribution: gradeDistribution
       }
 
       res.json({ sections, stats });
@@ -60,6 +87,17 @@ class AdminSectionController {
       res.json(section);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  async getParticipationReports(req, res) {
+    const { schoolYear, semester } = req.query;
+
+    try {
+      const reports = await ParticipationReport.find({ schoolYear, semester });
+      res.json(reports);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error', message: error.message });
     }
   }
 
