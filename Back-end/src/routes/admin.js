@@ -31,12 +31,14 @@ router.delete('/admins/:adminId', adminAccountController.deleteAdmin);
 
 // Student account management routes
 router.get('/students', studentAccountController.getStudents);
+router.post('/fileStudents', upload.single('file'), studentAccountController.addStudentsFromFile);
 router.post('/students', studentAccountController.createStudent);
 router.put('/students/:studentId', studentAccountController.updateStudent);
 router.delete('/students/:studentId', studentAccountController.deleteStudent);
 
 // Teacher account management routes
 router.get('/teachers', teacherAccountController.getTeachers);
+router.post('/fileTeachers', upload.single('file'), teacherAccountController.addTeachersFromFile);
 router.post('/teachers', teacherAccountController.createTeacher);
 router.put('/teachers/:teacherId', teacherAccountController.updateTeacher);
 router.delete('/teachers/:teacherId', teacherAccountController.deleteTeacher);

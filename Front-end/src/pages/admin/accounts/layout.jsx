@@ -101,12 +101,10 @@ const AdminManageAccountsLayout = () => {
         <FileUploadDialog
           heading={'Import student file'}
           isOpen={studentFileUploadDialogVisible}
-          onSubmit={(file) => {
-            console.log('Call backend API to submit file', file);
-            // setToast(['Student imported successfully!', true]);
-          }}
+          onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
           onClose={() => setStudentFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
+          userType="student"
         />
         {/* Create / Import teachers */}
         <TeacherInfoDialog
@@ -118,12 +116,10 @@ const AdminManageAccountsLayout = () => {
         <FileUploadDialog
           heading={'Import teacher file'}
           isOpen={teacherFileUploadDialogVisible}
-          onSubmit={(file) => {
-            console.log('Call backend API to sumbit file', file);
-            // setToast(['Teacher imported successfully!', true]);
-          }}
+          onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
           onClose={() => setTeacherFileUploadVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
+          userType="teacher"
         />
         {/* Create / Import administrators */}
         <AdminInfoDialog
@@ -135,12 +131,10 @@ const AdminManageAccountsLayout = () => {
         <FileUploadDialog
           heading={'Import administrator file'}
           isOpen={adminFileUploadDialogVisible}
-          onSubmit={(message, isAccepted) => {
-            console.log("Hello")
-            setToast([message, isAccepted]);
-          }}
+          onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
           onClose={() => setAdminFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
+          userType="admin"
         />
 
         {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto top-6'} isAccepted={toast[1]} Icon={

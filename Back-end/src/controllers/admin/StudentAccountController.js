@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Student = require('../../models/StudentModel');
 const Section = require('../../models/SectionModel');
 const { Account, RoleId } = require('../../models/AccountModel');
+const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FileProcessing');
 
 class StudentAccountController {
   // Get page number and items per page from request query
@@ -17,6 +18,27 @@ class StudentAccountController {
 
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  async addStudentsFromFile(req, res) {
+    try {
+      const requiredFields = ['studentId', 'fullName', 'email', 'class', 'gender', 'dob', 'address', 'phone' ];
+      const userData = await FileProcessingUtil.processFile(req.file, requiredFields);
+
+      const result = await BulkUserCreationUtil.createUsers(userData, {
+        UserModel: Student,
+        roleId: RoleId.STUDENT,
+        userIdField: 'studentId',
+      });
+  
+      res.status(201).json(result);
+    } catch (error) {
+      console.error('Error processing file:', error);
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message,
+      });
     }
   }
 
@@ -136,7 +158,7 @@ class StudentAccountController {
       // 2. Check if student exists
       if (!deletedStudent) {
         await session.abortTransaction();
-        return res.status(404).json({ error: 'Admin not found' });
+        return res.status(404).json({ error: 'Student not found' });
       }
 
       // 3. Delete the associated account
