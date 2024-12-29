@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Accordion, AccordionHeader, AccordionBody } from "@material-tailwind/react";
 
-const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelete }) => {
+const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelete, canEdit = true }) => {
   const [localTitle, setTitle] = useState(title);
   const [localContent, setContent] = useState(content);
   const [localUrl, setUrl] = useState(url);
@@ -98,7 +98,7 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
                 </label>
                 <textarea
                   id="content"
-                  className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                  className="border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Material description"
                   value={localContent}
                   onChange={(e) => setContent(e.target.value)}
@@ -141,22 +141,26 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
           </AccordionBody>
         </Accordion>
       </div>
-      <div className="pt-2 pl-2">
-        <button
-          onClick={handleEditButton}
-          className="p-2"
-          disabled={isLoading}
-        >
-          {isLoading ? "⏳" : !isEditing ? "✏️" : "✔️"}
-        </button>
-        <button
-          onClick={handleDeleteButton}
-          className="p-2"
-          disabled={isLoading}
-        >
-          {isLoading ? "⏳" : "❌"}
-        </button>
-      </div>
+      {canEdit ? (
+        <div className="pt-2 pl-2">
+          <button
+            onClick={handleEditButton}
+            className="p-2"
+            disabled={isLoading}
+          >
+            {isLoading ? "⏳" : !isEditing ? "✏️" : "✔️"}
+          </button>
+          <button
+            onClick={handleDeleteButton}
+            className="p-2"
+            disabled={isLoading}
+          >
+            {isLoading ? "⏳" : "❌"}
+          </button>
+        </div>
+      ) : (
+        <div className="pr-2" />
+      )}
     </div>
   );
 };

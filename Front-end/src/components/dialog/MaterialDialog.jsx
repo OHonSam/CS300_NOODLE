@@ -39,7 +39,7 @@ const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.content) {
       alert("Title and content are required");
       return;
@@ -90,7 +90,7 @@ const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
           </div>
           <div className="mb-6">
             <label htmlFor="url" className="block mb-2 text-sm font-medium text-gray-900">URL</label>
-            <input type="text" id="url" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="URL" required
+            <input type="text" id="url" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="URL"
               value={formData.url}
               onChange={handleChange} />
           </div>
