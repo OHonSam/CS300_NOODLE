@@ -2,10 +2,10 @@ import axios from "axios";
 
 export const fetchSection = async (schoolYear, semester, sectionId) => {
     try {
-      const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
-      return response.data;
+        const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
+        return response.data;
     } catch (error) {
-      console.error("Error fetching section:", error);
+        console.error("Error fetching section:", error);
     }
 };
 
@@ -93,7 +93,7 @@ export const fetchAssignedTeachers = async (schoolYear, semester, sectionId) => 
         return response.data;
     } catch (error) {
         console.error("Error fetching teachers:", error);
-        throw{ message: error.response.data.message};
+        throw { message: error.response.data.message };
     }
 };
 
@@ -104,6 +104,24 @@ export const removeTeacherFromSection = async (currentAssignedTeachers, teacherI
     } catch (error) {
         console.error("Error removing teacher from section:", error);
         throw { message: error.response.data.message };
+    }
+}
+
+export const assignTeacherToSection = async ( teacherId, schoolYear, semester, sectionId) => {
+    try {
+        const response = await axios.post(
+            `/api/admin/sections/${schoolYear}/${semester}/${sectionId}/assignTeacher/${teacherId}`
+        );
+        console.log(response.data)
+        if (response.data) {
+           return response.data;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error assigning teacher:", error);
+        throw {
+            message: error.response?.data?.message || 'Failed to assign teacher'
+        };
     }
 }
 
@@ -176,3 +194,4 @@ export const addEnrolledStudentsFromFile = async (currentEnrolledStudents, file,
         }
     }
 }
+

@@ -3,11 +3,10 @@ import { useState, useEffect } from "react";
 import { FaXmark } from 'react-icons/fa6'
 import { useTeacherInfo } from "../../hooks/admin/accounts/useTeacherInfo";
 
-const SelectTeacherDialog = ({ isOpen, onSave, onClose }) => {
+const SelectTeacherDialog = ({ isOpen, onSave, onClose, assignedTeachers, setAssignedTeachers, onAssign, onRemove }) => {
   const [searchTeacher, setSearchTeacher] = useState('');
   const [selectedItems, setSelectedItems] = useState(new Set());
   const { teachers } = useTeacherInfo();
-  const { assignedTeachers, assignTeacherToSection, removeTeacherFromSection } = useSectionTeachers();
 
   // Initialize selected items with currently assigned teachers
   useEffect(() => {
@@ -48,14 +47,20 @@ const SelectTeacherDialog = ({ isOpen, onSave, onClose }) => {
 
       // Process removals
       for (const teacherId of toRemove) {
-        await removeTeacherFromSection(teacherId);
+        await onRemove(teacherId);
       }
 
       // Process additions
+      var newAssignedTeachers
       for (const teacherId of toAdd) {
-        await assignTeacherToSection(teacherId);
+        newAssignedTeachers = await onAssign(teacherId);
       }
 
+      if (toRemove.length > 0) {
+        setAssignedTeachers(assignedTeachers.filter(teacher => !toRemove.includes(teacher.teacherId)));
+      } else {
+        setAssignedTeachers(newAssignedTeachers);
+      }
     } catch(error) {
       console.error('Error assigning teachers:', error);
     }
