@@ -14,7 +14,7 @@ export const AnnouncementInfoProvider = ({ children }) => {
           `/api/admin/announcements?`
         );
         // sort by createdAt
-        setAnnouncements(response.data.announcements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        setAnnouncements(response.data.announcements.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
       } catch (error) {
         console.error("Error fetching announcements:", error);
       }
