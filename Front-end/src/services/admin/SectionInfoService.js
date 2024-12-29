@@ -35,3 +35,13 @@ export const deleteSection = async (deletedSection) => {
         return false;
     }
 };
+
+export const fetchMaterials = async (schoolYear, semester, sectionId) => {
+    try {
+        const response = await axios.get(`/api/material/${schoolYear}/${semester}/${sectionId}`);
+        return response.data.materials;
+    } catch (error) {
+        console.error("Error fetching material:", error);
+        throw{ message: error.response.data.message};
+    } 
+};

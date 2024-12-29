@@ -91,7 +91,7 @@ const AdminSectionDetails = () => {
             <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
-            <SectionMaterialView />
+            <SectionMaterialView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <SectionTeachersView />
