@@ -11,6 +11,7 @@ import Breadcrumbs from "../../../components/breadcrumbs";
 import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import EnrolledStudentsUploadDialog from "../../../components/dialog/EnrolledStudentsUploadDialog";
+import MaterialDialog from '../../../components/dialog/MaterialDialog';
 
 const AdminSectionDetails = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const AdminSectionDetails = () => {
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
+  const [resourceCreationDialogVisible, setresourceCreationDialogVisible] = useState(false);
 
   useEffect(() => {
     if (!sectionId) {
@@ -53,7 +55,12 @@ const AdminSectionDetails = () => {
 
   const configs = [
     [],
-    [],
+    [
+      {
+        name: 'Add a Resouce',
+        onClick: () => setresourceCreationDialogVisible(true)
+      },
+    ],
     [
       {
         name: 'Add Teacher',
@@ -66,10 +73,9 @@ const AdminSectionDetails = () => {
         onClick: () => setStudentFileUploadDialogVisible(true)
       }
     ]
-  ]
+  ];
 
   return (
-
     <SectionProvider
       sectionId={sectionId}
       schoolYear={schoolYear}
@@ -92,6 +98,13 @@ const AdminSectionDetails = () => {
             <SectionEnrolledStudentsView />
           </div>
         </Tab>
+
+        <MaterialDialog
+          dialogFor={'create'}
+          isOpen={resourceCreationDialogVisible}
+          // onCreate={(message, isAccepted) => setToast([message, isAccepted])}
+          onClose={() => setresourceCreationDialogVisible(false)}
+        />
       </div>
       <TeacherInfoProvider>
         <SelectTeacherDialog

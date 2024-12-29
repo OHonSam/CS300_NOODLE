@@ -120,7 +120,9 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
                           width="16"
                           height="16"
                         >
-                          <path d="M6 10.6V15l4-2v-2.4l5.802-6.4A1 1 0 0 0 15 1H1a1 1 0 0 0-.802 1.6L6 10.6z" />
+                          <rect x="1" y="3" width="14" height="2" />
+                          <rect x="3" y="7" width="10" height="2" />
+                          <rect x="5" y="11" width="6" height="2" />
                         </svg>
                       </button>
                     </div>
