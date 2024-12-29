@@ -2,12 +2,11 @@ import { useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
-import { useAnnouncementInfo } from "../../../hooks/admin/announcement/useAnnouncementInfo";
-import AnnouncementDialog from "../../../components/dialog/AnnouncementDialog";
+import { useAnnouncementInfo } from "../../../hooks/admin/announcements/useAnnouncementInfo";
+import AnnouncementDialog from "../../../components/dialog/AdminAnnouncementDialog";
 import { useToast } from "../../../hooks/useToast";
 
 const Announcement = () => {
-  const [totalPages, setTotalPages] = useState(1);
   const [announcementInfoDialogVisible, setAnnouncementInfoDialogVisible] = useState(false);
   const [announcementCreateDialogVisible, setAnnouncementCreateDialogVisible] = useState(false);
   const [currentAnnouncementDialog, setCurrentAnnouncementDialog] = useState(null);
@@ -45,13 +44,6 @@ const Announcement = () => {
         </button>
       </div>
       <div className="relative mt-8 flex flex-col items-center justify-between w-full">
-        <Table
-          headings={headings}
-          data={announcements}
-          readOnly={false}
-          rowsPerPage={10}
-          onRowClicked={handleRowClicked}
-        />
 
         {
           announcementInfoDialogVisible && <AnnouncementDialog
@@ -79,16 +71,14 @@ const Announcement = () => {
           />
         }
 
-        {totalPages > 1 && (
-          <Table
-            headings={headings}
-            data={announcements}
-            readOnly={false}
-            rowsPerPage={10}
-            onRowClicked={handleRowClicked}
-            className={"pt-4"}
-          />
-        )}
+        <Table
+          headings={headings}
+          data={announcements}
+          readOnly={false}
+          rowsPerPage={10}
+          onRowClicked={handleRowClicked}
+          className={"pt-4"}
+        />
       </div>
     </div>
   );

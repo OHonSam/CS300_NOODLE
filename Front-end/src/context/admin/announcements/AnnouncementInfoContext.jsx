@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../../../axios.config";
 
-import { AnnouncementInfoContext } from "../../../hooks/admin/announcement/useAnnouncementInfo";
+import { AnnouncementInfoContext } from "../../../hooks/admin/announcements/useAnnouncementInfo";
 
 export const AnnouncementInfoProvider = ({ children }) => {
   const [announcements, setAnnouncements] = useState([]);
@@ -13,7 +13,8 @@ export const AnnouncementInfoProvider = ({ children }) => {
         const response = await axios.get(
           `/api/admin/announcements?`
         );
-        setAnnouncements(response.data.announcements);
+        // sort by createdAt
+        setAnnouncements(response.data.announcements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       } catch (error) {
         console.error("Error fetching announcements:", error);
       }
@@ -25,7 +26,7 @@ export const AnnouncementInfoProvider = ({ children }) => {
     try {
       const response = await axios.post("/api/admin/announcements", newAnnouncement);
       console.log("response", response);
-      setAnnouncements((prev) => [...prev, response.data]);
+      setAnnouncements((prev) => [response.data, ...prev]);
       return true;
     } catch (error) {
       console.error("Error adding announcement:", error);
