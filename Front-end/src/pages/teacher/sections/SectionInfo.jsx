@@ -5,7 +5,6 @@ import { fetchSection, deleteSection, updateSection } from "../../../services/Se
 
 const SectionInfoView = ({schoolYear, semester, sectionId}) => {
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const { addToast } = useToast();
 
@@ -26,58 +25,6 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
     }));
   };
 
-  const handleDeleteClick = async () => {
-    if (!window.confirm('Are you sure you want to delete this section?')) {
-      return
-    }
-
-    try {
-      const success = await deleteSection(formData);
-      if (success) {
-        navigate('/admin/sections');
-        addToast('success', 'Section deleted successfully!');
-      } else {
-        setError('Failed to delete section');
-        addToast('error', 'Failed to delete section');
-      }
-    } catch (error) {
-      setError(error.message || 'Failed to delete section');
-      addToast('error', 'Failed to delete section');
-    }
-  };
-
-  const handleEditClick = async () => {
-    if (isEditing) {
-      if (!window.confirm('Are you sure you want to update this section information?')) {
-        return
-      }
-
-      let message = null
-      try {
-        const _ = await updateSection(formData, schoolYear, semester, sectionId);
-        navigate(`/admin/sections/${formData.schoolYear}/${formData.semester}/${formData.sectionId}`, {
-          state: {
-            sectionId: formData.sectionId,
-            courseName: formData.courseName,
-            semester: formData.semester,
-            schoolYear: formData.schoolYear
-          }
-        });
-      } catch (error) {
-        message = error.message || 'Error editing section';
-      }
-
-      if (message) {
-        addToast('error', message);
-      } else {
-        setIsEditing(false);
-        addToast('success', 'Section edited successfully!');
-      }
-    } else {
-      setIsEditing(true);
-    }
-  };
-
   return (
     <div className="relative pt-4 flex flex-col overflow-y-auto h-full w-full">
       <div className="grid grid-cols-1 gap-4 w-full">
@@ -88,7 +35,7 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
             id="sectionId"
             className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
             placeholder="Enter Course ID"
-            disabled={!isEditing}
+            disabled
             value={formData.sectionId}
             onChange={handleChange}
           />
@@ -100,7 +47,7 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
             id="courseName"
             className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
             placeholder="Enter Course Name"
-            disabled={!isEditing}
+            disabled
             value={formData.courseName}
             onChange={handleChange}
           />
@@ -112,7 +59,7 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
             id="courseCredit"
             className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
             placeholder="Enter Credits"
-            disabled={!isEditing}
+            disabled
             value={formData.courseCredit}
             onChange={handleChange}
           />
@@ -124,7 +71,7 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
             id="schoolYear"
             className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
             placeholder="Enter School Year"
-            disabled={!isEditing}
+            disabled
             value={formData.schoolYear}
             onChange={handleChange}
           />
@@ -136,7 +83,7 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
             id="semester"
             className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
             placeholder="Enter Semester"
-            disabled={!isEditing}
+            disabled
             value={formData.semester}
             onChange={handleChange}
           />
@@ -148,26 +95,10 @@ const SectionInfoView = ({schoolYear, semester, sectionId}) => {
             id="capacity"
             className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
             placeholder="Enter Capacity"
-            disabled={!isEditing}
+            disabled
             value={formData.capacity}
             onChange={handleChange}
           />
-        </div>
-      </div>
-      <div className="flex justify-center items-center mt-4">
-        <div className="flex space-x-4">
-          <button
-            className="bg-red-600 hover:bg-red-700 font-bold text-white px-6 py-2 rounded-md w-64"
-            onClick={handleDeleteClick}
-          >
-            Delete
-          </button>
-          <button
-            className="bg-blue-600 hover:bg-blue-700 font-bold text-white px-6 py-2 rounded-md w-64"
-            onClick={handleEditClick}
-          >
-            {isEditing ? "Save" : "Edit"}
-          </button>
         </div>
       </div>
     </div>

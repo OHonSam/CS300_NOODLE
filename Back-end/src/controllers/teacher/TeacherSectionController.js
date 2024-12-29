@@ -41,7 +41,7 @@ class TeacherSectionController {
         sectionName: section.courseName,
         teachersName: section.teachers.map((id) => teacherMap[id] || '-'),
         credits: section.courseCredit,
-        year: section.schoolYear ? parseInt(section.schoolYear) : undefined,
+        year: section.schoolYear,
         semester: section.semester,
         noOfStudents: section.students.length,
       }));

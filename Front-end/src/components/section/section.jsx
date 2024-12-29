@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Section = ({ 
   sectionId, 
   sectionName, 
@@ -10,12 +8,22 @@ const Section = ({
   noOfStudents, 
   gpa, 
   noOfFails,
-  userType // Add userType prop
+  userType, // Add userType prop
+  onClick,
 }) => {
   const isTeacher = userType === 'teacher';
   
   return (
-    <div className="border rounded-lg shadow-md p-4 bg-white w-full">
+    <div className="border rounded-lg shadow-md p-4 bg-white w-full" 
+      onClick={() => onClick({
+        sectionId: sectionId,
+        courseName: sectionName,
+        schoolYear: year,
+        semester: semester,
+        capacity: noOfStudents,
+        courseCredit: credits,
+      })}
+    >
       <div className="flex justify-between items-center pb-2">
         <h1 className="font-bold text-lg">{sectionId} - {sectionName}</h1>
       </div>

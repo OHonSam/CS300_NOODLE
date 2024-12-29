@@ -16,6 +16,7 @@ export const SectionsManagementProvider = ({ children }) => {
       const teacherId = token.username;
 
       const response = await axios.get(`/api/teacher/sections?teacherId=${teacherId}&page=${page}&limit=10`);
+      console.log(response)
 
       if (response.data.sections.length === 0) {
         setSections([]);
