@@ -42,8 +42,8 @@ const AdminDashboard = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-2 gap-6">
-        <GradeDistributionChart data={gradeData} />
+      <div className="flex justify-center">
+        <GradeDistributionChart data={gradeData} className={"w-1/2"} />
       </div>
     </div>
   );

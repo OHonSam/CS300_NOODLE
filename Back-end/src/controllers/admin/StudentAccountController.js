@@ -24,7 +24,7 @@ class StudentAccountController {
 
   async addStudentsFromFile(req, res) {
     try {
-      const requiredFields = ['studentId', 'fullName', 'email', 'class', 'gender', 'dob', 'address', 'phone' ];
+      const requiredFields = ['studentId', 'fullName', 'email', 'class', 'gender', 'dob', 'address', 'phone'];
       const userData = await FileProcessingUtil.processFile(req.file, requiredFields);
 
       const result = await BulkUserCreationUtil.createUsers(userData, {
@@ -32,7 +32,7 @@ class StudentAccountController {
         roleId: RoleId.STUDENT,
         userIdField: 'studentId',
       });
-  
+
       res.status(201).json(result);
     } catch (error) {
       console.error('Error processing file:', error);
@@ -129,6 +129,13 @@ class StudentAccountController {
         await Account.findOneAndUpdate(
           { username: studentId },
           { email: updateData.email }
+        );
+      }
+
+      if (updateData.fullName) {
+        await Account.findOneAndUpdate(
+          { username: studentId },
+          { fullName: updateData.fullName }
         );
       }
 
