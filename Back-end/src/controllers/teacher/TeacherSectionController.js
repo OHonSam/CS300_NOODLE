@@ -1,5 +1,6 @@
 const Teacher = require('../../models/TeacherModel');
 const Section = require('../../models/SectionModel');
+const ParticipationReport = require('../../models/ParticipationReportModel');
 
 class TeacherSectionController {
   // View all assigned sections
@@ -108,6 +109,55 @@ class TeacherSectionController {
         student.grade !== undefined && student.grade !== null && student.grade < 60
     ).length;
   };
+
+  async filterSectionsByTime(req, res) {
+    const { teacherId, semester, schoolYear } = req.params;
+    console.log(teacherId, semester, schoolYear)
+
+    try {
+      const sections = await Section.find({
+        schoolYear: schoolYear,
+        semester: Number(semester),
+        teachers: teacherId,
+      });
+
+      const sectionIds = sections.map(section => section._id);
+
+      // Fetch participation reports for the filtered sections
+      const reports = await ParticipationReport.find({
+        schoolYear: schoolYear,
+        semester: Number(semester),
+        sectionId: { $in: sectionIds },
+      });
+
+      const uniqueTeachers = new Set(sections.flatMap(section => section.teachers)).size;
+      const uniqueStudents = new Set(sections.flatMap(section => section.students)).size;
+
+      const gradeDistribution = reports.reduce((acc, report) => {
+        const grade10 = report.gradeTotal;
+
+        if (grade10 >= 9.0) acc.A++;
+        else if (grade10 >= 8.0) acc.B++;
+        else if (grade10 >= 7.0) acc.C++;
+        else if (grade10 >= 6.0) acc.D++;
+        else if (grade10 >= 5.0) acc.E++;
+        else acc.F++;
+
+        return acc;
+      }, { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 });
+
+      const stats = {
+        totalSections: sections.length,
+        totalTeachers: uniqueTeachers,
+        totalStudents: uniqueStudents,
+        gradeDistribution: gradeDistribution
+      }
+
+      res.json({ sections, stats });
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
 }
 
 module.exports = new TeacherSectionController();
