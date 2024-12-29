@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "../../../axios.config";
 
-const initialSectionStatisticContext = { 
+const initialSectionStatisticContext = {
   stats: {
     totalSections: 0,
     totalTeachers: 0,
@@ -11,10 +11,10 @@ const initialSectionStatisticContext = {
   selectedYear: new Date().getFullYear().toString(),
   selectedSemester: '1',
   loading: false,
-  setSelectedYear: () => {},
-  setSelectedSemester: () => {},
+  setSelectedYear: () => { },
+  setSelectedSemester: () => { },
   schoolYears: [],
-  getSchoolYearLabel: () => {}
+  getSchoolYearLabel: () => { }
 };
 
 export const SectionStatisticContext = createContext(initialSectionStatisticContext);
@@ -64,7 +64,7 @@ export const SectionStatisticProvider = ({ children }) => {
 
   return (
     <SectionStatisticContext.Provider
-      value={{ 
+      value={{
         stats,
         selectedYear,
         loading,

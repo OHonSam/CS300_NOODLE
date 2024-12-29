@@ -26,10 +26,10 @@ class StudentSectionController {
       // Transform the data to match frontend structure
       const transformedSections = sections.map((section) => ({
         sectionId: section.sectionId,
-        sectionName: section.courseName,
+        courseName: section.courseName,
         teachersName: section.teachers.map((id) => teacherMap[id] || '-'),
         credits: section.courseCredit,
-        year: section.schoolYear ? parseInt(section.schoolYear) : undefined,
+        schoolYear: section.schoolYear,
         semester: section.semester,
         noOfStudents: section.students.length,
       }));

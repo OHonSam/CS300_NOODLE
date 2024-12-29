@@ -170,38 +170,6 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
             />
           </div>
         </div>
-        <div className="flex justify-center items-center mt-4">
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              className="bg-red-600 hover:bg-red-700 font-bold text-white px-6 py-2 rounded-md w-64"
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </button>
-            <div>
-              <button
-                hidden={isEditing}
-                type={"button"}
-                className="bg-blue-600 hover:bg-blue-700 font-bold text-white px-6 py-2 rounded-md w-64"
-                onClick={() => {
-                  setIsEditing(true);
-                  console.log("change to editing");
-                }}
-              >
-                Edit
-              </button>
-              <button
-                hidden={!isEditing}
-                type={"submit"}
-                className="bg-blue-600 hover:bg-blue-700 font-bold text-white px-6 py-2 rounded-md w-64"
-                onClick={() => { }}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
       </form>
     </div>
   );

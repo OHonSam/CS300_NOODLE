@@ -3,8 +3,10 @@ import React from 'react';
 import Header from "../../../components/tab";
 import SectionList from "../../../components/section/sectionlist";
 import { useSectionsManagementInfo } from "../../../hooks/student/useSectionsManagementInfo";
+import { useNavigate } from "react-router-dom";
 
 const StudentSections = () => {
+  const navigate = useNavigate();
   const {
     sections,
     currentPage,
@@ -13,6 +15,7 @@ const StudentSections = () => {
     setCurrentPage,
   } = useSectionsManagementInfo();
 
+  console.log("Sections: ", sections);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -20,18 +23,19 @@ const StudentSections = () => {
   };
 
   const handleRowClicked = (row) => {
-    // navigate(`/student/sections/${row.schoolYear}/${row.semester}/${row.sectionId}`,
-    //   {
-    //     state:
-    //     {
-    //       sectionId: row.sectionId,
-    //       courseName: row.courseName,
-    //       schoolYear: row.schoolYear,
-    //       semester: row.semester,
-    //       capacity: row.capacity,
-    //       courseCredit: row.courseCredit,
-    //     }
-    //   });
+    console.log("Row clicked: ", row);
+    navigate(`/student/sections/${row.schoolYear}/${row.semester}/${row.sectionId}`,
+      {
+        state:
+        {
+          sectionId: row.sectionId,
+          courseName: row.courseName,
+          schoolYear: row.schoolYear,
+          semester: row.semester,
+          capacity: row.capacity,
+          courseCredit: row.courseCredit,
+        }
+      });
   };
 
   if (loading) {
@@ -59,7 +63,7 @@ const StudentSections = () => {
 
         <SectionList
           data={sections || []}
-          onSectionClicked={handleRowClicked}
+          onClick={handleRowClicked}
           onPageChange={handlePageChange}
           currentPage={currentPage}
           rowsPerPage={10}

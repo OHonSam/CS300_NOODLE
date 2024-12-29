@@ -29,7 +29,7 @@ class TeacherSectionController {
       // Get the full names of all teachers in the sections
       const teacherIds = sections.flatMap((section) => section.teachers);
       const teachers = await Teacher.find({ teacherId: { $in: teacherIds } }, 'teacherId fullName').lean();
-      
+
       const teacherMap = teachers.reduce((acc, teacher) => {
         acc[teacher.teacherId] = teacher.fullName;
         return acc;
@@ -38,14 +38,14 @@ class TeacherSectionController {
       // Transform the data to match frontend structure
       const transformedSections = sections.map((section) => ({
         sectionId: section.sectionId,
-        sectionName: section.courseName,
+        courseName: section.courseName,
         teachersName: section.teachers.map((id) => teacherMap[id] || '-'),
         credits: section.courseCredit,
-        year: section.schoolYear,
+        schoolYear: section.schoolYear,
         semester: section.semester,
         noOfStudents: section.students.length,
       }));
-      
+
       res.json({
         currentPage: page,
         totalPages,
@@ -56,7 +56,7 @@ class TeacherSectionController {
       });
     } catch (error) {
       console.error('Error in viewAssignedSections:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         error: error.message,
         details: 'Error occurred while fetching sections'
       });
