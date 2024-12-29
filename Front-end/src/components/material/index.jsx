@@ -142,7 +142,7 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
         </Accordion>
       </div>
       {canEdit ? (
-        <div className="pt-2 pl-2">
+        <div className="pt-2 pl-2 flex-shrink-0">
           <button
             onClick={handleEditButton}
             className="p-2"

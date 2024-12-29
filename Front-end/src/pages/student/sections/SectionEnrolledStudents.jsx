@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import Table from "../../../components/table";
-import { SectionStudentInfoDialog } from "../../../components/dialog/SectionStudentInfoDialog";
-import EnrolledStudentsUploadDialog from "../../../components/dialog/EnrolledStudentsUploadDialog";
 import { addEnrolledStudentsFromFile, fetchEnrolledStudents, removeStudentFromSection, updateStudentFromSection } from "../../../services/SectionInfoService";
 
 export const SectionEnrolledStudentsView = ({ schoolYear, semester, sectionId }) => {

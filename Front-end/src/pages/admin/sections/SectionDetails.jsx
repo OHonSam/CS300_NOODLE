@@ -140,13 +140,6 @@ const AdminSectionDetails = () => {
           onCreate={handleAddMaterial}
           onClose={() => setResourceCreationDialogVisible(false)}
         />
-
-        <TeacherInfoProvider>
-          <SelectTeacherDialog
-            isOpen={assignTeacherDialogVisible}
-            onClose={() => setAssignTeacherDialogVisible(false)}
-          />
-        </TeacherInfoProvider>
       </div>
     </div >
   );
