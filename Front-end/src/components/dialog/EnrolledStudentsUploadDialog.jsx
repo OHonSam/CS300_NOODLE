@@ -1,13 +1,11 @@
 import { Dialog, DialogBackdrop } from "@headlessui/react";
 import { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
-import { useSectionStudents } from "../../hooks/admin/sections/useSectionStudents";
 
 const EnrolledStudentUploadDialog = ({ heading, isOpen, onClose, onSubmit, fileFormat }) => {
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { addEnrolledStudentsFromFile } = useSectionStudents();
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
@@ -26,9 +24,8 @@ const EnrolledStudentUploadDialog = ({ heading, isOpen, onClose, onSubmit, fileF
 
     setIsLoading(true);
     try {
-      const message = await addEnrolledStudentsFromFile(file);
       handleClose();
-      onSubmit(message, true);
+      onSubmit(file);
     } catch (error) {
       setErrorMessage(error.message || 'An error occurred while uploading the file');
     } finally {

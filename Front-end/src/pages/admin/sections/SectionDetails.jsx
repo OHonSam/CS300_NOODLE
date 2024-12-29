@@ -6,11 +6,9 @@ import SectionInfoView from './SectionInfo';
 import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionEnrolledStudentsView from './SectionEnrolledStudents';
-import SectionProvider from './provider';
 import Breadcrumbs from "../../../components/breadcrumbs";
 import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
-import EnrolledStudentsUploadDialog from "../../../components/dialog/EnrolledStudentsUploadDialog";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
 
@@ -78,26 +76,25 @@ const AdminSectionDetails = () => {
   ];
 
   return (
-    <SectionProvider
-      sectionId={sectionId}
-      schoolYear={schoolYear}
-      semester={semester}
-    >
-      <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
+    <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
+      <div>
         <Breadcrumbs className='mb-4'
           paths={[{ name: 'Section', url: '/admin/sections' }, { name: `${sectionId} - ${courseName}` }]} />
         <Tab title={sectionId + ' - ' + courseName} configs={configs} tabs={tabs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="info" role="tabpanel" aria-labelledby="info-tab">
-            <SectionInfoView />
+            <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
-            <SectionMaterialView />
+            <SectionMaterialView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
-            <SectionTeachersView />
+            <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
-            <SectionEnrolledStudentsView />
+            <SectionEnrolledStudentsView schoolYear={schoolYear} semester={semester} sectionId={sectionId} 
+              studentFileUploadDialogVisible={studentFileUploadDialogVisible} 
+              setStudentFileUploadDialogVisible={setStudentFileUploadDialogVisible}
+            />
           </div>
         </Tab>
 
@@ -114,15 +111,7 @@ const AdminSectionDetails = () => {
           onClose={() => setAssignTeacherDialogVisible(false)}
         />
       </TeacherInfoProvider>
-      <EnrolledStudentsUploadDialog
-        heading={'Import enrolled student file'}
-        isOpen={studentFileUploadDialogVisible}
-        onSubmit={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
-        onClose={() => setStudentFileUploadDialogVisible(false)}
-        fileFormat={['.csv', '.xlsx', '.txt']}
-        userType="student"
-      />
-    </SectionProvider >
+      </div>
   );
 }
 

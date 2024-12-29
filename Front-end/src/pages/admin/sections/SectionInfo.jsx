@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSectionInfo } from "../../../hooks/admin/sections/useSectionInfo";
 import { useToast } from "../../../hooks/useToast";
+import { fetchSection, deleteSection, updateSection } from "../../../services/admin/SectionInfoService";
 
-const SectionInfoView = () => {
+const SectionInfoView = ({schoolYear, semester, sectionId}) => {
   const navigate = useNavigate();
-  const { section, updateSection, deleteSection } = useSectionInfo();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const { addToast } = useToast();
 
   useEffect(() => {
-    if (section) {
-      setFormData(section);
+    const fetchSectionData = async () => {
+      const data = await fetchSection(schoolYear, semester, sectionId);
+      setFormData(data)
     }
-  }, [section]);
+
+    fetchSectionData();
+  }, []);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -30,7 +32,7 @@ const SectionInfoView = () => {
     }
 
     try {
-      const success = await deleteSection();
+      const success = await deleteSection(formData);
       if (success) {
         navigate('/admin/sections');
         addToast('success', 'Section deleted successfully!');
@@ -52,7 +54,15 @@ const SectionInfoView = () => {
 
       let message = null
       try {
-        const _ = await updateSection(formData);
+        const _ = await updateSection(formData, schoolYear, semester, sectionId);
+        navigate(`/admin/sections/${formData.schoolYear}/${formData.semester}/${formData.sectionId}`, {
+          state: {
+            sectionId: formData.sectionId,
+            courseName: formData.courseName,
+            semester: formData.semester,
+            schoolYear: formData.schoolYear
+          }
+        });
       } catch (error) {
         message = error.message || 'Error editing section';
       }
