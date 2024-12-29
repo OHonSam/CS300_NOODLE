@@ -11,6 +11,7 @@ import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog"
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
+import { addMaterial } from "../../../services/SectionInfoService";
 
 const TeacherSectionDetails = () => {
   const navigate = useNavigate();
@@ -18,8 +19,9 @@ const TeacherSectionDetails = () => {
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
-  const [resourceCreationDialogVisible, setresourceCreationDialogVisible] = useState(false);
+  const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
   const { addToast } = useToast();
+  const [shouldRefreshMaterials, setShouldRefreshMaterials] = useState(false);
 
   useEffect(() => {
     if (!sectionId) {
@@ -58,7 +60,7 @@ const TeacherSectionDetails = () => {
     [
       {
         name: 'Add a Resouce',
-        onClick: () => setresourceCreationDialogVisible(true)
+        onClick: () => setResourceCreationDialogVisible(true)
       },
     ],
     [],
@@ -70,6 +72,29 @@ const TeacherSectionDetails = () => {
     ]
   ];
 
+  const handleAddMaterial = async (materialData) => {
+      try {
+        const newMaterial = {
+          ...materialData,
+          type: "RESOURCE",
+          sectionReference: {
+            sectionId,
+            schoolYear,
+            semester
+          }
+        };
+  
+        const addedMaterial = await addMaterial(newMaterial);
+        addToast('success', 'Material added successfully');
+        setShouldRefreshMaterials(true);
+        setResourceCreationDialogVisible(false);
+        return true;
+      } catch (error) {
+        addToast('error', error.message || "Failed to add material");
+        return false;
+      }
+    };
+
   return (
     <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
       <div>
@@ -80,7 +105,13 @@ const TeacherSectionDetails = () => {
             <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
-            <SectionMaterialView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
+            <SectionMaterialView 
+                schoolYear={schoolYear} 
+                semester={semester} 
+                sectionId={sectionId}
+                shouldRefresh={shouldRefreshMaterials}
+                onRefreshComplete={() => setShouldRefreshMaterials(false)}
+            />
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
@@ -96,8 +127,8 @@ const TeacherSectionDetails = () => {
         <MaterialDialog
           dialogFor={'create'}
           isOpen={resourceCreationDialogVisible}
-          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
-          onClose={() => setresourceCreationDialogVisible(false)}
+          onCreate={handleAddMaterial}
+          onClose={() => setResourceCreationDialogVisible(false)}
         />
       </div>
       <TeacherInfoProvider>

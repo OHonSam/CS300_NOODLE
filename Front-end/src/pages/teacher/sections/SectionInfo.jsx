@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "../../../hooks/useToast";
-import { fetchSection, deleteSection, updateSection } from "../../../services/SectionInfoService";
+import { fetchSection } from "../../../services/SectionInfoService";
 
 const SectionInfoView = ({schoolYear, semester, sectionId}) => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
-  const { addToast } = useToast();
 
   useEffect(() => {
     const fetchSectionData = async () => {
