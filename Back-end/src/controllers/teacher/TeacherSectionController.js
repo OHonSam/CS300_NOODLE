@@ -111,8 +111,8 @@ class TeacherSectionController {
   };
 
   async filterSectionsByTime(req, res) {
-    const { teacherId, semester, schoolYear } = req.params;
-    console.log(teacherId, semester, schoolYear)
+    const { teacherId, semester, schoolYear } = req.query;
+    console.log(teacherId, semester, schoolYear);
 
     try {
       const sections = await Section.find({
