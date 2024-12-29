@@ -11,6 +11,7 @@ import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog"
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
+import { addMaterial } from "../../../services/admin/SectionInfoService";
 
 const AdminSectionDetails = () => {
   const navigate = useNavigate();
@@ -18,8 +19,9 @@ const AdminSectionDetails = () => {
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
-  const [resourceCreationDialogVisible, setresourceCreationDialogVisible] = useState(false);
+  const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
   const { addToast } = useToast();
+  const [shouldRefreshMaterials, setShouldRefreshMaterials] = useState(false);
 
   useEffect(() => {
     if (!sectionId) {
@@ -29,6 +31,29 @@ const AdminSectionDetails = () => {
 
     initFlowbite();
   }, []);
+
+  const handleAddMaterial = async (materialData) => {
+    try {
+      const newMaterial = {
+        ...materialData,
+        type: "RESOURCE",
+        sectionReference: {
+          sectionId,
+          schoolYear,
+          semester
+        }
+      };
+
+      const addedMaterial = await addMaterial(newMaterial);
+      addToast('success', 'Material added successfully');
+      setShouldRefreshMaterials(true);
+      setResourceCreationDialogVisible(false);
+      return true;
+    } catch (error) {
+      addToast('error', error.message || "Failed to add material");
+      return false;
+    }
+  };
 
   const tabs = [
     {
@@ -57,8 +82,8 @@ const AdminSectionDetails = () => {
     [],
     [
       {
-        name: 'Add a Resouce',
-        onClick: () => setresourceCreationDialogVisible(true)
+        name: 'Add a Resource',
+        onClick: () => setResourceCreationDialogVisible(true)
       },
     ],
     [
@@ -85,13 +110,22 @@ const AdminSectionDetails = () => {
             <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
-            <SectionMaterialView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
+            <SectionMaterialView 
+              schoolYear={schoolYear} 
+              semester={semester} 
+              sectionId={sectionId}
+              shouldRefresh={shouldRefreshMaterials}
+              onRefreshComplete={() => setShouldRefreshMaterials(false)}
+            />
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
-            <SectionEnrolledStudentsView schoolYear={schoolYear} semester={semester} sectionId={sectionId} 
+            <SectionEnrolledStudentsView 
+              schoolYear={schoolYear} 
+              semester={semester} 
+              sectionId={sectionId} 
               studentFileUploadDialogVisible={studentFileUploadDialogVisible} 
               setStudentFileUploadDialogVisible={setStudentFileUploadDialogVisible}
             />
@@ -99,10 +133,10 @@ const AdminSectionDetails = () => {
         </Tab>
 
         <MaterialDialog
-          dialogFor={'create'}
+          dialogFor="create"
           isOpen={resourceCreationDialogVisible}
-          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
-          onClose={() => setresourceCreationDialogVisible(false)}
+          onClose={() => setResourceCreationDialogVisible(false)}
+          onCreate={handleAddMaterial}
         />
       </div>
       <TeacherInfoProvider>
@@ -111,7 +145,7 @@ const AdminSectionDetails = () => {
           onClose={() => setAssignTeacherDialogVisible(false)}
         />
       </TeacherInfoProvider>
-      </div>
+    </div>
   );
 }
 

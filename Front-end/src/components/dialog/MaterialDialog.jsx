@@ -10,6 +10,16 @@ const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
     url: '',
   });
 
+  const checkValidUrl = (url) => {
+    if (!url) return true;
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const clearForm = () => {
     setFormData({
       id: '',
@@ -29,6 +39,17 @@ const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.title || !formData.content) {
+      alert("Title and content are required");
+      return;
+    }
+
+    if (formData.url && !checkValidUrl(formData.url)) {
+      alert("Invalid URL, please enter a valid URL");
+      return;
+    }
+
     onCreate(formData);
     clearForm();
     handleClose(true);
@@ -46,8 +67,8 @@ const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
 
   return (
     <Dialog open={isOpen} onClose={() => handleClose(false)}
-      className={`absolute top-0 left-0 w-screen h-screen backdrop-blur-sm`}>
-      <DialogPanel className={`absolute w-1/2 bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl`}>
+      className="absolute top-0 left-0 w-screen h-screen backdrop-blur-sm">
+      <DialogPanel className="absolute w-1/2 bg-white px-10 py-8 z-50 focus:outline-none shadow-lg -inset-12 m-auto max-h-max rounded-xl">
         <div className="mt-4 mb-8 flex items-center justify-between">
           <h3 className="font-semibold text-2xl">Create new material</h3>
           <button className="hover:text-gray-300" onClick={() => handleClose(false)}>
@@ -77,7 +98,7 @@ const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
             <button type="submit" className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
               Add
             </button>
-            <button onClick={clearForm}
+            <button onClick={clearForm} type="button"
               className="text-white ms-2 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
               Clear
             </button>

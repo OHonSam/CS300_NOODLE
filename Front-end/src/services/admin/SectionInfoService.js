@@ -39,11 +39,52 @@ export const deleteSection = async (deletedSection) => {
 export const fetchMaterials = async (schoolYear, semester, sectionId) => {
     try {
         const response = await axios.get(`/api/material/${schoolYear}/${semester}/${sectionId}`);
+        console.log(response.data.materials);
         return response.data.materials;
     } catch (error) {
         console.error("Error fetching material:", error);
-        throw{ message: error.response.data.message};
+        throw { message: error.response?.data?.message || 'Failed to fetch materials' };
     } 
+};
+
+export const addMaterial = async (materialData) => {
+    try {
+        const response = await axios.post('/api/material/material', materialData);
+        return response.data;
+    } catch (error) {
+        console.error("Error adding material:", error);
+        throw { message: error.response?.data?.message || 'Failed to add material' };
+    }
+};
+
+export const updateMaterial = async (materialId, updatedData) => {
+    try {
+        const response = await axios.put(`/api/material/${materialId}`, updatedData);
+        return response.data;
+    } catch (error) {
+        console.error("Error updating material:", error);
+        throw { message: error.response?.data?.message || 'Failed to update material' };
+    }
+};
+
+export const deleteMaterial = async (materialId) => {
+    try {
+        const response = await axios.delete(`/api/material/${materialId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting material:", error);
+        throw { message: error.response?.data?.message || 'Failed to delete material' };
+    }
+};
+
+export const addFileToMaterial = async (materialId, fileData) => {
+    try {
+        const response = await axios.post(`/api/material/${materialId}/file`, fileData);
+        return response.data;
+    } catch (error) {
+        console.error("Error adding file to material:", error);
+        throw { message: error.response?.data?.message || 'Failed to add file' };
+    }
 };
 
 export const fetchAssignedTeachers = async (schoolYear, semester, sectionId) => {

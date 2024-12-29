@@ -2,18 +2,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MaterialSchema = new Schema({
+    materialId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     sectionReference: {
-        sectionId: { 
+        sectionId: {
             type: String,
-            required: true 
+            required: true
         },
-        schoolYear: { 
+        schoolYear: {
             type: String,
-            required: true 
+            required: true
         },
-        semester: { 
+        semester: {
             type: Number,
-            required: true 
+            required: true
         }
     },
     type: {
@@ -21,25 +26,18 @@ const MaterialSchema = new Schema({
         enum: ['RESOURCE', 'ASSIGNMENT', 'QUIZ'],
         required: true
     },
-    title: { 
-        type: String, 
-        required: true 
+    title: {
+        type: String,
+        required: true
     },
-    content: { 
-        type: String, 
-        required: true 
+    content: {
+        type: String,
+        required: true
     },
-    files: [{
-        fileName: String,
-        originalName: String,
-        fileSize: Number,
-        fileType: String,
-        fileUrl: String,
-        uploadDate: {
-            type: Date,
-            default: Date.now
-        }
-    }],
+    url: {
+        type: String,
+        required: false
+    },
     isActive: {
         type: Boolean,
         default: true
@@ -61,9 +59,12 @@ MaterialSchema.index({
     'sectionReference.semester': 1
 });
 
+MaterialSchema.index({ materialId: 1 });
+
+// Add pre-save middleware to update the updatedAt timestamp
+MaterialSchema.pre('save', function(next) {
+    this.updatedAt = new Date();
+    next();
+});
+
 module.exports = mongoose.model('Material', MaterialSchema);
-
-
-
-
-
