@@ -10,7 +10,6 @@ import SectionProvider from './provider';
 import Breadcrumbs from "../../../components/breadcrumbs";
 import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
-import EnrolledStudentsUploadDialog from "../../../components/dialog/EnrolledStudentsUploadDialog";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
 
@@ -94,10 +93,13 @@ const AdminSectionDetails = () => {
             <SectionMaterialView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
-            <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId} />
+            <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
-            <SectionEnrolledStudentsView schoolYear={schoolYear} semester={semester} sectionId={sectionId} />
+            <SectionEnrolledStudentsView schoolYear={schoolYear} semester={semester} sectionId={sectionId} 
+              studentFileUploadDialogVisible={studentFileUploadDialogVisible} 
+              setStudentFileUploadDialogVisible={setStudentFileUploadDialogVisible}
+            />
           </div>
         </Tab>
 
@@ -114,14 +116,6 @@ const AdminSectionDetails = () => {
           onClose={() => setAssignTeacherDialogVisible(false)}
         />
       </TeacherInfoProvider>
-      <EnrolledStudentsUploadDialog
-        heading={'Import enrolled student file'}
-        isOpen={studentFileUploadDialogVisible}
-        onSubmit={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
-        onClose={() => setStudentFileUploadDialogVisible(false)}
-        fileFormat={['.csv', '.xlsx', '.txt']}
-        userType="student"
-      />
     </SectionProvider >
   );
 }

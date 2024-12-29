@@ -65,3 +65,73 @@ export const removeTeacherFromSection = async (currentAssignedTeachers, teacherI
         throw { message: error.response.data.message };
     }
 }
+
+export const fetchEnrolledStudents = async (schoolYear, semester, sectionId) => {
+    try {
+        const response = await axios.get(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/enrolledStudents`);
+        return response.data;
+
+    } catch (error) {
+        console.error("Error fetching students:", error);
+        throw { message: error.response.data.message };
+    }
+};
+
+export const removeStudentFromSection = async (currentEnrolledStudents, studentId, schoolYear, semester, sectionId) => {
+    try {
+        await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/removeEnrolled/${studentId}`);
+        const newEnrolledStudents = currentEnrolledStudents.filter((student) => student.studentId !== studentId);
+        return newEnrolledStudents;
+    } catch (error) {
+        console.error("Error removing student from section:", error);
+    }
+};
+
+export const updateStudentFromSection = async (currentEnrolledStudents, updatedStudent, schoolYear, semester, sectionId) => {
+    try {
+        const response = await axios.put(
+            `/api/admin/sections/${schoolYear}/${semester}/${sectionId}/updateEnrolledStudent/${updatedStudent.studentId}`,
+            updatedStudent
+        );
+
+        if (response.data) {
+            const newEnrolledStudents = currentEnrolledStudents.map(student => student.studentId === updatedStudent.studentId ? response.data : student);
+            console.log(newEnrolledStudents)
+            return newEnrolledStudents;
+        }
+    } catch (error) {
+        console.error("Error updating student:", error);
+        return false;
+    }
+};
+
+export const addEnrolledStudentsFromFile = async (currentEnrolledStudents, file, schoolYear, semester, sectionId) => {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/enrollStudents`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        );
+
+        if (response.data.success) {
+            return [...currentEnrolledStudents, ...response.data.students];
+        }
+        return response.data.message;
+    } catch (error) {
+        if (error.code == "ERR_BAD_RESPONSE") {
+            throw {
+                message: "Data import failed: Duplicate student ID or email. Try again.",
+            };
+        } else {
+            throw {
+                message: error.response?.data?.message || 'Failed to enroll students'
+            };
+        }
+    }
+}
