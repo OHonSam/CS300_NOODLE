@@ -45,7 +45,7 @@ const Tab = ({ children, title, tabs, configs, className }) => {
           )}
       </div>
       {tabs && (
-        <div className="text-sm font-medium text-center text-grey-600 border-b border-grey-200">
+        <div className="text-sm font-medium text-center border-b border-grey-200">
             <ul className="flex flex-wrap -mb-px" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
               {tabs.map((tab, index) => {
                 return (
@@ -57,7 +57,7 @@ const Tab = ({ children, title, tabs, configs, className }) => {
                       type="button"
                       aria-controls={tab.tabId}
                       aria-selected={false}
-                      className={`inline-block p-4 border-b-2 rounded-t-lg ${currentTab == index ? 'border-primary-600 text-primary-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}`}
+                      className={`inline-block p-4 border-b-2 rounded-t-lg ${currentTab == index ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:border-gray-300'}`}
                     >
                       {tab.name}
                     </button>
