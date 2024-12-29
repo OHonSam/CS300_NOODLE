@@ -25,17 +25,11 @@ const SectionTeachersView = ({ schoolYear, semester, sectionId }) => {
 
 
   const headings = [
-    { id: 'teacherId', label: 'Teacher ID' },
     { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
-    { id: 'gender', label: 'Gender' },
-    { id: 'department', label: 'Department' },
-    { id: 'dob', label: 'Date of Birth' },
   ];
 
   const handleRowClicked = (row) => {
-    setCurrentTeacherDialog(row);
-    setTeacherDialogVisible(true);
   };
 
   const handleRemoveAssignedTeacher = async () => {
