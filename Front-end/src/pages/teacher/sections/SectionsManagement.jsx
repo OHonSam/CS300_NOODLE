@@ -60,7 +60,7 @@ const SectionsManagement = () => {
         onSectionClicked={handleRowClicked}
         onPageChange={handlePageChange}
         currentPage={currentPage}
-        rowsPerPage={2}
+        rowsPerPage={10}
         className="mt-4 cursor-pointer"
         userType="teacher"
       />

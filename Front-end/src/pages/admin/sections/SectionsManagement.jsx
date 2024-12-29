@@ -11,8 +11,6 @@ const AdminManageSectionsLayout = () => {
   const navigate = useNavigate();
   const [sectionDialogVisible, setSectionDialogVisible] = useState(false);
   const [sections, setSections] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const { addToast } = useToast();
 
   const headings = [
@@ -28,15 +26,14 @@ const AdminManageSectionsLayout = () => {
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const response = await axios.get(`/api/admin/sections?page=${currentPage}&limit=5`);
+        const response = await axios.get(`/api/admin/sections?`);
         setSections(response.data.sections);
-        setTotalPages(response.data.totalPages);
       } catch (error) {
         console.error("Error fetching sections:", error);
       }
     };
     fetchSections();
-  }, [currentPage]);
+  }, []);
 
   const handleCreateSection = async (sectionData) => {
     try {
@@ -80,7 +77,7 @@ const AdminManageSectionsLayout = () => {
         onRowClicked={handleRowClicked}
         data={sections}
         readOnly={false}
-        rowsPerPage={20}
+        rowsPerPage={10}
         className={"pt-4"}
       />
       <SectionInfoDialog

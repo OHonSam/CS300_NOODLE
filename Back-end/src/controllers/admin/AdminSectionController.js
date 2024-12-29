@@ -8,17 +8,11 @@ const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FilePr
 
 class AdminSectionController {
   async getAllSections(req, res) {
-    const { page = 1, limit = 10 } = req.query;
     try {
       const sections = await Section.find()
-        .skip((page - 1) * limit)
-        .limit(parseInt(limit));
-
-      const totalSections = await Section.countDocuments();
 
       res.json({
-        sections,
-        totalPages: Math.ceil(totalSections / limit),
+        sections
       });
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
