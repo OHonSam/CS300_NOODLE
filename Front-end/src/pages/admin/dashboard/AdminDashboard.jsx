@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSectionStatisticInfo } from '../../../hooks/admin/dashboard/useSectionStatisticInfo';
 import { StatsCard } from '../../../components/dashboard/StatsCard';
 import { GradeDistributionChart } from '../../../components/dashboard/GradeDistributionChart';
@@ -46,7 +45,6 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-2 gap-6">
         <GradeDistributionChart data={gradeData} />
       </div>
-
     </div>
   );
 };

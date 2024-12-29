@@ -1,16 +1,24 @@
-import { useState } from "react";
-import { FiPlusCircle } from "react-icons/fi";
+import { useEffect, useState } from "react";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
-import { useAnnouncementInfo } from "../../../hooks/student/announcements/useAnnouncementInfo";
 import AnnouncementDialog from "../../../components/dialog/StudentAnnouncementDialog";
 import Toast from "../../../components/toast";
+import { fetchAnnouncements } from "../../../services/AnnouncementService";
 
-const Announcement = () => {
+const TeacherAnnouncements = () => {
   const [announcementInfoDialogVisible, setAnnouncementInfoDialogVisible] = useState(false);
   const [currentAnnouncementDialog, setCurrentAnnouncementDialog] = useState(null);
   const [toast, setToast] = useState([]);
-  const { announcements } = useAnnouncementInfo();
+  const [announcements, setAnnouncments] = useState([]);
+
+  useEffect(() => {
+    const fetchAnnouncementData = async () => {
+      const data = await fetchAnnouncements();
+      setAnnouncments(data);
+    };
+
+    fetchAnnouncementData();
+  }, []);
 
   const headings = [
     { id: 'title', label: 'Title' },
@@ -44,8 +52,6 @@ const Announcement = () => {
             dialogFor="info"
             announcementData={currentAnnouncementDialog}
             isOpen={announcementInfoDialogVisible}
-            onUpdate={(message, isAccepted) => setToast([message, isAccepted])}
-            onDelete={(message, isAccepted) => setToast([message, isAccepted])}
             onClose={() => {
               setAnnouncementInfoDialogVisible(false);
             }}
@@ -70,4 +76,4 @@ const Announcement = () => {
   );
 };
 
-export default Announcement;
+export default TeacherAnnouncements;
