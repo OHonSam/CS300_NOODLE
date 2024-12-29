@@ -2,8 +2,8 @@ import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
 
-const MaterialDialog = ({ materialData, isOpen, onCreate, onClose }) => {
-  const [formData, setFormData] = useState(materialData ? materialData : {
+const MaterialDialog = ({ announcementData, isOpen, onCreate, onClose }) => {
+  const [formData, setFormData] = useState(announcementData ? announcementData : {
     id: '',
     title: '',
     content: '',
@@ -39,11 +39,28 @@ const MaterialDialog = ({ materialData, isOpen, onCreate, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    onCreate("Added material successfully", 'success');
+    
+    if (!formData.title || !formData.content) {
+      alert("Title and content are required");
+      return;
+    }
+
+    if (formData.url && !checkValidUrl(formData.url)) {
+      alert("Invalid URL, please enter a valid URL");
+      return;
+    }
+
+    onCreate(formData);
+    clearForm();
     handleClose(true);
   };
-  
-  const handleClose = () => {
+
+  const handleDelete = () => {
+    onDelete(formData);
+    handleClose();
+  };
+
+  const handleClose = (updated) => {
     clearForm();
     onClose();
   };

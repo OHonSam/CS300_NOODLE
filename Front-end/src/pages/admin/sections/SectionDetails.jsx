@@ -11,7 +11,7 @@ import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog"
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
-import { addMaterial } from "../../../services/admin/SectionInfoService";
+import { addMaterial } from "../../../services/SectionInfoService";
 
 const AdminSectionDetails = () => {
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ const AdminSectionDetails = () => {
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
-  const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
   const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
   const { addToast } = useToast();
   const [shouldRefreshMaterials, setShouldRefreshMaterials] = useState(false);
@@ -136,7 +135,7 @@ const AdminSectionDetails = () => {
         <MaterialDialog
           dialogFor="create"
           isOpen={resourceCreationDialogVisible}
-          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
+          onCreate={handleAddMaterial}
           onClose={() => setResourceCreationDialogVisible(false)}
         />
       </div>

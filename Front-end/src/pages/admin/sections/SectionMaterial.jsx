@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Material from "../../../components/material";
-import { fetchMaterials, updateMaterial, deleteMaterial } from "../../../services/admin/SectionInfoService";
+import { fetchMaterials, updateMaterial, deleteMaterial } from "../../../services/SectionInfoService";
 import { useToast } from "../../../hooks/useToast";
 
 const SectionMaterialView = ({ schoolYear, semester, sectionId, shouldRefresh, onRefreshComplete }) => {
