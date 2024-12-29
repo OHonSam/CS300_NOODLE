@@ -21,7 +21,7 @@ const StudentAnnouncements = () => {
   const headings = [
     { id: 'title', label: 'Title' },
     { id: 'sender', label: 'Sender' },
-    { id: 'status', label: 'Status' },
+    // { id: 'status', label: 'Status' },
     { id: 'createdAt', label: 'Created At' },
     { id: 'updatedAt', label: 'Updated At' },
   ];
