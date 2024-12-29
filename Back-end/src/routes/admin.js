@@ -16,6 +16,7 @@ router.get('/section/statistic', adminSectionController.filterSectionsByTime);
 router.get('/section/participation/report', adminSectionController.getParticipationReports);
 router.get('/sections', adminSectionController.getAllSections);
 router.get('/section/:schoolYear/:semester/:sectionId', adminSectionController.getSection);
+router.get('/sections/:schoolYear/:semester/:sectionId/gradesReport/:studentId', adminSectionController.getGradesReport);
 router.get('/sections/:schoolYear/:semester/:sectionId/enrolledStudents', adminSectionController.getEnrolledStudents);
 router.get('/sections/:schoolYear/:semester/:sectionId/assignedTeachers', adminSectionController.getAssignedTeachers);
 router.post('/sections', adminSectionController.createSection);

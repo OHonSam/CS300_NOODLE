@@ -136,14 +136,14 @@ export const removeTeacherArrayFromSection = async (currentAssignedTeachers, tea
     }
 }
 
-export const assignTeacherToSection = async ( teacherId, schoolYear, semester, sectionId) => {
+export const assignTeacherToSection = async (teacherId, schoolYear, semester, sectionId) => {
     try {
         const response = await axios.post(
             `/api/admin/sections/${schoolYear}/${semester}/${sectionId}/assignTeacher/${teacherId}`
         );
         console.log(response.data)
         if (response.data) {
-           return response.data;
+            return response.data;
         }
         return false;
     } catch (error) {
@@ -171,6 +171,16 @@ export const assignTeacherArrayToSection = async (teacherIds, schoolYear, semest
         };
     }
 }
+
+export const fetchGradesReport = async (schoolYear, semester, sectionId, studentId) => {
+    try {
+        const response = await axios.get(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/gradesReport/${studentId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching grades report:", error);
+        throw { message: error.response.data.message || "Failed to fetch grades report" };
+    }
+};
 
 export const fetchEnrolledStudents = async (schoolYear, semester, sectionId) => {
     try {
