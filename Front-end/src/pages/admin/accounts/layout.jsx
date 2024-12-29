@@ -6,7 +6,7 @@ import Tab from "../../../components/tab";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
 import FileUploadDialog from "../../../components/dialog/FileUploadDialog";
 import StudentAccountView from "./StudentAccount";
-import Toast from "../../../components/toast";
+import { useToast } from "../../../hooks/useToast";
 import TeacherInfoDialog from "../../../components/dialog/TeacherInfoDialog";
 import TeacherAccountView from "./TeacherAccount";
 import AdminInfoDialog from "../../../components/dialog/AdminInfoDialog";
@@ -19,7 +19,7 @@ const AdminManageAccountsLayout = () => {
   const [teacherFileUploadDialogVisible, setTeacherFileUploadVisible] = useState(false);
   const [adminCreationDialogVisible, setAdminCreationDialogVisible] = useState(false);
   const [adminFileUploadDialogVisible, setAdminFileUploadDialogVisible] = useState(false);
-  const [toast, setToast] = useState([]);
+  const { addToast } = useToast();
 
   useEffect(() => {
     initFlowbite();
@@ -95,13 +95,13 @@ const AdminManageAccountsLayout = () => {
         <StudentInfoDialog
           dialogFor={'create'}
           isOpen={studentCreationDialogVisible}
-          onCreate={(message, isAccepted) => setToast([message, isAccepted])}
+          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setStudentCreationDialogVisible(false)}
         />
         <FileUploadDialog
           heading={'Import student file'}
           isOpen={studentFileUploadDialogVisible}
-          onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
+          onSubmit={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setStudentFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
           userType="student"
@@ -110,13 +110,13 @@ const AdminManageAccountsLayout = () => {
         <TeacherInfoDialog
           dialogFor={'create'}
           isOpen={teacherCreationDialogVisible}
-          onCreate={(message, isAccepted) => setToast([message, isAccepted])}
+          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setTeacherCreationDialogVisible(false)}
         />
         <FileUploadDialog
           heading={'Import teacher file'}
           isOpen={teacherFileUploadDialogVisible}
-          onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
+          onSubmit={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setTeacherFileUploadVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
           userType="teacher"
@@ -125,23 +125,17 @@ const AdminManageAccountsLayout = () => {
         <AdminInfoDialog
           dialogFor={'create'}
           isOpen={adminCreationDialogVisible}
-          onCreate={(message, isAccepted) => setToast([message, isAccepted])}
+          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setAdminCreationDialogVisible(false)}
         />
         <FileUploadDialog
           heading={'Import administrator file'}
           isOpen={adminFileUploadDialogVisible}
-          onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
+          onSubmit={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setAdminFileUploadDialogVisible(false)}
           fileFormat={['.csv', '.xlsx', '.txt']}
           userType="admin"
         />
-
-        {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto top-6'} isAccepted={toast[1]} Icon={
-          <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-          </svg>
-        } />}
       </div>
     </AccountProvider>
   );

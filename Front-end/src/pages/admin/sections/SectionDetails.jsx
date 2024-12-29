@@ -12,6 +12,7 @@ import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog"
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import EnrolledStudentsUploadDialog from "../../../components/dialog/EnrolledStudentsUploadDialog";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
+import { useToast } from "../../../hooks/useToast";
 
 const AdminSectionDetails = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const AdminSectionDetails = () => {
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
   const [resourceCreationDialogVisible, setresourceCreationDialogVisible] = useState(false);
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (!sectionId) {
@@ -102,7 +104,7 @@ const AdminSectionDetails = () => {
         <MaterialDialog
           dialogFor={'create'}
           isOpen={resourceCreationDialogVisible}
-          // onCreate={(message, isAccepted) => setToast([message, isAccepted])}
+          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
           onClose={() => setresourceCreationDialogVisible(false)}
         />
       </div>
@@ -115,7 +117,7 @@ const AdminSectionDetails = () => {
       <EnrolledStudentsUploadDialog
         heading={'Import enrolled student file'}
         isOpen={studentFileUploadDialogVisible}
-        onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
+        onSubmit={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
         onClose={() => setStudentFileUploadDialogVisible(false)}
         fileFormat={['.csv', '.xlsx', '.txt']}
         userType="student"

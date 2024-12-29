@@ -53,7 +53,7 @@ export const AdminInfoProvider = ({ children }) => {
       console.error("Error adding admins from file:", error);
       if (error.code == "ERR_BAD_RESPONSE") {
         throw {
-          message: "Data import failed: Duplicate admin ID or email. Try again.",  
+          message: "Data import failed: Duplicate admin ID or email. Try again.",
         };
       } else {
         throw {

@@ -1,14 +1,12 @@
 import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
-import Toast from "../../../components/toast";
 import { useAdminInfo } from "../../../hooks/admin/accounts/useAdminInfo";
 import AdminInfoDialog from "../../../components/dialog/AdminInfoDialog";
 
 const AdminAccountView = () => {
   const [adminInfoDialogVisible, setAdminInfoDialogVisible] = useState(false);
   const [currentAdminDialog, setCurrentAdminDialog] = useState(null);
-  const [toast, setToast] = useState([]);
   const { admins } = useAdminInfo();
 
   const headings = [
@@ -36,14 +34,6 @@ const AdminAccountView = () => {
         onUpdate={() => { }}
         onDelete={() => { }}
       />
-      {toast.length > 0 && (
-        <Toast
-          message={toast[0]}
-          onClick={() => setToast([])}
-          className={'m-auto -top-32'}
-          isAccepted={toast[1]}
-        />
-      )}
     </div>
   );
 };

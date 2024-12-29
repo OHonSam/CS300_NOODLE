@@ -1,30 +1,69 @@
-import { IoMdClose } from "react-icons/io";
-import { FaCheck } from "react-icons/fa6";
-import { FaXmark } from "react-icons/fa6";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const Toast = ({ onClick, message, className, isAccepted }) => {
+const Toast = ({ type, message, duration = 3000, onClose }) => {
+  const [visible, setVisible] = useState(true);
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClick();
-    }, 3000);
+      setVisible(false);
+      onClose();
+    }, duration, onClose);
 
     return () => clearTimeout(timer);
-  }, [onClick]);
+  }, [duration]);
+
+  if (!visible) {
+    return null;
+  }
+
+  const colors = {
+    success: "green-500",
+    error: "red-500",
+    info: "blue-500",
+    warning: "yellow-300",
+  };
+
+  const icons = {
+    success: <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />,
+    error: <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />,
+    info: <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12M12 2h0" />,
+    warning: <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v12M12 18h0" />,
+  };
+
+  const title = {
+    success: "Success",
+    error: "Error",
+    info: "Info",
+    warning: "Warning",
+  };
 
   return (
-    <div id="toast" className={`absolute m-auto flex items-center max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow ${className}`} role="alert">
-      <div className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 ${isAccepted ? "text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200" : "text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200"
-        }`}>
-        {isAccepted ? <FaCheck /> : <FaXmark />}
-        <span className="sr-only">Check icon</span>
+    <div className={`flex items-center bg-white rounded shadow-lg p-4 border-l-8 border-${colors[type]}`}>
+      <div className={`flex items-center justify-center w-10 h-10 bg-${colors[type]} rounded-full mr-3`}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="white"
+          className="w-6 h-6"
+        >
+          {icons[type]}
+        </svg>
       </div>
-      <div className="ms-3 text-sm font-normal">{message}</div>
+
+      <div className="flex-1">
+        <p className="font-bold text-lg">{title[type]}</p>
+        <p className="text-gray-600">{message}</p>
+      </div>
+
       <button
-        onClick={onClick}
-        type="button" className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast" aria-label="Close">
-        <span className="sr-only">Close</span>
-        <IoMdClose />
+        className="text-gray-500 hover:text-gray-700 ml-4"
+        onClick={() => setVisible(false)}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
     </div>
   );
