@@ -34,7 +34,7 @@ export const SectionStudentsProvider = ({ children, sectionId, schoolYear, semes
   const updateStudentFromSection = async (updatedStudent) => {
     try {
       const response = await axios.put(
-        `/api/admin/students/${updatedStudent.studentId}`,
+        `/api/admin/sections/${schoolYear}/${semester}/${sectionId}/updateEnrolledStudent/${updatedStudent.studentId}`,
         updatedStudent
       );
 

@@ -15,9 +15,11 @@ export const SectionEnrolledStudentsView = () => {
     { id: 'studentId', label: 'Student ID' },
     { id: 'fullName', label: 'Full Name' },
     { id: 'email', label: 'Email' },
-    { id: 'gender', label: 'Gender' },
     { id: 'class', label: 'Class' },
-    { id: 'dob', label: 'Date of Birth' },
+    { id: 'gradeMidterm', label: 'Midterm' },
+    { id: 'gradeFinal', label: 'Final' },
+    { id: 'gradeOthers', label: 'Other' },
+    { id: 'gradeTotal', label: 'Total' }
   ];
 
   const handleRowClicked = (row) => {
