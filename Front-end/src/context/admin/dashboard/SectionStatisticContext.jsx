@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from "react";
 import axios from "../../../axios.config";
 
 const initialSectionStatisticContext = { 
-  // New dashboard stats
   stats: {
     totalSections: 0,
     totalTeachers: 0,
@@ -68,12 +67,12 @@ export const SectionStatisticProvider = ({ children }) => {
       value={{ 
         stats,
         selectedYear,
+        loading,
+        schoolYears,
+        getSchoolYearLabel,
         setSelectedYear,
         selectedSemester,
         setSelectedSemester,
-        loading,
-        schoolYears,
-        getSchoolYearLabel
       }}
     >
       {children}

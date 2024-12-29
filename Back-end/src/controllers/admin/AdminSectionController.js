@@ -43,7 +43,7 @@ class AdminSectionController {
       const uniqueStudents = new Set(sections.flatMap(section => section.students)).size;
 
       const gradeDistribution = reports.reduce((acc, report) => {
-        const grade10 = report.gradeAverage;
+        const grade10 = report.gradeTotal;
 
         if (grade10 >= 9.0) acc.A++;
         else if (grade10 >= 8.0) acc.B++;
