@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ToastProvider } from './context/ToastContext'
 import AdminDashboardLayout from './pages/admin/dashboard/layout'
 import AdminLayout from './pages/admin/layout'
 import AdminManageAccountsLayout from './pages/admin/accounts/layout'
@@ -23,73 +24,75 @@ import { RoleId } from './utils/roleId'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route index element={<Navigate to="/auth" replace />} />
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route index element={<Navigate to="/auth" replace />} />
 
-        {/* Authentication Routes - Now wrapped with AuthRoute */}
-        <Route element={<AuthRoute />}>
-          <Route path='/auth' element={<AuthLayout />}>
-            <Route index element={<Navigate to="/auth/login" replace />} />
-            <Route path='login' element={<SignIn />} />
-            <Route path='reset-password' element={<ResetPassword />} />
-            <Route path='otp-confirmation' element={<OtpConfirmation />} />
+          {/* Authentication Routes - Now wrapped with AuthRoute */}
+          <Route element={<AuthRoute />}>
+            <Route path='/auth' element={<AuthLayout />}>
+              <Route index element={<Navigate to="/auth/login" replace />} />
+              <Route path='login' element={<SignIn />} />
+              <Route path='reset-password' element={<ResetPassword />} />
+              <Route path='otp-confirmation' element={<OtpConfirmation />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Protected Admin Routes */}
-        <Route element={<PrivateRoute allowedRoles={[RoleId.ADMIN]} />}>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="dashboard" element={<AdminDashboardLayout />} />
-            <Route path="accounts" element={<AdminManageAccountsLayout />} />
-            <Route path="sections" element={<AdminManageSectionsLayout />} />
-            <Route path="sections/:schoolYear/:semester/:sectionId" element={<AdminSectionDetails />} />
-            <Route path="announcements" element={<AdminAnnouncements />} />
+          {/* Protected Admin Routes */}
+          <Route element={<PrivateRoute allowedRoles={[RoleId.ADMIN]} />}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboardLayout />} />
+              <Route path="accounts" element={<AdminManageAccountsLayout />} />
+              <Route path="sections" element={<AdminManageSectionsLayout />} />
+              <Route path="sections/:schoolYear/:semester/:sectionId" element={<AdminSectionDetails />} />
+              <Route path="announcements" element={<AdminAnnouncements />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Protected Teacher Routes */}
-        <Route element={<PrivateRoute allowedRoles={[RoleId.TEACHER]} />}>
-          <Route path="/teacher" element={<TeacherLayout />}>
-            <Route index element={<Navigate to="/teacher/dashboard" replace />} />
-            <Route path="dashboard" element={<TeacherDashboard />} />
-            <Route path="sections" element={<TeacherSectionsManagement />} />
-            <Route path="announcements" element={<TeacherAnnouncements />} />
+          {/* Protected Teacher Routes */}
+          <Route element={<PrivateRoute allowedRoles={[RoleId.TEACHER]} />}>
+            <Route path="/teacher" element={<TeacherLayout />}>
+              <Route index element={<Navigate to="/teacher/dashboard" replace />} />
+              <Route path="dashboard" element={<TeacherDashboard />} />
+              <Route path="sections" element={<TeacherSectionsManagement />} />
+              <Route path="announcements" element={<TeacherAnnouncements />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Protected Student Routes */}
-        <Route element={<PrivateRoute allowedRoles={[RoleId.STUDENT]} />}>
-          <Route path="/student" element={<StudentLayout />}>
-            <Route index element={<Navigate to="/student/dashboard" replace />} />
-            <Route path="dashboard" element={<StudentDashboard />} />
-            <Route path="sections" element={<StudentSectionsManagement />} />
-            <Route path="announcements" element={<StudentAnnouncements />} />
+          {/* Protected Student Routes */}
+          <Route element={<PrivateRoute allowedRoles={[RoleId.STUDENT]} />}>
+            <Route path="/student" element={<StudentLayout />}>
+              <Route index element={<Navigate to="/student/dashboard" replace />} />
+              <Route path="dashboard" element={<StudentDashboard />} />
+              <Route path="sections" element={<StudentSectionsManagement />} />
+              <Route path="announcements" element={<StudentAnnouncements />} />
+            </Route>
           </Route>
-        </Route>
-        
 
-        {/* Add an Unauthorized Route */}
-        <Route path="/unauthorized" element={<div className="flex items-center justify-center h-screen w-screen">
-          <div className="text-3xl font-bold">401 | Unauthorized</div>
-        </div>} />
 
-        {/* Add a Not Found Route */}
-        <Route path="/notfound" element={<div className="flex items-center justify-center h-screen w-screen flex-col">
-          <div className="text-3xl font-bold">404 | Not Found</div>
-          <p className="pt-2">
-            <button className="text-blue-500 hover:underline" onClick={() => window.location.href = "/"}>Go home</button>
-            <span> | </span>
-            <button className="text-blue-500 hover:underline" onClick={() => window.open("https://slither.io")}>Relax and play slither.io</button>
-          </p>
-        </div>} />
+          {/* Add an Unauthorized Route */}
+          <Route path="/unauthorized" element={<div className="flex items-center justify-center h-screen w-screen">
+            <div className="text-3xl font-bold">401 | Unauthorized</div>
+          </div>} />
 
-        {/* Catch All Route */}
-        <Route path="*" element={<Navigate to="/notfound" />} />
-      </Routes>
-    </BrowserRouter >
+          {/* Add a Not Found Route */}
+          <Route path="/notfound" element={<div className="flex items-center justify-center h-screen w-screen flex-col">
+            <div className="text-3xl font-bold">404 | Not Found</div>
+            <p className="pt-2">
+              <button className="text-blue-500 hover:underline" onClick={() => window.location.href = "/"}>Go home</button>
+              <span> | </span>
+              <button className="text-blue-500 hover:underline" onClick={() => window.open("https://slither.io")}>Relax and play slither.io</button>
+            </p>
+          </div>} />
+
+          {/* Catch All Route */}
+          <Route path="*" element={<Navigate to="/notfound" />} />
+        </Routes>
+      </BrowserRouter >
+    </ToastProvider>
   )
 }
 

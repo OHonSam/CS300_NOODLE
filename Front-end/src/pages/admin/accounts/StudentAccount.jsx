@@ -2,12 +2,10 @@ import Table from "../../../components/table";
 import { useState } from "react";
 import StudentInfoDialog from "../../../components/dialog/StudentInfoDialog";
 import { useStudentInfo } from "../../../hooks/admin/accounts/useStudentInfo";
-import Toast from "../../../components/toast";
 
 const StudentAccountView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
-  const [toast, setToast] = useState([]);
   const { students } = useStudentInfo();
 
   const headings = [
@@ -36,7 +34,6 @@ const StudentAccountView = () => {
         onUpdate={() => { }}
         onDelete={() => { }}
       />
-      {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );
 };

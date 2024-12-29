@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Toast from "../../../components/toast";
 import Table from "../../../components/table";
 import { useSectionStudents } from "../../../hooks/admin/sections/useSectionStudents";
 import { StudentInfoProvider } from "../../../context/admin/accounts/StudentInfoContext";
@@ -8,7 +7,6 @@ import { SectionStudentInfoDialog } from "../../../components/dialog/SectionStud
 export const SectionEnrolledStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
-  const [toast, setToast] = useState([]);
   const { enrolledStudents } = useSectionStudents();
 
   const headings = [
@@ -41,7 +39,6 @@ export const SectionEnrolledStudentsView = () => {
           onRemove={() => { }}
         />
       </StudentInfoProvider>
-      {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );
 }

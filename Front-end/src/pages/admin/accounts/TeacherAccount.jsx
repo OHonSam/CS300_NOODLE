@@ -1,14 +1,12 @@
 import Table from "../../../components/table";
 import Pager from "../../../components/footer/pager";
 import { useState } from "react";
-import Toast from "../../../components/toast";
 import TeacherInfoDialog from "../../../components/dialog/TeacherInfoDialog";
 import { useTeacherInfo } from "../../../hooks/admin/accounts/useTeacherInfo";
 
 const TeacherAccountView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
   const [currentTeacherDialog, setCurrentTeacherDialog] = useState(null);
-  const [toast, setToast] = useState([]);
   const { teachers } = useTeacherInfo();
 
   const headings = [
@@ -37,7 +35,6 @@ const TeacherAccountView = () => {
         onUpdate={() => { }}
         onDelete={() => { }}
       />
-      {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import Table from "../../../components/table";
 import { useState, useEffect } from "react";
-import Toast from "../../../components/toast";
 import { useSectionTeachers } from "../../../hooks/admin/sections/useSectionTeachers";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import SectionTeacherInfoDialog from "../../../components/dialog/SectionTeacherInfoDialog";
@@ -8,7 +7,6 @@ import SectionTeacherInfoDialog from "../../../components/dialog/SectionTeacherI
 const SectionTeachersView = () => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
   const [currentTeacherDialog, setCurrentTeacherDialog] = useState(null);
-  const [toast, setToast] = useState([]);
   const { assignedTeachers } = useSectionTeachers();
 
   const headings = [
@@ -39,7 +37,6 @@ const SectionTeachersView = () => {
           onRemove={() => { }}
         />
       </TeacherInfoProvider>
-      {toast.length > 0 && <Toast message={toast[0]} onClick={() => setToast([])} className={'m-auto -top-32'} isAccepted={toast[1]} />}
     </div>
   );
 };
