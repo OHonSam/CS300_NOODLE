@@ -9,7 +9,7 @@ const SideNavigationBar = ({ navlinks }) => {
   const [isOpen, setIsOpen] = useState(true);
   const userData = getStoredToken();
   const decodedData = decryptToken(userData);
-  const userName = decodedData?.username
+  const fullName = decodedData?.fullName
 
   return (
     <div
@@ -58,7 +58,7 @@ const SideNavigationBar = ({ navlinks }) => {
             alt="User Profile"
             className="h-10 w-10 rounded-full"
           />
-          {isOpen && <span className="text-grey-100">Hi, {userName}</span>}
+          {isOpen && <span className="text-grey-100">Hi, {fullName}</span>}
         </div>
         {isOpen &&
           <button onClick={() => {

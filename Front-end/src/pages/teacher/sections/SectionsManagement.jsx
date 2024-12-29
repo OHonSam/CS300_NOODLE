@@ -19,6 +19,7 @@ const SectionsManagement = () => {
   };
 
   const handleRowClicked = (section) => {
+    console.log("Hello");
     navigate(`/teacher/sections/${section.schoolYear}/${section.semester}/${section.sectionId}`,
     {
       state:
@@ -57,7 +58,7 @@ const SectionsManagement = () => {
 
       <SectionList
         data={sections || []}
-        onSectionClicked={handleRowClicked}
+        onClick={handleRowClicked}
         onPageChange={handlePageChange}
         currentPage={currentPage}
         rowsPerPage={10}

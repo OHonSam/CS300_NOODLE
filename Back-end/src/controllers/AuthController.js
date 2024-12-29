@@ -21,7 +21,7 @@ class AuthController {
   async login(req, res) {
     try {
       const { username, password } = req.body;
-      const { isValid, roleId } = await this.authService.checkCredential(username, password);
+      const { isValid, roleId, fullName } = await this.authService.checkCredential(username, password);
 
       if (!isValid) {
         return res.status(401).json({ message: 'Incorrect Username or Password!' });
@@ -30,6 +30,7 @@ class AuthController {
       const token = jwt.sign({
         username,
         roleId,
+        fullName
       }, this.tokenSecretKey, { expiresIn: '24h' });
 
       // encrypt token

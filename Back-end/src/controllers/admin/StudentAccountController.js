@@ -69,6 +69,7 @@ class StudentAccountController {
       const newAccount = new Account({
         username: studentData.studentId,
         password: studentData.studentId, // Using studentId as initial password
+        fullName: studentData.fullName,
         email: studentData.email,
         roleId: RoleId.STUDENT,
       });

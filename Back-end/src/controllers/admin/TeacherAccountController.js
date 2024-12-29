@@ -23,6 +23,7 @@ class TeacherAccountController {
       const newAccount = new Account({
         username: teacherData.teacherId,
         password: teacherData.teacherId,
+        fullName: teacherData.fullName,
         email: teacherData.email,
         roleId: RoleId.TEACHER,
       });
