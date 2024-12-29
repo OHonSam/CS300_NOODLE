@@ -1,22 +1,7 @@
 import { useState } from "react";
 import { Accordion, AccordionHeader, AccordionBody } from "@material-tailwind/react";
 
-function Icon({ id, open }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={2}
-      stroke="currentColor"
-      className={`${id === open ? "rotate-180" : ""} h-5 w-5 transition-transform`}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-    </svg>
-  );
-}
-
-const Expander = ({ title, content, url, isOpened, canEdit = true }) => {
+const Material = ({ title, content, url, isOpened, canEdit = true }) => {
   const [localTitle, setTitle] = useState(title)
   const [localContent, setContent] = useState(content)
   const [localUrl, setUrl] = useState(url)
@@ -59,9 +44,9 @@ const Expander = ({ title, content, url, isOpened, canEdit = true }) => {
   }
 
   return (
-    <div className="border rounded-lg shadow-md bg-white w-full flex items-center pl-4 pr-2">
+    <div className="border rounded-lg shadow-md bg-white w-full flex pl-4 pr-2">
       <div className="flex-grow">
-        <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+        <Accordion open={open === 1} >
           <AccordionHeader onClick={() => handleOpen(1)}>
             {isEditing ? (
               <div className="w-full">
@@ -106,17 +91,16 @@ const Expander = ({ title, content, url, isOpened, canEdit = true }) => {
       </div>
       {
         canEdit ? (
-          <div>
-            <div className="border-r h-full ml-4" />
+          <div className="pt-2 pl-2">
             <button
               onClick={handleEditButton}
-              className="p-2 flex-shrink-0"
+              className="p-2"
             >
               {!isEditing ? "✏️" : "✔️"}
             </button>
             <button
               onClick={handleDeleteButton}
-              className="p-2 flex-shrink-0"
+              className="p-2"
             >
               {"❌"}
             </button>
@@ -129,4 +113,4 @@ const Expander = ({ title, content, url, isOpened, canEdit = true }) => {
   );
 }
 
-export default Expander;
+export default Material;

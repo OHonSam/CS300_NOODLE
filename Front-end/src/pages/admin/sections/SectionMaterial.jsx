@@ -1,4 +1,4 @@
-import Expander from "../../../components/expander";
+import Expander from "../../../components/material";
 import { useSectionMaterial } from "../../../hooks/admin/sections/useSectionMaterial";
 
 const SectionMaterialView = () => {
