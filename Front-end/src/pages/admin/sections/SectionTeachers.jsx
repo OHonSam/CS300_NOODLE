@@ -10,8 +10,8 @@ const SectionTeachersView = ({ schoolYear, semester, sectionId, assignTeacherDia
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
   const [currentTeacherDialog, setCurrentTeacherDialog] = useState(null);
   const [assignedTeachers, setAssignedTeachers] = useState([]);
-
   const { addToast } = useToast();
+
   useEffect(() => {
     const fetchTeacherData = async () => {
       try {

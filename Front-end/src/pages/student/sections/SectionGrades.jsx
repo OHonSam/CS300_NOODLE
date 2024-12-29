@@ -2,15 +2,22 @@ import { useState, useEffect } from "react";
 import Table from "../../../components/table";
 import { fetchGradesReport } from "../../../services/SectionInfoService";
 import { getStoredToken, decryptToken } from "../../../services/auth/tokenService";
+import { useToast } from "../../../hooks/useToast";
 
 export const SectionGradesView = ({ schoolYear, semester, sectionId }) => {
   const [gradesReport, setGradesReport] = useState([]);
+  const { addToast } = useToast();
+
   useEffect(() => {
     const fetchGradeReportData = async () => {
-      const token = await decryptToken(getStoredToken());
-      const studentId = await token.username;
-      const data = await fetchGradesReport(schoolYear, semester, sectionId, studentId);
-      setGradesReport([data]);
+      try {
+        const token = await decryptToken(getStoredToken());
+        const studentId = await token.username;
+        const data = await fetchGradesReport(schoolYear, semester, sectionId, studentId);
+        setGradesReport([data]);
+      } catch (error) {
+        addToast('error', error.message || 'Failed to fetch grades report');
+      }
     };
 
     fetchGradeReportData();

@@ -11,9 +11,13 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
 
   useEffect(() => {
     const fetchSectionData = async () => {
-      const data = await fetchSection(schoolYear, semester, sectionId);
-      setFormData(data)
-    }
+      try {
+        const data = await fetchSection(schoolYear, semester, sectionId);
+        setFormData(data);
+      } catch (error) {
+        addToast('error', error.message || 'Failed to fetch section data');
+      }
+    };
 
     fetchSectionData();
   }, []);
