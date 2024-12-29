@@ -9,10 +9,9 @@ const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FilePr
 class AdminSectionController {
   async getAllSections(req, res) {
     try {
-      const sections = await Section.find()
-
+      const sections = await Section.find();
       res.json({
-        sections
+        sections,
       });
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
@@ -23,14 +22,14 @@ class AdminSectionController {
     const { semester, schoolYear } = req.query;
 
     try {
-      const sections = await Section.find({ 
-        schoolYear: schoolYear, 
-        semester: Number(semester) 
+      const sections = await Section.find({
+        schoolYear: schoolYear,
+        semester: Number(semester)
       });
-      
-      const reports = await ParticipationReport.find({ 
-        schoolYear: schoolYear, 
-        semester: Number(semester) 
+
+      const reports = await ParticipationReport.find({
+        schoolYear: schoolYear,
+        semester: Number(semester)
       });
 
       const uniqueTeachers = new Set(sections.flatMap(section => section.teachers)).size;
@@ -47,8 +46,8 @@ class AdminSectionController {
         else acc.F++;
 
         return acc;
-      }, { A: 0, B: 0, C: 0, D: 0, E:0, F: 0 });
-      
+      }, { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 });
+
       const stats = {
         totalSections: sections.length,
         totalTeachers: uniqueTeachers,
@@ -156,15 +155,15 @@ class AdminSectionController {
   async updateEnrolledStudent(req, res) {
     const { sectionId, schoolYear, semester, studentId } = req.params;
     const updateData = req.body;
-    
+
     const session = await mongoose.startSession();
     session.startTransaction();
-  
+
     try {
       // Update student basic info
       const updatedStudent = await Student.findOneAndUpdate(
         { studentId: studentId },
-        { 
+        {
           fullName: updateData.fullName,
           email: updateData.email,
           gender: updateData.gender,
@@ -179,12 +178,12 @@ class AdminSectionController {
           session
         }
       );
-  
+
       if (!updatedStudent) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Student not found' });
       }
-  
+
       // Update participation report grades
       const updatedReport = await ParticipationReport.findOneAndUpdate(
         {
@@ -205,14 +204,14 @@ class AdminSectionController {
           session
         }
       );
-  
+
       if (!updatedReport) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Participation report not found' });
       }
-  
+
       await session.commitTransaction();
-  
+
       // Combine student info with grades
       const response = {
         ...updatedStudent.toObject(),
@@ -221,7 +220,7 @@ class AdminSectionController {
         gradeOthers: updatedReport.gradeOthers,
         gradeTotal: updatedReport.gradeTotal
       };
-  
+
       res.json(response);
     } catch (error) {
       await session.abortTransaction();
@@ -311,7 +310,7 @@ class AdminSectionController {
           semester: Number(semester)
         })
       ]);
-      
+
       // Combine student info with their grades
       const studentsWithReport = students.map(student => {
         const report = reports.find(r => r.studentId === student.studentId) || {};
@@ -330,7 +329,7 @@ class AdminSectionController {
     }
   }
 
-  async getAssignedTeachers(req, res) { 
+  async getAssignedTeachers(req, res) {
     const { sectionId, schoolYear, semester } = req.params;
     try {
       const section = await Section.findOne({
@@ -453,10 +452,10 @@ class AdminSectionController {
 
   async assignTeacherToSection(req, res) {
     const { sectionId, schoolYear, semester, teacherId } = req.params;
-    
+
     const session = await mongoose.startSession();
     session.startTransaction();
-  
+
     try {
       // Find section and validate
       const section = await Section.findOne({
@@ -464,12 +463,12 @@ class AdminSectionController {
         schoolYear: schoolYear,
         semester: Number(semester)
       }).session(session);
-      
+
       if (!section) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Section not found' });
       }
-  
+
       // TODO: remove redundant checking for existence, 
       // Check if teacher exists
       const teacher = await Teacher.findOne({ teacherId }).session(session);
@@ -477,20 +476,20 @@ class AdminSectionController {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Teacher not found' });
       }
-  
+
       // Add teacher if not already assigned
       if (!section.teachers.includes(teacherId)) {
         section.teachers.push(teacherId);
         await section.save({ session });
       }
-      
+
       // Get all assigned teachers' details
       const assignedTeachers = await Teacher.find({
         teacherId: { $in: section.teachers }
       }).session(session);
 
       await session.commitTransaction();
-      
+
       // Return the list of assigned teachers
       res.json(assignedTeachers);
     } catch (error) {
@@ -547,7 +546,7 @@ class AdminSectionController {
     }
   }
 
-  async removeTeacherArrayFromSection (req, res) {
+  async removeTeacherArrayFromSection(req, res) {
     const { sectionId, schoolYear, semester } = req.params;
     const { teacherIds } = req.body;
 
@@ -595,33 +594,33 @@ class AdminSectionController {
     const { sectionId, schoolYear, semester } = req.params;
     const session = await mongoose.startSession();
     session.startTransaction();
-  
+
     try {
       const requiredFields = ['studentId'];
       const studentIds = await FileProcessingUtil.processFile(req.file, requiredFields);
-  
+
       const section = await Section.findOne({
         sectionId: sectionId,
         schoolYear: schoolYear,
         semester: Number(semester)
       }).session(session);
-  
+
       if (!section) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Section not found' });
       }
-  
+
       // Check capacity
       if (section.students.length + studentIds.length > section.capacity) {
         await session.abortTransaction();
         return res.status(400).json({ message: 'Section capacity exceeded' });
       }
-  
+
       // Verify all students exist
-      const students = await Student.find({ 
-        studentId: { $in: studentIds.map(s => s.studentId) } 
+      const students = await Student.find({
+        studentId: { $in: studentIds.map(s => s.studentId) }
       }).session(session);
-  
+
       if (students.length !== studentIds.length) {
         await session.abortTransaction();
         return res.status(400).json({ message: 'Some students do not exist' });
@@ -633,7 +632,7 @@ class AdminSectionController {
         await session.abortTransaction();
         return res.status(400).json({ message: 'Some students are already enrolled' });
       }
-  
+
       // Add students (no duplicate) to section
       section.students = [...new Set([...section.students, ...students.map(s => s.studentId)])];
       await section.save({ session });
@@ -652,7 +651,7 @@ class AdminSectionController {
 
       // Combine student info with their corresponding section reports
       const studentsWithReport = students.map(student => {
-        const report = reports.find(r => 
+        const report = reports.find(r =>
           r.studentId === student.studentId &&
           r.sectionId === sectionId &&
           r.schoolYear === schoolYear &&
@@ -667,9 +666,9 @@ class AdminSectionController {
           gradeTotal: report.gradeTotal || 0
         };
       });
-  
+
       await session.commitTransaction();
-      
+
       res.status(200).json({
         success: true,
         message: 'Students enrolled successfully',

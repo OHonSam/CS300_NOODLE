@@ -1,5 +1,23 @@
 import axios from "axios";
 
+export const fetchAllSections = async () => {
+    try {
+        const response = await axios.get(`/api/admin/sections`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching sections:", error);
+    }
+};
+
+export const addSection = async (newSection) => {
+    try {
+        const response = await axios.post(`/api/admin/sections`, newSection);
+        return response.data;
+    } catch (error) {
+        console.error("Error adding section:", error);
+    }
+};
+
 export const fetchSection = async (schoolYear, semester, sectionId) => {
     try {
         const response = await axios.get(`/api/admin/section/${schoolYear}/${semester}/${sectionId}`);
@@ -43,8 +61,8 @@ export const fetchMaterials = async (schoolYear, semester, sectionId) => {
         return response.data.materials;
     } catch (error) {
         console.error("Error fetching material:", error);
-        throw { message: error.response?.data?.message || 'Failed to fetch materials' };
-    } 
+        throw { message: error.response.data.message || 'Failed to fetch materials' };
+    }
 };
 
 export const addMaterial = async (materialData) => {

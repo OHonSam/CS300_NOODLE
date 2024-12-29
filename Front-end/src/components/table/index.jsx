@@ -143,20 +143,20 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
             </thead>
             <tbody>
               { // TODO: need maximum row width
-              paginatedData.map((row, rowIndex) => (
-                <tr key={rowIndex} className={`bg-white border-b ${!readOnly && 'hover:bg-gray-100'}`}>
-                  {headings.map((heading, itemIndex) => (
-                    <td
-                      key={itemIndex}
-                      scope="row"
-                      className="px-6 py-4 select-none"
-                      onClick={() => onRowClicked(row)}
-                    >
-                      {row[heading.id]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+                paginatedData.map((row, rowIndex) => (
+                  <tr key={rowIndex} className={`bg-white border-b ${!readOnly && 'hover:bg-gray-100'}`}>
+                    {headings.map((heading, itemIndex) => (
+                      <td
+                        key={itemIndex}
+                        scope="row"
+                        className="px-6 py-4 select-none"
+                        onClick={() => onRowClicked(row)}
+                      >
+                        {row[heading.id]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

@@ -1,12 +1,12 @@
 import SectionsProvider from "./provider";
-import SectionsManagement from "./SectionsManagement";
+import StudentSections from "./StudentSections";
 
-const SectionsLayout = () => {
-    return (
-        <SectionsProvider>
-            <SectionsManagement />
-        </SectionsProvider>
-    );
+const StudentSectionsLayout = () => {
+  return (
+    <SectionsProvider>
+      <StudentSections />
+    </SectionsProvider>
+  );
 }
 
-export default SectionsLayout;
+export default StudentSectionsLayout;
