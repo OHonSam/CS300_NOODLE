@@ -88,7 +88,7 @@ const AdminSectionDetails = () => {
           paths={[{ name: 'Section', url: '/admin/sections' }, { name: `${sectionId} - ${courseName}` }]} />
         <Tab title={sectionId + ' - ' + courseName} configs={configs} tabs={tabs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="info" role="tabpanel" aria-labelledby="info-tab">
-            <SectionInfoView />
+            <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
             <SectionMaterialView />
