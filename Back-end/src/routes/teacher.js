@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/AuthMiddleware');
 router.use(authMiddleware.verifyToken);
 
 router.get('/sections', teacherSectionController.viewAssignedSections);
+router.get('/teacherId/section/statistic/', teacherSectionController.filterSectionsByTime);
 // router.get('/sections/:sectionId/students', teacherSectionController.viewStudentsInSection);
 
 // router.get('/teachers', teacherAccountController.getTeachers);

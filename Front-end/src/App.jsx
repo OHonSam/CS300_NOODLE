@@ -7,7 +7,7 @@ import AdminManageSectionsLayout from './pages/admin/sections/SectionsManagement
 import AdminSectionDetails from './pages/admin/sections/SectionDetails'
 import AdminAnnouncements from './pages/admin/announcements'
 import TeacherLayout from './pages/teacher/layout'
-import TeacherDashboard from './pages/teacher/dashboard'
+import TeacherDashboard from './pages/teacher/dashboard/layout'
 import TeacherSectionsManagement from './pages/teacher/sections/layout'
 import TeacherAnnouncements from './pages/teacher/announcements'
 import StudentSectionsLayout from './pages/student/sections/layout'
