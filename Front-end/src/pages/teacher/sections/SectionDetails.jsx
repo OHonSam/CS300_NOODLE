@@ -7,8 +7,6 @@ import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionEnrolledStudentsView from './SectionEnrolledStudents';
 import Breadcrumbs from "../../../components/breadcrumbs";
-import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
-import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
 import { addMaterial } from "../../../services/SectionInfoService";
@@ -17,7 +15,6 @@ const TeacherSectionDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
-  const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
   const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
   const { addToast } = useToast();
@@ -131,13 +128,7 @@ const TeacherSectionDetails = () => {
           onClose={() => setResourceCreationDialogVisible(false)}
         />
       </div>
-      <TeacherInfoProvider>
-        <SelectTeacherDialog
-          isOpen={assignTeacherDialogVisible}
-          onClose={() => setAssignTeacherDialogVisible(false)}
-        />
-      </TeacherInfoProvider>
-      </div>
+    </div>
   );
 }
 
