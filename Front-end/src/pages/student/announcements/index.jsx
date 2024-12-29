@@ -38,7 +38,7 @@ const StudentAnnouncements = () => {
       <div className="flex justify-between items-start">
         <Tab title="Announcements" />
       </div>
-      <div className="relative mt-8 flex flex-col items-center justify-between w-full">
+      <div className="relative flex flex-col items-center justify-between w-full pt-4">
         <Table
           headings={headings}
           data={announcements}

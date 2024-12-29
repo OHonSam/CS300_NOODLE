@@ -106,12 +106,12 @@ const AdminSectionDetails = () => {
           paths={[{ name: 'Section', url: '/admin/sections' }, { name: `${sectionId} - ${courseName}` }]} />
         <Tab title={sectionId + ' - ' + courseName} configs={configs} tabs={tabs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="info" role="tabpanel" aria-labelledby="info-tab">
-            <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
+            <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId} />
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
-            <SectionMaterialView 
-              schoolYear={schoolYear} 
-              semester={semester} 
+            <SectionMaterialView
+              schoolYear={schoolYear}
+              semester={semester}
               sectionId={sectionId}
               shouldRefresh={shouldRefreshMaterials}
               onRefreshComplete={() => setShouldRefreshMaterials(false)}
@@ -119,16 +119,16 @@ const AdminSectionDetails = () => {
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}
-              assignTeacherDialogVisible={assignTeacherDialogVisible} 
+              assignTeacherDialogVisible={assignTeacherDialogVisible}
               setAssignTeacherDialogVisible={setAssignTeacherDialogVisible}
             />
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
-            <SectionEnrolledStudentsView 
-              schoolYear={schoolYear} 
-              semester={semester} 
-              sectionId={sectionId} 
-              studentFileUploadDialogVisible={studentFileUploadDialogVisible} 
+            <SectionEnrolledStudentsView
+              schoolYear={schoolYear}
+              semester={semester}
+              sectionId={sectionId}
+              studentFileUploadDialogVisible={studentFileUploadDialogVisible}
               setStudentFileUploadDialogVisible={setStudentFileUploadDialogVisible}
             />
           </div>
@@ -141,7 +141,7 @@ const AdminSectionDetails = () => {
           onClose={() => setResourceCreationDialogVisible(false)}
         />
       </div>
-    </div>
+    </div >
   );
 }
 

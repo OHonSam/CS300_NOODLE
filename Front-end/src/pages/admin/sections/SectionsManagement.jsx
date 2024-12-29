@@ -6,6 +6,7 @@ import Table from "../../../components/table";
 import SectionInfoDialog from "../../../components/dialog/SectionInfoDialog";
 import { useToast } from "../../../hooks/useToast";
 import { FiPlusCircle } from "react-icons/fi";
+import { fetchAllSections, addSection } from "../../../services/SectionInfoService";
 
 const AdminManageSectionsLayout = () => {
   const navigate = useNavigate();
@@ -23,27 +24,27 @@ const AdminManageSectionsLayout = () => {
     { id: 'currentEnrollment', label: 'No. of Students' },
   ];
 
+  const fetchAdminSections = async () => {
+    const response = await fetchAllSections();
+    setSections(response.sections);
+  };
+
+  const addAdminSections = async (sectionData) => {
+    const response = await addSection(sectionData);
+    setSections((prev) => [...prev, response]);
+    if (response) {
+      addToast("success", "Section added successfully");
+    } else {
+      addToast("error", "Failed to add section");
+    }
+  };
+
   useEffect(() => {
-    const fetchSections = async () => {
-      try {
-        const response = await axios.get(`/api/admin/sections?`);
-        setSections(response.data.sections);
-      } catch (error) {
-        console.error("Error fetching sections:", error);
-      }
-    };
-    fetchSections();
+    fetchAdminSections();
   }, []);
 
-  const handleCreateSection = async (sectionData) => {
-    try {
-      const response = await axios.post('/api/admin/sections', sectionData);
-      setSections(prev => [...prev, response.data]);
-      addToast('success', 'Section created successfully!');
-    } catch (error) {
-      const message = error.response?.data?.message || 'Error creating section';
-      addToast('error', message);
-    }
+  const handleCreateSection = (sectionData) => {
+    addAdminSections(sectionData);
   };
 
   const handleRowClicked = (row) => {

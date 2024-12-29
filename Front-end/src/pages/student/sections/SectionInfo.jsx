@@ -92,7 +92,7 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
             <input
               type="text"
               id="sectionId"
-              className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+              className="border border-gray-300 rounded-md p-2 w-4/5"
               placeholder="Enter Course ID"
               disabled={!isEditing}
               value={formData.sectionId}
@@ -105,7 +105,7 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
             <input
               type="text"
               id="courseName"
-              className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+              className="border border-gray-300 rounded-md p-2 w-4/5"
               placeholder="Enter Course Name"
               disabled={!isEditing}
               value={formData.courseName}
@@ -119,7 +119,7 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
               type="number"
               id="courseCredit"
               min="1"
-              className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+              className="border border-gray-300 rounded-md p-2 w-4/5"
               placeholder="Enter Credits"
               disabled={!isEditing}
               value={formData.courseCredit}
@@ -132,7 +132,7 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
             <input
               type="text"
               id="schoolYear"
-              className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+              className="border border-gray-300 rounded-md p-2 w-4/5"
               placeholder="Enter School Year"
               disabled={!isEditing}
               value={formData.schoolYear}
@@ -142,18 +142,16 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-lg font-bold">Semester</span>
-            <select
+            <input
               id="semester"
-              className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+              type="text"
+              className="border border-gray-300 rounded-md p-2 w-4/5"
+              placeholder="Enter School Year"
               disabled={!isEditing}
               value={formData.semester}
               onChange={handleChange}
               required
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
+            />
           </div>
           <div className="flex items-center justify-between">
             <span className="text-lg font-bold">Capacity</span>
@@ -161,45 +159,13 @@ const SectionInfoView = ({ schoolYear, semester, sectionId }) => {
               type="number"
               min="1"
               id="capacity"
-              className="border border-gray-300 disabled:opacity-50 rounded-md p-2 w-4/5"
+              className="border border-gray-300 rounded-md p-2 w-4/5"
               placeholder="Enter Capacity"
               disabled={!isEditing}
               value={formData.capacity}
               onChange={handleChange}
               required
             />
-          </div>
-        </div>
-        <div className="flex justify-center items-center mt-4">
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              className="bg-red-600 hover:bg-red-700 font-bold text-white px-6 py-2 rounded-md w-64"
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </button>
-            <div>
-              <button
-                hidden={isEditing}
-                type={"button"}
-                className="bg-blue-600 hover:bg-blue-700 font-bold text-white px-6 py-2 rounded-md w-64"
-                onClick={() => {
-                  setIsEditing(true);
-                  console.log("change to editing");
-                }}
-              >
-                Edit
-              </button>
-              <button
-                hidden={!isEditing}
-                type={"submit"}
-                className="bg-blue-600 hover:bg-blue-700 font-bold text-white px-6 py-2 rounded-md w-64"
-                onClick={() => { }}
-              >
-                Save
-              </button>
-            </div>
           </div>
         </div>
       </form>

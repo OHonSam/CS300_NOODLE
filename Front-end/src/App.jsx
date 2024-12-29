@@ -12,7 +12,8 @@ import TeacherSectionsManagement from './pages/teacher/sections/layout'
 import TeacherAnnouncements from './pages/teacher/announcements'
 import StudentLayout from './pages/student/layout'
 import StudentDashboard from './pages/student/dashboard'
-import StudentSectionsManagement from './pages/student/sections/layout'
+import StudentSectionsLayout from './pages/student/sections/layout'
+import StudentSectionDetails from './pages/student/sections/SectionDetails'
 import StudentAnnouncements from './pages/student/announcements'
 import SignIn from './pages/auth/login'
 import AuthLayout from './pages/auth/layout'
@@ -59,7 +60,7 @@ function App() {
               <Route index element={<Navigate to="/teacher/dashboard" replace />} />
               <Route path="dashboard" element={<TeacherDashboard />} />
               <Route path="sections" element={<TeacherSectionsManagement />} />
-              <Route path="sections/:schoolYear/:semester/:sectionId" element={<TeacherSectionDetails/>} />
+              <Route path="sections/:schoolYear/:semester/:sectionId" element={<TeacherSectionDetails />} />
               <Route path="announcements" element={<TeacherAnnouncements />} />
             </Route>
           </Route>
@@ -69,7 +70,8 @@ function App() {
             <Route path="/student" element={<StudentLayout />}>
               <Route index element={<Navigate to="/student/dashboard" replace />} />
               <Route path="dashboard" element={<StudentDashboard />} />
-              <Route path="sections" element={<StudentSectionsManagement />} />
+              <Route path="sections" element={<StudentSectionsLayout />} />
+              <Route path="sections/:schoolYear/:semester/:sectionId" element={<StudentSectionDetails />} />
               <Route path="announcements" element={<StudentAnnouncements />} />
             </Route>
           </Route>
