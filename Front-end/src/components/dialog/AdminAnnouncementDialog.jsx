@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6';
-import { useAnnouncementInfo } from "../../hooks/admin/announcement/useAnnouncementInfo";
+import { useAnnouncementInfo } from "../../hooks/admin/announcements/useAnnouncementInfo";
 import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
 
 const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
@@ -181,7 +181,7 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onU
                   readOnly
                   id="publishDateTime"
                   className="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-gray-900"
-                  value={formData.createdAt ? new Date(formData.createdAt).toLocaleString() : 'troll'}
+                  value={formData.createdAt ? formData.createdAt : 'Unkonwn'}
                 />
               </div>
               <div className="w-1/2">
@@ -195,7 +195,7 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onU
                   id="lastUpdateDateTime"
                   className="bg-gray-50 border border-gray-300 text-sm rounded-lg 
                     focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-gray-900"
-                  value={formData.updatedAt ? new Date(formData.updatedAt).toLocaleString() : 'troll'}
+                  value={formData.updatedAt ? formData.updatedAt : 'Unknown'}
                 />
               </div>
             </div>

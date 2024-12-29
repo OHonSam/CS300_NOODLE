@@ -142,7 +142,8 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((row, rowIndex) => (
+              { // TODO: need maximum row width
+              paginatedData.map((row, rowIndex) => (
                 <tr key={rowIndex} className={`bg-white border-b ${!readOnly && 'hover:bg-gray-100'}`}>
                   {headings.map((heading, itemIndex) => (
                     <td
