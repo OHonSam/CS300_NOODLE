@@ -119,34 +119,11 @@ const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, on
               </select>
             </div>
             <div>
-              <label htmlFor="dob" className="block mb-2 text-sm font-medium text-gray-900">Date of Birth</label>
-              <input type="date" id="dob" className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${datePickerPlaceHolder ? 'text-gray-400' : 'text-gray-900'}`} required
-                value={formData.dob}
-                max='2024-01-01'
-                min='1940-01-01'
-                onChange={(e) => {
-                  setDatePickerPlaceholder(false)
-                  handleChange(e)
-                }} />
-            </div>
-            <div>
               <label htmlFor="class" className="block mb-2 text-sm font-medium text-gray-900">Class</label>
               <input type="text" id="class" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22TT2" required
                 value={formData.class}
                 onChange={handleChange} />
             </div>
-            <div>
-              <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
-              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required
-                value={formData.phone}
-                onChange={handleChange} />
-            </div>
-          </div>
-          <div className="mb-6">
-            <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900">Home address</label>
-            <input type="text" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="227 Nguyen Van Cu, Ward 4, District 5, Ho Chi Minh City" required
-              value={formData.address}
-              onChange={handleChange} />
           </div>
           <div className="mb-6">
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email address</label>
