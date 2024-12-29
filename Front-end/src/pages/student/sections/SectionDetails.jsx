@@ -6,7 +6,9 @@ import SectionInfoView from './SectionInfo';
 import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionEnrolledStudentsView from './SectionEnrolledStudents';
+import SectionGradesView from './SectionGrades';
 import Breadcrumbs from "../../../components/breadcrumbs";
+// import { getStoredToken, decryptToken } from "../../../services/auth/tokenService";
 
 const StudentSectionDetails = () => {
   const navigate = useNavigate();
@@ -43,6 +45,11 @@ const StudentSectionDetails = () => {
       id: 'students-tab',
       tabId: 'students'
     },
+    {
+      name: 'Grades',
+      id: 'grades-tab',
+      tabId: 'grades'
+    }
   ];
 
   return (
@@ -62,6 +69,9 @@ const StudentSectionDetails = () => {
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
             <SectionEnrolledStudentsView schoolYear={schoolYear} semester={semester} sectionId={sectionId} />
+          </div>
+          <div className="hidden rounded-lg" id="grades" role="tabpanel" aria-labelledby="grades-tab">
+            <SectionGradesView schoolYear={schoolYear} semester={semester} sectionId={sectionId} />
           </div>
         </Tab>
       </div>

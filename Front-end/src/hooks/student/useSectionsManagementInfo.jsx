@@ -3,10 +3,9 @@ import { createContext, useContext } from "react";
 const initialSectionsManagementContext = {
   sections: null,
   totalPages: 0,
-  currentPage: 1,
   loading: false,
   error: null,
-  setCurrentPage: () => {},
+  setCurrentPage: () => { },
 };
 
 export const SectionsManagementContext = createContext(initialSectionsManagementContext);

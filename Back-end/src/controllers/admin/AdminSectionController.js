@@ -284,6 +284,30 @@ class AdminSectionController {
     }
   }
 
+  async getGradesReport(req, res) {
+    const { sectionId, schoolYear, semester, studentId } = req.params;
+    console.log("HEHEHE", sectionId, schoolYear, semester, studentId)
+
+    try {
+      const report = await ParticipationReport.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester),
+        studentId: studentId
+      });
+
+      console.log("HAHAHA", report)
+
+      if (!report) {
+        return res.status(404).json({ message: 'Participation report not found' });
+      }
+
+      res.json(report);
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
   async getEnrolledStudents(req, res) {
     const { sectionId, schoolYear, semester } = req.params;
 

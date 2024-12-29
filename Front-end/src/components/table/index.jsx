@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Pager from '../footer/pager';
 
-const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0, className }) => {
+const Table = ({ onRowClicked, headings, data, readOnly = false, rowsPerPage = 0, className }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
   const [numberOfPages, setNumberOfPages] = useState(1);
