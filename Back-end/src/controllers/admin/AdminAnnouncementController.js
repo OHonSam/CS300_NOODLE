@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Announcement = require('../../models/AnnouncementModel');
+const { getCurrentDateTimeString } = require('../../utils/DateTimeProcessing');
 
 class AdminAnnouncementController {
   // Get all announcements with pagination
@@ -18,7 +19,7 @@ class AdminAnnouncementController {
   // Create a new announcement
   async createAnnouncement(req, res) {
     const announcementData = req.body;
-    announcementData.createdAt = new Date().toLocaleString();
+    announcementData.createdAt = getCurrentDateTimeString();
     announcementData.updatedAt = announcementData.createdAt;
     console.log('Creating announcement:', announcementData);
 
@@ -46,7 +47,7 @@ class AdminAnnouncementController {
   async updateAnnouncement(req, res) {
     const announcementId = req.params.announcementId;
     const updateData = req.body;
-    updateData.updatedAt = new Date().toLocaleString();
+    updateData.updatedAt = getCurrentDateTimeString();
 
     try {
       const updatedAnnouncement = await Announcement.findOneAndUpdate(
