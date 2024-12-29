@@ -3,8 +3,7 @@ const Section = require('../../models/SectionModel');
 const Student = require('../../models/StudentModel');
 const Teacher = require('../../models/TeacherModel');
 const ParticipationReport = require('../../models/ParticipationReportModel');
-const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FileProcessing');
-
+const { FileProcessingUtil } = require('../../utils/FileProcessing');
 
 class AdminSectionController {
   async getAllSections(req, res) {

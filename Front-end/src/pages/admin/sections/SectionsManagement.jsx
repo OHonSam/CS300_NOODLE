@@ -25,8 +25,12 @@ const AdminManageSectionsLayout = () => {
   ];
 
   const fetchAdminSections = async () => {
-    const response = await fetchAllSections();
-    setSections(response.sections);
+    try {
+      const response = await fetchAllSections();
+      setSections(response.sections);
+    } catch (error) {
+      addToast("error", error.message || "Failed to load sections");
+    }
   };
 
   const addAdminSections = async (sectionData) => {
@@ -43,8 +47,8 @@ const AdminManageSectionsLayout = () => {
     fetchAdminSections();
   }, []);
 
-  const handleCreateSection = (sectionData) => {
-    addAdminSections(sectionData);
+  const handleCreateSection = async (sectionData) => {
+    await addAdminSections(sectionData);
   };
 
   const handleRowClicked = (row) => {

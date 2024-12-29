@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import Expander from "../../../components/material";
 import { fetchMaterials } from "../../../services/SectionInfoService";
+import { useToast } from "../../../hooks/useToast";
 
 const SectionMaterialView = ({ schoolYear, semester, sectionId }) => {
   // generate a list a materials contains the title, the content and url of the material
   const [materials, setMaterials] = useState([])
+  const { addToast } = useToast();
 
   useEffect(() => {
     const fetchMaterialsData = async () => {
-      const data = await fetchMaterials(schoolYear, semester, sectionId);
-      setMaterials(data);
+      try {
+        const data = await fetchMaterials(schoolYear, semester, sectionId);
+        setMaterials(data);
+      } catch (error) {
+        addToast('error', error.message || 'Failed to fetch materials');
+      }
     };
 
     fetchMaterialsData();

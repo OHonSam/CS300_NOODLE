@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react";
 import Table from "../../../components/table";
 import { addEnrolledStudentsFromFile, fetchEnrolledStudents, removeStudentFromSection, updateStudentFromSection } from "../../../services/SectionInfoService";
+import { useToast } from "../../../hooks/useToast";
 
 export const SectionEnrolledStudentsView = ({ schoolYear, semester, sectionId }) => {
   const [enrolledStudents, setEnrolledStudents] = useState([]);
+  const { addToast } = useToast();
+
   useEffect(() => {
     const fetchEnrolledStudentsData = async () => {
-      const data = await fetchEnrolledStudents(schoolYear, semester, sectionId);
-      setEnrolledStudents(data);
+      try {
+        const data = await fetchEnrolledStudents(schoolYear, semester, sectionId);
+        setEnrolledStudents(data);
+      }
+      catch (error) {
+        addToast('error', error.message || 'Failed to fetch enrolled students');
+      }
     };
 
     fetchEnrolledStudentsData();

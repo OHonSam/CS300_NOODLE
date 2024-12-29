@@ -4,17 +4,22 @@ import Table from "../../../components/table";
 import AnnouncementDialog from "../../../components/dialog/StudentAnnouncementDialog";
 import Toast from "../../../components/toast";
 import { fetchAnnouncements } from "../../../services/AnnouncementService";
+import { useToast } from "../../../hooks/useToast";
 
 const TeacherAnnouncements = () => {
   const [announcementInfoDialogVisible, setAnnouncementInfoDialogVisible] = useState(false);
   const [currentAnnouncementDialog, setCurrentAnnouncementDialog] = useState(null);
-  const [toast, setToast] = useState([]);
+  const { addToast } = useToast();
   const [announcements, setAnnouncments] = useState([]);
   
     useEffect(() => {
       const fetchAnnouncementData = async () => {
-        const data = await fetchAnnouncements();
-        setAnnouncments(data);
+        try {
+          const data = await fetchAnnouncements();
+          setAnnouncments(data);
+        } catch (error) {
+          addToast('error', error.message || 'Failed to fetch announcements');
+        }
       };
   
       fetchAnnouncementData();
