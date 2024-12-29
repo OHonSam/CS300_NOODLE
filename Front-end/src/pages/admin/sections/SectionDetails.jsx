@@ -7,7 +7,6 @@ import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionEnrolledStudentsView from './SectionEnrolledStudents';
 import Breadcrumbs from "../../../components/breadcrumbs";
-import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
@@ -119,7 +118,10 @@ const AdminSectionDetails = () => {
             />
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
-            <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
+            <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}
+              assignTeacherDialogVisible={assignTeacherDialogVisible} 
+              setAssignTeacherDialogVisible={setAssignTeacherDialogVisible}
+            />
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
             <SectionEnrolledStudentsView 
@@ -139,12 +141,6 @@ const AdminSectionDetails = () => {
           onClose={() => setResourceCreationDialogVisible(false)}
         />
       </div>
-      <TeacherInfoProvider>
-        <SelectTeacherDialog
-          isOpen={assignTeacherDialogVisible}
-          onClose={() => setAssignTeacherDialogVisible(false)}
-        />
-      </TeacherInfoProvider>
     </div>
   );
 }

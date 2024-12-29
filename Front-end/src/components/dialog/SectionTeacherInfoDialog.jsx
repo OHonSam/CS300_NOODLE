@@ -2,7 +2,7 @@ import { Dialog, DialogPanel } from "@headlessui/react"
 import { FaXmark } from 'react-icons/fa6'
 import { useEffect, useState } from 'react'
 
-const SectionTeacherInfoDialog = ({ teacherData, isOpen, onRemove, onClose }) => {
+const SectionTeacherInfoDialog = ({ teacherData, isOpen, assignedTeachers, setAssignedTeachers, onRemove, onClose }) => {
     const [formData, setFormData] = useState(teacherData ? teacherData : {
         teacherId: '',
         fullName: '',
@@ -21,7 +21,8 @@ const SectionTeacherInfoDialog = ({ teacherData, isOpen, onRemove, onClose }) =>
     }, [teacherData]);
 
     const handleRemove = () => {
-        onRemove(teacherData);
+        onRemove(teacherData.teacherId);
+        setAssignedTeachers(assignedTeachers.filter(teacher => teacher.teacherId !== teacherData.teacherId));
         handleClose();
     };
 

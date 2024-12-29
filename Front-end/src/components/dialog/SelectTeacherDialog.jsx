@@ -1,12 +1,18 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaXmark } from 'react-icons/fa6'
 import { useTeacherInfo } from "../../hooks/admin/accounts/useTeacherInfo";
 
-const SelectTeacherDialog = ({ isOpen, onSave, onClose }) => {
+const SelectTeacherDialog = ({ isOpen, onSave, onClose, assignedTeachers, setAssignedTeachers, onAssign, onRemove }) => {
   const [searchTeacher, setSearchTeacher] = useState('');
   const [selectedItems, setSelectedItems] = useState(new Set());
   const { teachers } = useTeacherInfo();
+
+  // Initialize selected items with currently assigned teachers
+  useEffect(() => {
+    const assignedIds = new Set(assignedTeachers.map(teacher => teacher.teacherId));
+    setSelectedItems(assignedIds);
+  }, [assignedTeachers]);
 
   const filteredTeachers = teachers.filter((teacher) =>
     teacher.fullName.toLowerCase().includes(searchTeacher)
@@ -26,8 +32,36 @@ const SelectTeacherDialog = ({ isOpen, onSave, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave();
-    handleClose();
+    try {
+      const currentAssignedIds = new Set(assignedTeachers.map(teacher => teacher.teacherId));
+      const selectedIds = new Set(selectedItems); // Keep as Set instead of converting to Array
+
+      // Teachers to remove (in current but not in selected)
+      const toRemove = [...currentAssignedIds].filter(id => !selectedIds.has(id));
+      
+      // Teachers to add (in selected but not in current)
+      const toAdd = [...selectedIds].filter(id => !currentAssignedIds.has(id));
+
+      console.log(toRemove)
+      console.log(toAdd)
+
+      // Process removals
+      if (toRemove.length > 0)  {
+        const updatedAssignedTeachers = await onRemove(toRemove);
+        setAssignedTeachers(updatedAssignedTeachers);
+      }
+
+      // Process additions
+      // Then process additions if there are any teachers to add
+      if (toAdd.length > 0) {
+        const updatedAssignedTeachers = await onAssign(toAdd);
+        setAssignedTeachers(updatedAssignedTeachers);
+      }
+
+      handleClose();
+    } catch(error) {
+      console.error('Error assigning teachers:', error);
+    }
   };
 
   const handleClose = () => {
