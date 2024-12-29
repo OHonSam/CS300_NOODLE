@@ -10,6 +10,7 @@ const RoleId = {
 const AccountSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
+    fullName: { type: String, required: true },
     password: { type: String, required: true },
     roleId: {type: Number, enum: Object.values(RoleId), required: true},
     resetPasswordOTP: { type: String, default: null },

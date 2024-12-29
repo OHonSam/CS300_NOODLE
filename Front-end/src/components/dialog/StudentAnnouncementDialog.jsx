@@ -6,13 +6,13 @@ import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
 const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onClose }) => {
   const userData = getStoredToken();
   const decodedData = decryptToken(userData);
-  const username = decodedData?.username
+  const fullName = decodedData?.fullName
   const [formData, setFormData] = useState(announcementData ? announcementData : {
     announcementId: 1,
     title: '',
     content: '',
     attachment: null,
-    sender: username ? username : '',
+    sender: fullName ? fullName : '',
     status: '',
     createdAt: '',
     updatedAt: '',
@@ -24,7 +24,7 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onClose }) =>
       title: '',
       content: '',
       attachment: null,
-      sender: username ? username : '',
+      sender: fullName ? fullName : '',
       status: '',
       createdAt: '',
       updatedAt: '',

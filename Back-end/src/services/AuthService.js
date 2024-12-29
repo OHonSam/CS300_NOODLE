@@ -11,7 +11,8 @@ class AuthService {
         
         const isValid = await account.checkCredential(password);
         const roleId = account.roleId;
-        return { isValid, roleId };
+        const fullName = account.fullName;
+        return { isValid, roleId, fullName };
     }
 
     async checkResetPasswordCredential(username, resetPasswordToken) {

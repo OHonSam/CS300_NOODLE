@@ -48,6 +48,7 @@ class AdminAccountController {
       const newAccount = new Account({
         username: adminData.adminId,
         password: adminData.adminId, // Using adminId as initial password
+        fullName: adminData.fullName,
         email: adminData.email,
         roleId: RoleId.ADMIN,
       });

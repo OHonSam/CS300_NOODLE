@@ -228,6 +228,7 @@ class BulkUserCreationUtil {
         const newAccount = new Account({
           username: mappedUser[userIdField],
           password: mappedUser[userIdField], // Using ID as initial password
+          fullName: mappedUser.fullName,
           email: mappedUser.email,
           roleId: roleId,
         });
