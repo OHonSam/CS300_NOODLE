@@ -105,23 +105,39 @@ const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCreate, on
                 onChange={handleChange} />
             </div>
             <div>
-              <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900">Gender</label>
-              <select id="gender" value={formData.gender} className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${selectPlaceHolder ? 'text-gray-400' : 'text-gray-900'}`} required
-                onChange={(e) => {
-                  setSelectPlaceHolder(false);
-                  handleChange(e);
-                }}
-              >
-                <option disabled value="default">Choose a gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div>
               <label htmlFor="class" className="block mb-2 text-sm font-medium text-gray-900">Class</label>
               <input type="text" id="class" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22TT2" required
                 value={formData.class}
+                onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
+              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required
+                value={formData.phone}
+                onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="midterm" className="block mb-2 text-sm font-medium text-gray-900">Midterm grades</label>
+              <input type="tel" id="midterm" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0.0" required
+                value={formData.gradeMidterm}
+                onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="final" className="block mb-2 text-sm font-medium text-gray-900">Final grades</label>
+              <input type="tel" id="final" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0.0" required
+                value={formData.gradeFinal}
+                onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="other" className="block mb-2 text-sm font-medium text-gray-900">Other grades</label>
+              <input type="tel" id="other" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0.0" required
+                value={formData.gradeOthers}
+                onChange={handleChange} />
+            </div>
+            <div>
+              <label htmlFor="total" className="block mb-2 text-sm font-medium text-gray-900">Total grades</label>
+              <input type="tel" id="total" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0.0"
+                value={formData.gradeTotal}
                 onChange={handleChange} />
             </div>
           </div>
