@@ -35,7 +35,7 @@ const SelectTeacherDialog = ({ isOpen, onSave, onClose }) => {
     e.preventDefault();
     try {
       const currentAssignedIds = new Set(assignedTeachers.map(teacher => teacher.teacherId));
-      const selectedIds = Array.from(selectedItems);
+      const selectedIds = new Set(selectedItems); // Keep as Set instead of converting to Array
 
       // Teachers to remove (in current but not in selected)
       const toRemove = [...currentAssignedIds].filter(id => !selectedIds.has(id));

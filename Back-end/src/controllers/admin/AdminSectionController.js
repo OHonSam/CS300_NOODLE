@@ -420,17 +420,12 @@ class AdminSectionController {
   
     try {
       // Find section and validate
-      const section = await Section.findOne(
-        {
+      const section = await Section.findOne({
         sectionId: sectionId,
         schoolYear: schoolYear,
         semester: Number(semester)
-        },
-        { session }
-      );
+      }).session(session);
       
-      console.log(section)
-
       if (!section) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Section not found' });
@@ -449,8 +444,6 @@ class AdminSectionController {
         section.teachers.push(teacherId);
         await section.save({ session });
       }
-  
-      await session.commitTransaction();
       
       // Get all assigned teachers' details
       const assignedTeachers = await Teacher.find({
