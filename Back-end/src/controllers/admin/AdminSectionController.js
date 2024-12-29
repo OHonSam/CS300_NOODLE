@@ -161,6 +161,87 @@ class AdminSectionController {
     }
   }
 
+  async updateEnrolledStudent(req, res) {
+    const { sectionId, schoolYear, semester, studentId } = req.params;
+    const updateData = req.body;
+    
+    const session = await mongoose.startSession();
+    session.startTransaction();
+  
+    try {
+      // Update student basic info
+      const updatedStudent = await Student.findOneAndUpdate(
+        { studentId: studentId },
+        { 
+          fullName: updateData.fullName,
+          email: updateData.email,
+          gender: updateData.gender,
+          dob: updateData.dob,
+          class: updateData.class,
+          phone: updateData.phone,
+          address: updateData.address
+        },
+        {
+          new: true,
+          runValidators: true,
+          session
+        }
+      );
+  
+      if (!updatedStudent) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Student not found' });
+      }
+  
+      // Update participation report grades
+      const updatedReport = await ParticipationReport.findOneAndUpdate(
+        {
+          studentId: studentId,
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        },
+        {
+          gradeMidterm: updateData.gradeMidterm,
+          gradeFinal: updateData.gradeFinal,
+          gradeOthers: updateData.gradeOthers,
+          gradeTotal: updateData.gradeTotal
+        },
+        {
+          new: true,
+          runValidators: true,
+          session
+        }
+      );
+  
+      if (!updatedReport) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Participation report not found' });
+      }
+  
+      await session.commitTransaction();
+  
+      // Combine student info with grades
+      const response = {
+        ...updatedStudent.toObject(),
+        gradeMidterm: updatedReport.gradeMidterm,
+        gradeFinal: updatedReport.gradeFinal,
+        gradeOthers: updatedReport.gradeOthers,
+        gradeTotal: updatedReport.gradeTotal
+      };
+  
+      res.json(response);
+    } catch (error) {
+      await session.abortTransaction();
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message
+      });
+    } finally {
+      session.endSession();
+    }
+  }
+
   async deleteSection(req, res) {
     const { sectionId, schoolYear, semester } = req.params;
 
@@ -227,9 +308,33 @@ class AdminSectionController {
       }
 
       const studentIds = section.students;
-      const students = await Student.find({ studentId: { $in: studentIds } });
+
+      // Get both student info and their participation reports
+      const [students, reports] = await Promise.all([
+        Student.find({ studentId: { $in: studentIds } }),
+        ParticipationReport.find({
+          studentId: { $in: studentIds },
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester)
+        })
+      ]);
       
-      res.json(students);
+      // Combine student info with their grades
+      const studentsWithReport = students.map(student => {
+        const report = reports.find(r => r.studentId === student.studentId) || {};
+        return {
+          ...student.toObject(),
+          gradeMidterm: report.gradeMidterm || 0,
+          gradeFinal: report.gradeFinal || 0,
+          gradeOthers: report.gradeOthers || 0,
+          gradeTotal: report.gradeTotal || 0
+        };
+      });
+
+      console.log(studentsWithReport)
+
+      res.json(studentsWithReport);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }
@@ -409,13 +514,31 @@ class AdminSectionController {
       });
 
       await ParticipationReport.insertMany(reports, { session });
+
+      // Combine student info with their corresponding section reports
+      const studentsWithReport = students.map(student => {
+        const report = reports.find(r => 
+          r.studentId === student.studentId &&
+          r.sectionId === sectionId &&
+          r.schoolYear === schoolYear &&
+          r.semester === Number(semester)
+        ) || {};
+
+        return {
+          ...student.toObject(),
+          gradeMidterm: report.gradeMidterm || 0,
+          gradeFinal: report.gradeFinal || 0,
+          gradeOthers: report.gradeOthers || 0,
+          gradeTotal: report.gradeTotal || 0
+        };
+      });
   
       await session.commitTransaction();
       
       res.status(200).json({
         success: true,
         message: 'Students enrolled successfully',
-        students: students,
+        students: studentsWithReport,
         enrolledCount: students.length
       });
     } catch (error) {
