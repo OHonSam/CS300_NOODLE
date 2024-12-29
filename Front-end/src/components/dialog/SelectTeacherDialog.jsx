@@ -46,16 +46,18 @@ const SelectTeacherDialog = ({ isOpen, onSave, onClose, assignedTeachers, setAss
       console.log(toAdd)
 
       // Process removals
-      // for (const teacherId of toRemove) {
-      //   await onRemove(teacherId);
-      // }
+      if (toRemove.length > 0)  {
+        const updatedAssignedTeachers = await onRemove(toRemove);
+        setAssignedTeachers(updatedAssignedTeachers);
+      }
 
       // Process additions
       // Then process additions if there are any teachers to add
       if (toAdd.length > 0) {
-        const updatedTeachers = await onAssign(toAdd);
-        setAssignedTeachers(updatedTeachers);
+        const updatedAssignedTeachers = await onAssign(toAdd);
+        setAssignedTeachers(updatedAssignedTeachers);
       }
+
       handleClose();
     } catch(error) {
       console.error('Error assigning teachers:', error);

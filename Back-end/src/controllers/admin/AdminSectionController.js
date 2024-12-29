@@ -55,8 +55,6 @@ class AdminSectionController {
         return acc;
       }, { A: 0, B: 0, C: 0, D: 0, E:0, F: 0 });
       
-      console.log(gradeDistribution);
-
       const stats = {
         totalSections: sections.length,
         totalTeachers: uniqueTeachers,
@@ -332,8 +330,6 @@ class AdminSectionController {
         };
       });
 
-      console.log(studentsWithReport)
-
       res.json(studentsWithReport);
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
@@ -342,7 +338,6 @@ class AdminSectionController {
 
   async getAssignedTeachers(req, res) { 
     const { sectionId, schoolYear, semester } = req.params;
-    console.log(sectionId, schoolYear, semester);
     try {
       const section = await Section.findOne({
         sectionId: sectionId,
@@ -433,8 +428,6 @@ class AdminSectionController {
 
       // Check if teachers exist
       const existingTeachers = await Teacher.find({ teacherId: { $in: teacherIds } }).session(session);
-      console.log(teacherIds)
-      console.log(existingTeachers)
       if (existingTeachers.length !== teacherIds.length) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Some teachers do not exist' });
@@ -560,6 +553,50 @@ class AdminSectionController {
     }
   }
 
+  async removeTeacherArrayFromSection (req, res) {
+    const { sectionId, schoolYear, semester } = req.params;
+    const { teacherIds } = req.body;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const section = await Section.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester)
+      }).session(session);
+
+      if (!section) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Section not found' });
+      }
+
+      // Remove teachers if they are assigned
+      const removedTeachers = teacherIds.filter(teacherId => section.teachers.includes(teacherId));
+      section.teachers = section.teachers.filter(teacherId => !removedTeachers.includes(teacherId));
+      await section.save({ session });
+
+      // Get all assigned teachers' details
+      const assignedTeachers = await Teacher.find({
+        teacherId: { $in: section.teachers }
+      }).session(session);
+      console.log(assignedTeachers)
+
+      await session.commitTransaction();
+
+      res.json(assignedTeachers);
+    } catch (error) {
+      await session.abortTransaction();
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message
+      });
+    } finally {
+      session.endSession();
+    }
+  }
+
   async addEnrolledStudentsFromFile(req, res) {
     const { sectionId, schoolYear, semester } = req.params;
     const session = await mongoose.startSession();
@@ -605,7 +642,6 @@ class AdminSectionController {
   
       // Add students (no duplicate) to section
       section.students = [...new Set([...section.students, ...students.map(s => s.studentId)])];
-      console.log(section.students);
       await section.save({ session });
 
       // Create participation reports for each student

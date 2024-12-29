@@ -27,6 +27,7 @@ router.post('/sections/:schoolYear/:semester/:sectionId/assignTeacherArray', adm
 router.delete('/sections/:schoolYear/:semester/:sectionId', adminSectionController.deleteSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId/removeEnrolled/:studentId/', adminSectionController.removeStudentFromSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId/removeAssigned/:teacherId', adminSectionController.removeTeacherFromSection);
+router.delete('/sections/:schoolYear/:semester/:sectionId/removeAssignedArray', adminSectionController.removeTeacherArrayFromSection);
 
 // Admin account management routes
 router.get('/admins', adminAccountController.getAdmins);

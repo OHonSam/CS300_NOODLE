@@ -1,6 +1,6 @@
 import Table from "../../../components/table";
 import { useState, useEffect } from "react";
-import { fetchAssignedTeachers, assignTeacherToSection, assignTeacherArrayToSection, removeTeacherFromSection } from "../../../services/admin/SectionInfoService";
+import { fetchAssignedTeachers, assignTeacherToSection, assignTeacherArrayToSection, removeTeacherFromSection, removeTeacherArrayFromSection } from "../../../services/admin/SectionInfoService";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import SectionTeacherInfoDialog from "../../../components/dialog/SectionTeacherInfoDialog";
 import { useToast } from "../../../hooks/useToast";
@@ -67,6 +67,15 @@ const SectionTeachersView = ({ schoolYear, semester, sectionId, assignTeacherDia
     }
   }
 
+  const handleRemoveAssignedTeacherArray = async (teacherIds) => {
+    try {
+      return await removeTeacherArrayFromSection(assignedTeachers, teacherIds, schoolYear, semester, sectionId);
+      addToast("success", "Teachers removed successfully");
+    } catch (error) {
+      addToast("error", error.message);
+    }
+  }
+
   return (
     <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
       <Table headings={headings} data={assignedTeachers} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
@@ -85,7 +94,7 @@ const SectionTeachersView = ({ schoolYear, semester, sectionId, assignTeacherDia
           assignedTeachers={assignedTeachers}
           setAssignedTeachers={setAssignedTeachers}
           onAssign={handleAssignTeacherArrayToSection}
-          onRemove={handleRemoveAssignedTeacher}
+          onRemove={handleRemoveAssignedTeacherArray}
         />
       </TeacherInfoProvider>
 

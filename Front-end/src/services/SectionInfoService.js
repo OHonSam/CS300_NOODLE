@@ -107,6 +107,16 @@ export const removeTeacherFromSection = async (currentAssignedTeachers, teacherI
     }
 }
 
+export const removeTeacherArrayFromSection = async (currentAssignedTeachers, teacherIds, schoolYear, semester, sectionId) => {
+    try {
+        await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/removeAssignedArray`, { data: { teacherIds } });
+        return currentAssignedTeachers.filter((teacher) => !teacherIds.includes(teacher.teacherId));
+    } catch (error) {
+        console.error("Error removing teachers from section:", error);
+        throw { message: error.response.data.message };
+    }
+}
+
 export const assignTeacherToSection = async ( teacherId, schoolYear, semester, sectionId) => {
     try {
         const response = await axios.post(
