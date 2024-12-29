@@ -412,6 +412,58 @@ class AdminSectionController {
     }
   }
 
+  async assignTeacherArrayToSection(req, res) {
+    const { sectionId, schoolYear, semester } = req.params;
+    const { teacherIds } = req.body;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const section = await Section.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester)
+      }).session(session);
+
+      if (!section) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Section not found' });
+      }
+
+      // Check if teachers exist
+      const existingTeachers = await Teacher.find({ teacherId: { $in: teacherIds } }).session(session);
+      console.log(teacherIds)
+      console.log(existingTeachers)
+      if (existingTeachers.length !== teacherIds.length) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Some teachers do not exist' });
+      }
+
+      // Add teachers if not already assigned
+      const newTeachers = teacherIds.filter(teacherId => !section.teachers.includes(teacherId));
+      section.teachers = [...new Set([...section.teachers, ...newTeachers])];
+      await section.save({ session });
+
+      // Get all assigned teachers' details
+      const assignedTeachers = await Teacher.find({
+        teacherId: { $in: section.teachers }
+      }).session(session);
+
+      await session.commitTransaction();
+
+      res.json(assignedTeachers);
+    } catch (error) {
+      await session.abortTransaction();
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message
+      });
+    } finally {
+      session.endSession();
+    }
+  }
+
   async assignTeacherToSection(req, res) {
     const { sectionId, schoolYear, semester, teacherId } = req.params;
     

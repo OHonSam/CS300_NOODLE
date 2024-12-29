@@ -125,6 +125,24 @@ export const assignTeacherToSection = async ( teacherId, schoolYear, semester, s
     }
 }
 
+export const assignTeacherArrayToSection = async (teacherIds, schoolYear, semester, sectionId) => {
+    try {
+        const response = await axios.post(
+            `/api/admin/sections/${schoolYear}/${semester}/${sectionId}/assignTeacherArray`,
+            { teacherIds }
+        );
+        if (response.data) {
+            return response.data;
+        }
+        throw new Error('Unexpected empty response from server');
+    } catch (error) {
+        console.error("Error assigning teachers:", error);
+        throw {
+            message: error.response?.data?.message || 'Failed to assign teachers'
+        };
+    }
+}
+
 export const fetchEnrolledStudents = async (schoolYear, semester, sectionId) => {
     try {
         const response = await axios.get(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/enrolledStudents`);

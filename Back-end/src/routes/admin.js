@@ -23,6 +23,7 @@ router.post('/sections/:schoolYear/:semester/:sectionId/enrollStudents', upload.
 router.put('/sections/:schoolYear/:semester/:sectionId', adminSectionController.updateSection);
 router.put('/sections/:schoolYear/:semester/:sectionId/updateEnrolledStudent/:studentId', adminSectionController.updateEnrolledStudent);
 router.post('/sections/:schoolYear/:semester/:sectionId/assignTeacher/:teacherId', adminSectionController.assignTeacherToSection);
+router.post('/sections/:schoolYear/:semester/:sectionId/assignTeacherArray', adminSectionController.assignTeacherArrayToSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId', adminSectionController.deleteSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId/removeEnrolled/:studentId/', adminSectionController.removeStudentFromSection);
 router.delete('/sections/:schoolYear/:semester/:sectionId/removeAssigned/:teacherId', adminSectionController.removeTeacherFromSection);

@@ -1,12 +1,12 @@
 import Table from "../../../components/table";
 import { useState, useEffect } from "react";
-import { fetchAssignedTeachers, assignTeacherToSection, removeTeacherFromSection} from "../../../services/admin/SectionInfoService";
+import { fetchAssignedTeachers, assignTeacherToSection, assignTeacherArrayToSection, removeTeacherFromSection } from "../../../services/admin/SectionInfoService";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import SectionTeacherInfoDialog from "../../../components/dialog/SectionTeacherInfoDialog";
 import { useToast } from "../../../hooks/useToast";
 import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
 
-const SectionTeachersView = ({schoolYear, semester, sectionId, assignTeacherDialogVisible, setAssignTeacherDialogVisible}) => {
+const SectionTeachersView = ({ schoolYear, semester, sectionId, assignTeacherDialogVisible, setAssignTeacherDialogVisible }) => {
   const [teacherDialogVisible, setTeacherDialogVisible] = useState(false);
   const [currentTeacherDialog, setCurrentTeacherDialog] = useState(null);
   const [assignedTeachers, setAssignedTeachers] = useState([]);
@@ -40,10 +40,19 @@ const SectionTeachersView = ({schoolYear, semester, sectionId, assignTeacherDial
     setTeacherDialogVisible(true);
   };
 
-  const handleAssignTeacherToSection = async(teacherId) => {
+  const handleAssignTeacherToSection = async (teacherId) => {
     try {
       return await assignTeacherToSection(teacherId, schoolYear, semester, sectionId);
       addToast("success", "Teacher added successfully");
+    } catch (error) {
+      addToast("error", error.message);
+    }
+  }
+
+  const handleAssignTeacherArrayToSection = async (teacherIds) => {
+    try {
+      return await assignTeacherArrayToSection(teacherIds, schoolYear, semester, sectionId);
+      addToast("success", "Teachers added successfully");
     } catch (error) {
       addToast("error", error.message);
     }
@@ -57,7 +66,6 @@ const SectionTeachersView = ({schoolYear, semester, sectionId, assignTeacherDial
       addToast("error", error.message);
     }
   }
-
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col items-center justify-between w-full">
@@ -76,11 +84,11 @@ const SectionTeachersView = ({schoolYear, semester, sectionId, assignTeacherDial
           onClose={() => setAssignTeacherDialogVisible(false)}
           assignedTeachers={assignedTeachers}
           setAssignedTeachers={setAssignedTeachers}
-          onAssign={handleAssignTeacherToSection}
+          onAssign={handleAssignTeacherArrayToSection}
           onRemove={handleRemoveAssignedTeacher}
         />
       </TeacherInfoProvider>
-      
+
     </div>
   );
 };
