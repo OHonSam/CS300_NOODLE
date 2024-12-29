@@ -3,6 +3,8 @@ const Section = require('../../models/SectionModel');
 const Student = require('../../models/StudentModel');
 const Teacher = require('../../models/TeacherModel');
 const ParticipationReport = require('../../models/ParticipationReportModel');
+const { FileProcessingUtil, BulkUserCreationUtil } = require('../../utils/FileProcessing');
+
 
 class AdminSectionController {
   async getAllSections(req, res) {
@@ -41,7 +43,7 @@ class AdminSectionController {
       const uniqueStudents = new Set(sections.flatMap(section => section.students)).size;
 
       const gradeDistribution = reports.reduce((acc, report) => {
-        const grade10 = report.grade10;
+        const grade10 = report.gradeAverage;
 
         if (grade10 >= 9.0) acc.A++;
         else if (grade10 >= 8.0) acc.B++;
@@ -282,6 +284,12 @@ class AdminSectionController {
         return res.status(404).json({ message: 'Section not found' });
       }
 
+      // Delete associated participation report
+      await ParticipationReport.findOneAndDelete(
+        { sectionId: sectionId, schoolYear: schoolYear, semester: Number(semester), studentId: studentId },
+        { session }
+      );
+
       await session.commitTransaction();
 
       res.json(updatedSection);
@@ -333,6 +341,85 @@ class AdminSectionController {
         await session.abortTransaction();
       }
       console.error('Remove teacher from section error:', error);
+      res.status(500).json({
+        error: 'Server error',
+        message: error.message
+      });
+    } finally {
+      session.endSession();
+    }
+  }
+
+  async addEnrolledStudentsFromFile(req, res) {
+    const { sectionId, schoolYear, semester } = req.params;
+    const session = await mongoose.startSession();
+    session.startTransaction();
+  
+    try {
+      const requiredFields = ['studentId'];
+      const studentIds = await FileProcessingUtil.processFile(req.file, requiredFields);
+  
+      const section = await Section.findOne({
+        sectionId: sectionId,
+        schoolYear: schoolYear,
+        semester: Number(semester)
+      }).session(session);
+  
+      if (!section) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Section not found' });
+      }
+  
+      // Check capacity
+      if (section.students.length + studentIds.length > section.capacity) {
+        await session.abortTransaction();
+        return res.status(400).json({ message: 'Section capacity exceeded' });
+      }
+  
+      // Verify all students exist
+      const students = await Student.find({ 
+        studentId: { $in: studentIds.map(s => s.studentId) } 
+      }).session(session);
+  
+      if (students.length !== studentIds.length) {
+        await session.abortTransaction();
+        return res.status(400).json({ message: 'Some students do not exist' });
+      }
+
+      // Check for duplicates
+      const existingStudents = students.filter(s => section.students.includes(s.studentId));
+      if (existingStudents.length > 0) {
+        await session.abortTransaction();
+        return res.status(400).json({ message: 'Some students are already enrolled' });
+      }
+  
+      // Add students (no duplicate) to section
+      section.students = [...new Set([...section.students, ...students.map(s => s.studentId)])];
+      console.log(section.students);
+      await section.save({ session });
+
+      // Create participation reports for each student
+      const reports = students.map(student => {
+        return new ParticipationReport({
+          sectionId: sectionId,
+          schoolYear: schoolYear,
+          semester: Number(semester),
+          studentId: student.studentId
+        });
+      });
+
+      await ParticipationReport.insertMany(reports, { session });
+  
+      await session.commitTransaction();
+      
+      res.status(200).json({
+        success: true,
+        message: 'Students enrolled successfully',
+        students: students,
+        enrolledCount: students.length
+      });
+    } catch (error) {
+      await session.abortTransaction();
       res.status(500).json({
         error: 'Server error',
         message: error.message

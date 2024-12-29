@@ -3,9 +3,9 @@ import Toast from "../../../components/toast";
 import Table from "../../../components/table";
 import { useSectionStudents } from "../../../hooks/admin/sections/useSectionStudents";
 import { StudentInfoProvider } from "../../../context/admin/accounts/StudentInfoContext";
-import SectionStudentInfoDialog from "../../../components/dialog/SectionStudentInfoDialog";
+import { SectionStudentInfoDialog } from "../../../components/dialog/SectionStudentInfoDialog";
 
-export const SectionStudentsView = () => {
+export const SectionEnrolledStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
   const [toast, setToast] = useState([]);
@@ -44,4 +44,4 @@ export const SectionStudentsView = () => {
   );
 }
 
-export default SectionStudentsView;
+export default SectionEnrolledStudentsView;
