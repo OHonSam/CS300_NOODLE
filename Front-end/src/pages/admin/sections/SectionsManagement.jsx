@@ -28,7 +28,7 @@ const AdminManageSectionsLayout = () => {
   useEffect(() => {
     const fetchSections = async () => {
       try {
-        const response = await axios.get(`/api/admin/sections?page=${currentPage}&limit=20`);
+        const response = await axios.get(`/api/admin/sections?page=${currentPage}&limit=5`);
         setSections(response.data.sections);
         setTotalPages(response.data.totalPages);
       } catch (error) {

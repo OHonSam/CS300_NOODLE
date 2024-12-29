@@ -56,15 +56,34 @@ const AdminInfoDialog = ({ adminData, isOpen, dialogFor, onCreate, onUpdate, onD
         clearForm();
       }
     } else {
-      onUpdate(formData);
-      updateAdmin(formData);
+      try{
+        updateAdmin(formData);
+      } catch (error) {
+        message = error.message;
+      }
+
+      if (message) {
+        onUpdate(message, false);
+      } else {
+        onUpdate('Admin updated successfully!', true);
+      }
     }
     handleClose(true);
   };
 
   const handleDelete = () => {
-    onDelete(formData);
-    deleteAdmin(formData.adminId);
+    let message = null;
+    try {
+      deleteAdmin(formData.adminId);
+    } catch (error) {
+      message = error.message;
+    }
+
+    if (message) {
+      onDelete(message, false);
+    } else {
+      onDelete('Announcement deleted successfully!', true);
+    }
     handleClose();
   };
 

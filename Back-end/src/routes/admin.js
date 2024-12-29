@@ -4,6 +4,7 @@ const adminSectionController = require('../controllers/admin/AdminSectionControl
 const studentAccountController = require('../controllers/admin/StudentAccountController');
 const teacherAccountController = require('../controllers/admin/TeacherAccountController');
 const adminAccountController = require('../controllers/admin/AdminAccountController');
+const announcementController = require('../controllers/admin/AdminAnnouncementController');
 const authMiddleware = require('../middleware/AuthMiddleware');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
@@ -44,5 +45,13 @@ router.post('/fileTeachers', upload.single('file'), teacherAccountController.add
 router.post('/teachers', teacherAccountController.createTeacher);
 router.put('/teachers/:teacherId', teacherAccountController.updateTeacher);
 router.delete('/teachers/:teacherId', teacherAccountController.deleteTeacher);
+
+// Announcement management routes
+router.get('/announcements', announcementController.getAnnouncements);
+router.post('/announcements', announcementController.createAnnouncement);
+router.put('/announcements/:announcementId', announcementController.updateAnnouncement);
+router.delete('/announcements/:announcementId', announcementController.deleteAnnouncement);
+
+// ...existing code...
 
 module.exports = router;

@@ -8,14 +8,14 @@ class AdminAccountController {
   async getAdmins(req, res) {
     try {
       // Find admins with pagination
-      const admins = await Admin.find()
+      const admins = await Admin.find();
       // Send response
       res.json({
         admins,
       });
 
     } catch (error) {
-      res.status(500).json({ error: 'Server error' });
+      res.status(500).json({ error: 'Server error!' });
     }
   }
 
