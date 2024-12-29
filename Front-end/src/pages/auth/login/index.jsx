@@ -47,7 +47,7 @@ const SignIn = () => {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.username) {
       setErrorMessage("Please enter your username to reset password");
       return;
@@ -58,7 +58,7 @@ const SignIn = () => {
 
     try {
       await requestPasswordReset(formData.username);
-      navigate("/auth/otp-confirmation", { 
+      navigate("/auth/otp-confirmation", {
         state: { username: formData.username }
       });
     } catch (error) {
@@ -67,19 +67,21 @@ const SignIn = () => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <div>
       <div className="text-center mb-6">
         <img
-          src="https://via.placeholder.com/50"
+          src="https://cdn-icons-png.flaticon.com/512/1046/1046850.png"
           alt="Logo"
-          className="mx-auto mb-4"
+          width="50"
+          height="50"
+          className="mx-auto"
         />
         <h2 className="text-2xl font-semibold text-gray-800">Welcome Back to Noodle</h2>
         <p className="text-gray-500">Enter your username and password to continue.</p>
       </div>
-      <form onSubmit={ onSubmit } className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6">
         <div>
           <label htmlFor="username" className="block text-sm font-medium text-gray-700">
             Username
@@ -113,7 +115,7 @@ const SignIn = () => {
             <button
               type="button"
               className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-              onClick={ () => setPasswordVisible(!passwordVisbile) }
+              onClick={() => setPasswordVisible(!passwordVisbile)}
             >
               {passwordVisbile ? <FaEye /> : <FaEyeSlash />}
             </button>
@@ -124,7 +126,7 @@ const SignIn = () => {
             <input type="checkbox" className="checkbox checkbox-sm mr-2 [--chkbg:theme(colors.primary.500)] rounded" />
             Remember me
           </label>
-        <button
+          <button
             type="button"
             onClick={handleForgotPassword}
             className="text-sm text-blue-500 hover:underline"
@@ -151,4 +153,4 @@ const SignIn = () => {
   );
 };
 
-  export default SignIn;
+export default SignIn;
