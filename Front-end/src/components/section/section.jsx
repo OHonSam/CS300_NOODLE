@@ -16,7 +16,7 @@ const Section = ({
   const isTeacher = userType === 'teacher';
 
   return (
-    <div className="border rounded-lg shadow-md p-4 bg-white w-full" onClick={() => onClick()}>
+    <div className="border rounded-lg shadow-md p-4 bg-white w-full hover:bg-gray-100 cursor-pointer" onClick={() => onClick()}>
       <div className="flex justify-between items-center pb-2">
         <h1 className="font-bold text-lg">{sectionId} - {courseName}</h1>
       </div>
