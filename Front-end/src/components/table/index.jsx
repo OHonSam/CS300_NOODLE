@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Pager from '../footer/pager';
 
-const Table = ({ onRowClicked, headings, data, readOnly = false, rowsPerPage = 0, className }) => {
+const Table = ({ onRowClicked, headings, data, rowsPerPage = 0, className }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState(data);
   const [numberOfPages, setNumberOfPages] = useState(1);
@@ -164,7 +164,7 @@ const Table = ({ onRowClicked, headings, data, readOnly = false, rowsPerPage = 0
           </thead>
           <tbody>
             {paginatedData.map((row, rowIndex) => (
-              <tr key={rowIndex} className={`bg-white border-b ${!readOnly && 'hover:bg-gray-100'}`}>
+              <tr key={rowIndex} className={`bg-white border-b hover:bg-gray-100`}>
                 {headings.map((heading, itemIndex) => (
                   <td
                     key={itemIndex}
