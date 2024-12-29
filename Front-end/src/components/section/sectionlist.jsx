@@ -31,7 +31,6 @@ const SectionList = ({ data, onClick, onPageChange, rowsPerPage = 0, className, 
             onClick={() => onClick(section)}
             {...section}
             userType={userType}
-            onClick={onSectionClicked}
           />
         ))}
 
