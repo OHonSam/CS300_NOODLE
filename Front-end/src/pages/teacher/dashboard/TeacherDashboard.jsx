@@ -23,6 +23,8 @@ const TeacherDashboard = () => {
     );
   }
 
+  console.log(gradeData)
+
   return (
     <div className="p-8">
       <FilterBar

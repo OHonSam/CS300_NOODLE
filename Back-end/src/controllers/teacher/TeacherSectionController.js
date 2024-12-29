@@ -112,7 +112,7 @@ class TeacherSectionController {
 
   async filterSectionsByTime(req, res) {
     const { teacherId, semester, schoolYear } = req.query;
-    console.log(teacherId, semester, schoolYear);
+    // console.log(teacherId, semester, schoolYear);
 
     try {
       const sections = await Section.find({
@@ -121,7 +121,7 @@ class TeacherSectionController {
         teachers: teacherId,
       });
 
-      const sectionIds = sections.map(section => section._id);
+      const sectionIds = sections.map(section => section.sectionId);
 
       // Fetch participation reports for the filtered sections
       const reports = await ParticipationReport.find({
@@ -129,6 +129,8 @@ class TeacherSectionController {
         semester: Number(semester),
         sectionId: { $in: sectionIds },
       });
+
+      console.log(reports)
 
       const uniqueTeachers = new Set(sections.flatMap(section => section.teachers)).size;
       const uniqueStudents = new Set(sections.flatMap(section => section.students)).size;
