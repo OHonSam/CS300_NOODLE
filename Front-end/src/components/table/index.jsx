@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Pager from '../footer/pager';
 
 const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0, className }) => {
@@ -12,6 +12,8 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
   const [filterVisible, setFilterVisible] = useState(() =>
     headings.reduce((acc, heading) => ({ ...acc, [heading.id]: false }), {})
   );
+
+  const filterRefs = useRef({});
 
   useEffect(() => {
     let filteredData = data.filter((row) =>
@@ -49,6 +51,23 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
       setPaginatedData(filteredData);
     }
   }, [data, currentPage, sortConfig, filters]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const newFilterVisible = { ...filterVisible };
+      for (const key in filterRefs.current) {
+        if (filterRefs.current[key] && !filterRefs.current[key].contains(event.target)) {
+          newFilterVisible[key] = false;
+        }
+      }
+      setFilterVisible(newFilterVisible);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [filterVisible]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -126,7 +145,10 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
                     </button>
                   </div>
                   {filterVisible[heading.id] && (
-                    <div className="mt-2 absolute right-2 top-full z-10 bg-white shadow-lg border rounded-md p-2">
+                    <div
+                      ref={(el) => (filterRefs.current[heading.id] = el)}
+                      className="mt-2 absolute right-2 top-full z-10 bg-white shadow-lg border rounded-md p-2"
+                    >
                       <input
                         type="text"
                         placeholder={`Filter ${heading.label}`}
@@ -141,21 +163,20 @@ const Table = ({ onRowClicked, headings, data, readOnly = true, rowsPerPage = 0,
             </tr>
           </thead>
           <tbody>
-            { // TODO: need maximum row width
-              paginatedData.map((row, rowIndex) => (
-                <tr key={rowIndex} className={`bg-white border-b ${!readOnly && 'hover:bg-gray-100'}`}>
-                  {headings.map((heading, itemIndex) => (
-                    <td
-                      key={itemIndex}
-                      scope="row"
-                      className="px-6 py-4 select-none"
-                      onClick={() => onRowClicked(row)}
-                    >
-                      {row[heading.id]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+            {paginatedData.map((row, rowIndex) => (
+              <tr key={rowIndex} className={`bg-white border-b ${!readOnly && 'hover:bg-gray-100'}`}>
+                {headings.map((heading, itemIndex) => (
+                  <td
+                    key={itemIndex}
+                    scope="row"
+                    className="px-6 py-4 select-none"
+                    onClick={() => onRowClicked(row)}
+                  >
+                    {row[heading.id]}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
 
