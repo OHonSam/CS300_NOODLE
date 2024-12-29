@@ -52,7 +52,7 @@ const SectionsManagement = () => {
 
   return (
     <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <Header title="Your Sections" />
       </div>
 
@@ -62,7 +62,6 @@ const SectionsManagement = () => {
         onPageChange={handlePageChange}
         currentPage={currentPage}
         rowsPerPage={10}
-        className="mt-4 cursor-pointer"
         userType="teacher"
       />
     </div>
