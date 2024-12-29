@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="p-8">
+    <div>
       <FilterBar
         selectedYear={selectedYear}
         selectedSemester={selectedSemester}

@@ -1,14 +1,14 @@
 import DashboardInfoProvider from './provider';
-import TeacherDashboard from './TeacherDashboard';
+import StudentDashboard from './StudentDashboard';
 
-const AdminDashboardLayout = () => {
+const StudentDashboardLayout = () => {
   return (
     <DashboardInfoProvider>
       <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
-        <TeacherDashboard />
+        <StudentDashboard />
       </div>
     </DashboardInfoProvider>
   );
 };
 
-export default AdminDashboardLayout;
+export default StudentDashboardLayout;

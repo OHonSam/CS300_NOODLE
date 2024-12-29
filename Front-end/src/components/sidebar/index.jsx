@@ -27,7 +27,7 @@ const SideNavigationBar = ({ navlinks }) => {
 
         {/* Toggle Button */}
         <button
-          className="bg-gray-800 text-white rounded-full p-2 shadow-md hover:bg-gray-700"
+          className="bg-gray-800 text-white rounded-full p-2 shadow-md hover:bg-gray-700 transition-all cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <FaArrowLeft /> : <FaBars />}
@@ -41,7 +41,7 @@ const SideNavigationBar = ({ navlinks }) => {
             <li key={index}>
               <NavLink
                 to={category.link}
-                className={({ isActive }) => `flex items-center gap-4 px-4 hover:bg-gray-700 hover:cursor-pointer rounded h-10 ${!isOpen && 'justify-center'} ${isActive ? 'text-primary-500' : 'text-grey-100'}`}>
+                className={({ isActive }) => `flex items-center gap-4 px-4 hover:bg-gray-700 hover:cursor-pointer rounded h-10 ${!isOpen && 'justify-center'} ${isActive ? 'text-primary-500' : 'text-grey-100'}  transition-all`}>
                 <category.icon className="text-lg" />
                 {isOpen && <span className="text-regular font-sans">{category.name}</span>}
               </NavLink>

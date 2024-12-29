@@ -1,7 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useState } from 'react';
 
-export const GradeDistributionChart = ({ data }) => {
+export const GradeDistributionChart = ({ data, className }) => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     const colors = {
@@ -14,9 +14,9 @@ export const GradeDistributionChart = ({ data }) => {
 
     const handleMouseMove = (state) => {
         if (state.isTooltipActive) {
-        setActiveIndex(state.activeTooltipIndex);
+            setActiveIndex(state.activeTooltipIndex);
         } else {
-        setActiveIndex(null);
+            setActiveIndex(null);
         }
     };
 
@@ -25,8 +25,8 @@ export const GradeDistributionChart = ({ data }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm p-6 transition-all duration-300 hover:shadow-lg">
-            <h3 className="text-lg font-semibold mb-4">Grade Distribution</h3>
+        <div className={`bg-white rounded-lg shadow-md hover:bg-gray-100 transition p-4 ${className}`}>
+            <h3 className="text-lg text-center font-semibold mb-4">Grade Distribution</h3>
             <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={data} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
@@ -46,8 +46,8 @@ export const GradeDistributionChart = ({ data }) => {
                         />
                         <Bar
                             dataKey="count"
-                            // animationBegin={handleMouseMove}
-                            // animationDuration={handleMouseLeave}
+                        // animationBegin={handleMouseMove}
+                        // animationDuration={handleMouseLeave}
                         >
                             {data.map((entry, index) => {
                                 const isActive = (activeIndex === index);
@@ -73,6 +73,6 @@ export const GradeDistributionChart = ({ data }) => {
                     </BarChart>
                 </ResponsiveContainer>
             </div>
-        </div>
+        </div >
     );
 };

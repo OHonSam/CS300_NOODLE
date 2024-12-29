@@ -65,7 +65,7 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
   };
 
   return (
-    <div className="border rounded-lg shadow-md hover:bg-gray-100 bg-white w-full flex pl-4 pr-2">
+    <div className="border rounded-lg shadow-md hover:bg-gray-100 bg-white cursor-pointer transition-all w-full flex pl-4 pr-2">
       <div className="flex-grow">
         <Accordion open={open === 1}>
           <AccordionHeader onClick={() => handleOpen(1)}>
