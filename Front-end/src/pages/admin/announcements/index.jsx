@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
-import { useAnnouncementInfo } from "../../../hooks/admin/announcements/useAnnouncementInfo";
 import AnnouncementDialog from "../../../components/dialog/AdminAnnouncementDialog";
 import { useToast } from "../../../hooks/useToast";
+import { addAnnouncement, deleteAnnouncement, fetchAnnouncements, updateAnnouncement } from "../../../services/AnnouncementService";
 
-const Announcement = () => {
+const AdminAnnouncements = () => {
   const [announcementInfoDialogVisible, setAnnouncementInfoDialogVisible] = useState(false);
   const [announcementCreateDialogVisible, setAnnouncementCreateDialogVisible] = useState(false);
   const [currentAnnouncementDialog, setCurrentAnnouncementDialog] = useState(null);
   const { addToast } = useToast();
-  const { announcements } = useAnnouncementInfo();
+  const [announcements, setAnnouncments] = useState([]);
+
+  useEffect(() => {
+    const fetchAnnouncementData = async () => {
+      const data = await fetchAnnouncements();
+      setAnnouncments(data);
+    };
+
+    fetchAnnouncementData();
+  }, []);
 
   const headings = [
     { id: 'announcementId', label: 'ID' },
@@ -26,6 +35,21 @@ const Announcement = () => {
     setCurrentAnnouncementDialog(row);
     setAnnouncementInfoDialogVisible(true);
     setAnnouncementCreateDialogVisible(false);
+  };
+
+  const handleAddAnnouncement = async (newAnnouncement) => {
+    const newAnnouncements = await addAnnouncement(newAnnouncement, announcements);
+    setAnnouncments(newAnnouncements);
+  };
+
+  const handleUpdateAnnouncement = async (updatedAnnouncement) => {
+    const newAnnouncements = await updateAnnouncement(updatedAnnouncement, announcements);
+    setAnnouncments(newAnnouncements);
+  };
+
+  const handleDeleteAnnouncement = async (announcementId) => {
+    const newAnnouncements = await deleteAnnouncement(announcementId, announcements);
+    setAnnouncments(newAnnouncements);
   };
 
   return (
@@ -50,8 +74,16 @@ const Announcement = () => {
             dialogFor="info"
             announcementData={currentAnnouncementDialog}
             isOpen={announcementInfoDialogVisible}
-            onUpdate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
-            onDelete={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
+            onUpdate={(message, isAccepted, updatedAnnouncement) => {
+              addToast(isAccepted ? 'success' : 'error', message);
+              if (isAccepted) 
+                handleUpdateAnnouncement(updatedAnnouncement);
+            }}
+            onDelete={(message, isAccepted, announcementId) => {
+              addToast(isAccepted ? 'success' : 'error', message)
+              if (isAccepted)
+                handleDeleteAnnouncement(announcementId);
+            }}
             onClose={() => {
               setAnnouncementInfoDialogVisible(false);
               setAnnouncementCreateDialogVisible(false);
@@ -63,7 +95,11 @@ const Announcement = () => {
           announcementCreateDialogVisible && <AnnouncementDialog
             dialogFor="create"
             isOpen={announcementCreateDialogVisible}
-            onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
+            onCreate={(message, isAccepted, newAnnouncement) => {
+              addToast(isAccepted ? 'success' : 'error', message);
+              if (isAccepted)
+                handleAddAnnouncement(newAnnouncement);
+            }}
             onClose={() => {
               setAnnouncementCreateDialogVisible(false)
               setAnnouncementInfoDialogVisible(false);
@@ -84,4 +120,4 @@ const Announcement = () => {
   );
 };
 
-export default Announcement;
+export default AdminAnnouncements;
