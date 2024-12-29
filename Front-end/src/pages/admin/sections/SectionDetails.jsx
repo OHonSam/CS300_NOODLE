@@ -6,7 +6,6 @@ import SectionInfoView from './SectionInfo';
 import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionEnrolledStudentsView from './SectionEnrolledStudents';
-import SectionProvider from './provider';
 import Breadcrumbs from "../../../components/breadcrumbs";
 import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
@@ -77,12 +76,8 @@ const AdminSectionDetails = () => {
   ];
 
   return (
-    <SectionProvider
-      sectionId={sectionId}
-      schoolYear={schoolYear}
-      semester={semester}
-    >
-      <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
+    <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
+      <div>
         <Breadcrumbs className='mb-4'
           paths={[{ name: 'Section', url: '/admin/sections' }, { name: `${sectionId} - ${courseName}` }]} />
         <Tab title={sectionId + ' - ' + courseName} configs={configs} tabs={tabs} className={'w-full h-full'}>
@@ -116,7 +111,7 @@ const AdminSectionDetails = () => {
           onClose={() => setAssignTeacherDialogVisible(false)}
         />
       </TeacherInfoProvider>
-    </SectionProvider >
+      </div>
   );
 }
 
