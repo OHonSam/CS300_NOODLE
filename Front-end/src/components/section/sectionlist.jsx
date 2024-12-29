@@ -30,6 +30,7 @@ const SectionList = ({ data, onSectionClicked, onPageChange, rowsPerPage = 0, cl
             key={index}
             {...section}
             userType={userType}
+            onClick={onSectionClicked}
           />
         ))}
 

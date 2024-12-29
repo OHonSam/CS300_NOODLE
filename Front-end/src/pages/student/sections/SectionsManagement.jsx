@@ -1,6 +1,4 @@
-// SectionsManagement.jsx
-import React from 'react';
-import Header from "../../../components/tab";
+import Tab from "../../../components/tab";
 import SectionList from "../../../components/section/sectionlist";
 import { useSectionsManagementInfo } from "../../../hooks/student/useSectionsManagementInfo";
 
@@ -42,7 +40,7 @@ const SectionsManagement = () => {
   return (
     <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
       <div className="flex justify-between items-center mb-6">
-        <Header title="Your Sections" />
+        <Tab title="Your Sections" />
       </div>
 
       <SectionList

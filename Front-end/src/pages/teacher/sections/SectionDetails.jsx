@@ -11,17 +11,15 @@ import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog"
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import MaterialDialog from '../../../components/dialog/MaterialDialog';
 import { useToast } from "../../../hooks/useToast";
-import { addMaterial } from "../../../services/SectionInfoService";
 
-const AdminSectionDetails = () => {
+const TeacherSectionDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
-  const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
+  const [resourceCreationDialogVisible, setresourceCreationDialogVisible] = useState(false);
   const { addToast } = useToast();
-  const [shouldRefreshMaterials, setShouldRefreshMaterials] = useState(false);
 
   useEffect(() => {
     if (!sectionId) {
@@ -31,29 +29,6 @@ const AdminSectionDetails = () => {
 
     initFlowbite();
   }, []);
-
-  const handleAddMaterial = async (materialData) => {
-    try {
-      const newMaterial = {
-        ...materialData,
-        type: "RESOURCE",
-        sectionReference: {
-          sectionId,
-          schoolYear,
-          semester
-        }
-      };
-
-      const addedMaterial = await addMaterial(newMaterial);
-      addToast('success', 'Material added successfully');
-      setShouldRefreshMaterials(true);
-      setResourceCreationDialogVisible(false);
-      return true;
-    } catch (error) {
-      addToast('error', error.message || "Failed to add material");
-      return false;
-    }
-  };
 
   const tabs = [
     {
@@ -82,16 +57,11 @@ const AdminSectionDetails = () => {
     [],
     [
       {
-        name: 'Add a Resource',
-        onClick: () => setResourceCreationDialogVisible(true)
+        name: 'Add a Resouce',
+        onClick: () => setresourceCreationDialogVisible(true)
       },
     ],
-    [
-      {
-        name: 'Add Teacher',
-        onClick: () => setAssignTeacherDialogVisible(true)
-      }
-    ],
+    [],
     [
       {
         name: 'Import Student File',
@@ -104,28 +74,19 @@ const AdminSectionDetails = () => {
     <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
       <div>
         <Breadcrumbs className='mb-4'
-          paths={[{ name: 'Section', url: '/admin/sections' }, { name: `${sectionId} - ${courseName}` }]} />
+          paths={[{ name: 'Section', url: '/teacher/sections' }, { name: `${sectionId} - ${courseName}` }]} />
         <Tab title={sectionId + ' - ' + courseName} configs={configs} tabs={tabs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="info" role="tabpanel" aria-labelledby="info-tab">
             <SectionInfoView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="material" role="tabpanel" aria-labelledby="material-tab">
-            <SectionMaterialView 
-              schoolYear={schoolYear} 
-              semester={semester} 
-              sectionId={sectionId}
-              shouldRefresh={shouldRefreshMaterials}
-              onRefreshComplete={() => setShouldRefreshMaterials(false)}
-            />
+            <SectionMaterialView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <SectionTeachersView schoolYear={schoolYear} semester={semester} sectionId={sectionId}/>
           </div>
           <div className="hidden rounded-lg" id="students" role="tabpanel" aria-labelledby="students-tab">
-            <SectionEnrolledStudentsView 
-              schoolYear={schoolYear} 
-              semester={semester} 
-              sectionId={sectionId} 
+            <SectionEnrolledStudentsView schoolYear={schoolYear} semester={semester} sectionId={sectionId} 
               studentFileUploadDialogVisible={studentFileUploadDialogVisible} 
               setStudentFileUploadDialogVisible={setStudentFileUploadDialogVisible}
             />
@@ -133,10 +94,10 @@ const AdminSectionDetails = () => {
         </Tab>
 
         <MaterialDialog
-          dialogFor="create"
+          dialogFor={'create'}
           isOpen={resourceCreationDialogVisible}
-          onCreate={handleAddMaterial}
-          onClose={() => setResourceCreationDialogVisible(false)}
+          onCreate={(message, isAccepted) => addToast(isAccepted ? 'success' : 'error', message)}
+          onClose={() => setresourceCreationDialogVisible(false)}
         />
       </div>
       <TeacherInfoProvider>
@@ -145,8 +106,8 @@ const AdminSectionDetails = () => {
           onClose={() => setAssignTeacherDialogVisible(false)}
         />
       </TeacherInfoProvider>
-    </div>
+      </div>
   );
 }
 
-export default AdminSectionDetails;
+export default TeacherSectionDetails;

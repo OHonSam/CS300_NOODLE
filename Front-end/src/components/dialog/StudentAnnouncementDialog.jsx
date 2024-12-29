@@ -1,14 +1,12 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6';
-import { useAnnouncementInfo } from "../../hooks/student/announcements/useAnnouncementInfo";
 import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
 
-const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
+const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onClose }) => {
   const userData = getStoredToken();
   const decodedData = decryptToken(userData);
   const username = decodedData?.username
-  const { addAnnouncement, updateAnnouncement, deleteAnnouncement } = useAnnouncementInfo();
   const [formData, setFormData] = useState(announcementData ? announcementData : {
     announcementId: 1,
     title: '',
@@ -31,67 +29,6 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onU
       createdAt: '',
       updatedAt: '',
     });
-  };
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: id !== 'announcementId' ? value : Number(value),
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    console.log("handleSubmit", formData);
-    e.preventDefault();
-    let errorMessage = null;
-    if (dialogFor === 'create') {
-      try {
-        await addAnnouncement(formData);
-      } catch (error) {
-        errorMessage = error.message;
-      }
-
-      if (errorMessage) {
-        onCreate(errorMessage, false);
-      } else {
-        onCreate('Announcement created successfully!', true);
-        clearForm();
-      }
-    } else {
-      try {
-        await updateAnnouncement(formData);
-      } catch (error) {
-        errorMessage = error.message;
-      }
-
-      if (errorMessage) {
-        onUpdate(errorMessage, false);
-      } else {
-        onUpdate('Announcement updated successfully!', true);
-      }
-    }
-
-    if (!errorMessage) {
-      handleClose(true);
-    }
-  };
-
-  const handleDelete = () => {
-    let message = null;
-    try {
-      console.log("delete announcement", formData.announcementId);
-      deleteAnnouncement(formData.announcementId);
-    } catch (error) {
-      message = error.message;
-    }
-
-    if (message) {
-      onDelete(message, false);
-    } else {
-      onDelete('Announcement deleted successfully!', true);
-    }
-    handleClose(true);
   };
 
   const handleClose = (updated) => {
@@ -140,7 +77,6 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onU
             placeholder="Your description"
             required
             value={formData.content}
-            onChange={handleChange}
           />
         </div>
 

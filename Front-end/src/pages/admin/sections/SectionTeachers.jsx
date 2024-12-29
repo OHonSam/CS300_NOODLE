@@ -1,6 +1,6 @@
 import Table from "../../../components/table";
 import { useState, useEffect } from "react";
-import { fetchAssignedTeachers, removeTeacherFromSection} from "../../../services/admin/SectionInfoService";
+import { fetchAssignedTeachers, removeTeacherFromSection} from "../../../services/SectionInfoService";
 import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 import SectionTeacherInfoDialog from "../../../components/dialog/SectionTeacherInfoDialog";
 import { useToast } from "../../../hooks/useToast";

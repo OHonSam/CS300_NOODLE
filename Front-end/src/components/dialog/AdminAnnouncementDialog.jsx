@@ -1,14 +1,12 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6';
-import { useAnnouncementInfo } from "../../hooks/admin/announcements/useAnnouncementInfo";
 import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
 
 const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
   const userData = getStoredToken();
   const decodedData = decryptToken(userData);
   const username = decodedData?.username
-  const { addAnnouncement, updateAnnouncement, deleteAnnouncement } = useAnnouncementInfo();
   const [formData, setFormData] = useState(announcementData ? announcementData : {
     announcementId: 1,
     title: '',
@@ -47,28 +45,19 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onU
     let errorMessage = null;
     if (dialogFor === 'create') {
       try {
-        await addAnnouncement(formData);
+        onCreate('Announcement created successfully!', true, formData)
+        clearForm();
       } catch (error) {
         errorMessage = error.message;
-      }
-
-      if (errorMessage) {
         onCreate(errorMessage, false);
-      } else {
-        onCreate('Announcement created successfully!', true);
-        clearForm();
       }
     } else {
       try {
-        await updateAnnouncement(formData);
+        onUpdate('Announcement updated successfully', true, formData)
+        clearForm
       } catch (error) {
         errorMessage = error.message;
-      }
-
-      if (errorMessage) {
         onUpdate(errorMessage, false);
-      } else {
-        onUpdate('Announcement updated successfully!', true);
       }
     }
 
@@ -81,15 +70,10 @@ const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onU
     let message = null;
     try {
       console.log("delete announcement", formData.announcementId);
-      deleteAnnouncement(formData.announcementId);
+      onDelete('Announcement deleted successfully', true, formData.announcementId);
     } catch (error) {
       message = error.message;
-    }
-
-    if (message) {
       onDelete(message, false);
-    } else {
-      onDelete('Announcement deleted successfully!', true);
     }
     handleClose(true);
   };
