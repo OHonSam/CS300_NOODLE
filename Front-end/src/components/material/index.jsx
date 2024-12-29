@@ -131,7 +131,7 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
                   <p>
                     Click{" "}
                     <a href={localUrl} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline pt-2">
-                      {localUrl}
+                      this link
                     </a>{" "}
                     to open material
                   </p>
