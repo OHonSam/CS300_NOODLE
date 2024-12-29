@@ -67,7 +67,7 @@ const AdminAnnouncements = () => {
           <p>Add Announcement</p>
         </button>
       </div>
-      <div className="relative mt-8 flex flex-col items-center justify-between w-full">
+      <div className="relative flex flex-col items-center justify-between w-full pt-4">
 
         {
           announcementInfoDialogVisible && <AnnouncementDialog
@@ -113,7 +113,6 @@ const AdminAnnouncements = () => {
           readOnly={false}
           rowsPerPage={10}
           onRowClicked={handleRowClicked}
-          className={"pt-4"}
         />
       </div>
     </div>

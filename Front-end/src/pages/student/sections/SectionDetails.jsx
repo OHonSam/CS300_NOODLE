@@ -7,7 +7,6 @@ import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionEnrolledStudentsView from './SectionEnrolledStudents';
 import Breadcrumbs from "../../../components/breadcrumbs";
-import { useToast } from "../../../hooks/useToast";
 
 const StudentSectionDetails = () => {
   const navigate = useNavigate();

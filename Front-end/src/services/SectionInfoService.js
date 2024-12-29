@@ -6,6 +6,7 @@ export const fetchAllSections = async () => {
         return response.data;
     } catch (error) {
         console.error("Error fetching sections:", error);
+        throw { message: error.response.data.message || "Failed to fetch sections" };
     }
 };
 
@@ -15,6 +16,7 @@ export const addSection = async (newSection) => {
         return response.data;
     } catch (error) {
         console.error("Error adding section:", error);
+        throw { message: error.response.data.message || "Failed to add section" };
     }
 };
 
@@ -24,6 +26,7 @@ export const fetchSection = async (schoolYear, semester, sectionId) => {
         return response.data;
     } catch (error) {
         console.error("Error fetching section:", error);
+        throw { message: error.response.data.message || "Failed to fetch section" };
     }
 };
 
@@ -38,9 +41,7 @@ export const updateSection = async (updatedSection, schoolYear, semester, sectio
         }
     } catch (error) {
         console.error("Error updating section:", error.response);
-        throw {
-            message: error.response.data.message,
-        };
+        throw { message: error.response.data.message || "Failed to update section" };
     }
 };
 
@@ -50,7 +51,7 @@ export const deleteSection = async (deletedSection) => {
         return true;
     } catch (error) {
         console.error("Error deleting section:", error);
-        return false;
+        throw { message: error.response.data.message || "Failed to delete section" };
     }
 };
 
@@ -71,7 +72,7 @@ export const addMaterial = async (materialData) => {
         return response.data;
     } catch (error) {
         console.error("Error adding material:", error);
-        throw { message: error.response?.data?.message || 'Failed to add material' };
+        throw { message: error.response.data.message || 'Failed to add material' };
     }
 };
 
@@ -81,7 +82,7 @@ export const updateMaterial = async (materialId, updatedData) => {
         return response.data;
     } catch (error) {
         console.error("Error updating material:", error);
-        throw { message: error.response?.data?.message || 'Failed to update material' };
+        throw { message: error.response.data.message || 'Failed to update material' };
     }
 };
 
@@ -91,7 +92,7 @@ export const deleteMaterial = async (materialId) => {
         return response.data;
     } catch (error) {
         console.error("Error deleting material:", error);
-        throw { message: error.response?.data?.message || 'Failed to delete material' };
+        throw { message: error.response.data.message || 'Failed to delete material' };
     }
 };
 
@@ -101,7 +102,7 @@ export const addFileToMaterial = async (materialId, fileData) => {
         return response.data;
     } catch (error) {
         console.error("Error adding file to material:", error);
-        throw { message: error.response?.data?.message || 'Failed to add file' };
+        throw { message: error.response.data.message || 'Failed to add file' };
     }
 };
 
@@ -111,7 +112,7 @@ export const fetchAssignedTeachers = async (schoolYear, semester, sectionId) => 
         return response.data;
     } catch (error) {
         console.error("Error fetching teachers:", error);
-        throw { message: error.response.data.message };
+        throw { message: error.response.data.message || "Failed to fetch teachers" };
     }
 };
 
@@ -121,7 +122,7 @@ export const removeTeacherFromSection = async (currentAssignedTeachers, teacherI
         return currentAssignedTeachers.filter((teacher) => teacher.teacherId !== teacherId);
     } catch (error) {
         console.error("Error removing teacher from section:", error);
-        throw { message: error.response.data.message };
+        throw { message: error.response.data.message || "Failed to remove teacher" };
     }
 }
 
@@ -178,7 +179,7 @@ export const fetchEnrolledStudents = async (schoolYear, semester, sectionId) => 
 
     } catch (error) {
         console.error("Error fetching students:", error);
-        throw { message: error.response.data.message };
+        throw { message: error.response.data.message || "Failed to fetch students" };
     }
 };
 
@@ -189,6 +190,7 @@ export const removeStudentFromSection = async (currentEnrolledStudents, studentI
         return newEnrolledStudents;
     } catch (error) {
         console.error("Error removing student from section:", error);
+        throw { message: error.response.data.message || "Failed to remove student" };
     }
 };
 
@@ -203,10 +205,12 @@ export const updateStudentFromSection = async (currentEnrolledStudents, updatedS
             const newEnrolledStudents = currentEnrolledStudents.map(student => student.studentId === updatedStudent.studentId ? response.data : student);
             console.log(newEnrolledStudents)
             return newEnrolledStudents;
+        } else {
+            throw { message: "Failed to update student" };
         }
     } catch (error) {
         console.error("Error updating student:", error);
-        return false;
+        throw { message: error.response.data.message || "Failed to update student" };
     }
 };
 
@@ -235,7 +239,7 @@ export const addEnrolledStudentsFromFile = async (currentEnrolledStudents, file,
             };
         } else {
             throw {
-                message: error.response?.data?.message || 'Failed to enroll students'
+                message: error.response.data.message || 'Failed to enroll students'
             };
         }
     }
