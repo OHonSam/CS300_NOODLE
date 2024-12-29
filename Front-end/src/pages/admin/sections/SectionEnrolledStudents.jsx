@@ -4,13 +4,10 @@ import Table from "../../../components/table";
 import { useSectionStudents } from "../../../hooks/admin/sections/useSectionStudents";
 import { StudentInfoProvider } from "../../../context/admin/accounts/StudentInfoContext";
 import { SectionStudentInfoDialog } from "../../../components/dialog/SectionStudentInfoDialog";
-import EnrolledStudentsUploadDialog from "../../../components/dialog/EnrolledStudentsUploadDialog";
-import { FiPlusCircle } from "react-icons/fi";
 
 export const SectionEnrolledStudentsView = () => {
   const [studentInfoDialogVisible, setStudentInfoDialogVisible] = useState(false);
   const [currentStudentDialog, setCurrentStudentDialog] = useState(null);
-  const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
   const [toast, setToast] = useState([]);
   const { enrolledStudents } = useSectionStudents();
 
@@ -30,24 +27,6 @@ export const SectionEnrolledStudentsView = () => {
 
   return (
     <div className="relative pt-4 pb-8 flex flex-col h-full w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Add Enrolled Students</h2>
-        <button
-          onClick={() => setStudentFileUploadDialogVisible(true)}
-          className="flex items-center space-x-2 px-4 py-2 rounded-md text-sm tracking-wide text-white bg-blue-600 hover:bg-blue-700 font-medium"
-        >
-          <FiPlusCircle className="text-lg" />
-          <p>Enroll Students</p>
-        </button>
-      </div>
-      <EnrolledStudentsUploadDialog
-        heading={'Import student file'}
-        isOpen={studentFileUploadDialogVisible}
-        onSubmit={(message, isAccepted) => setToast([message, isAccepted])}
-        onClose={() => setStudentFileUploadDialogVisible(false)}
-        fileFormat={['.csv', '.xlsx', '.txt']}
-        userType="student"
-      />
       <Table headings={headings} data={enrolledStudents} readOnly={false} onRowClicked={handleRowClicked} rowsPerPage={10} />
       <StudentInfoProvider>
         <SectionStudentInfoDialog

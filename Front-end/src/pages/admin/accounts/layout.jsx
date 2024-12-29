@@ -50,7 +50,7 @@ const AdminManageAccountsLayout = () => {
         onClick: () => setStudentCreationDialogVisible(true)
       },
       {
-        name: 'Import Student List',
+        name: 'Import Student File',
         onClick: () => setStudentFileUploadDialogVisible(true)
       },
     ],
@@ -60,7 +60,7 @@ const AdminManageAccountsLayout = () => {
         onClick: () => setTeacherCreationDialogVisible(true)
       },
       {
-        name: 'Import Teacher List',
+        name: 'Import Teacher File',
         onClick: () => setTeacherFileUploadVisible(true)
       },
     ],
@@ -70,7 +70,7 @@ const AdminManageAccountsLayout = () => {
         onClick: () => setAdminCreationDialogVisible(true)
       },
       {
-        name: 'Import Admin List',
+        name: 'Import Admin File',
         onClick: () => setAdminFileUploadDialogVisible(true)
       },
     ]
