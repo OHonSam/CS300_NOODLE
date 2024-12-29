@@ -7,11 +7,17 @@ import SectionMaterialView from './SectionMaterial';
 import SectionTeachersView from './SectionTeachers';
 import SectionStudentsView from './SectionStudents';
 import SectionProvider from './provider';
+import Breadcrumbs from "../../../components/breadcrumbs";
+import SelectTeacherDialog from "../../../components/dialog/SelectTeacherDialog";
+import TeacherInfoProvider from "../../../context/admin/accounts/TeacherInfoContext";
 
 const AdminSectionDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { sectionId, courseName, schoolYear, semester } = location.state || {};
+  const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
+  const [addStudentDialogVisible, setAddStudentDialogVisible] = useState(false);
+  const [importStudentDialogVisible, setImportStudentDialogVisible] = useState(false);
 
   useEffect(() => {
     if (!sectionId) {
@@ -45,14 +51,38 @@ const AdminSectionDetails = () => {
     },
   ];
 
+  const configs = [
+    [],
+    [],
+    [
+      {
+        name: 'Add Teacher',
+        onClick: () => setAssignTeacherDialogVisible(true)
+      }
+    ],
+    [
+      {
+        name: 'Add Student',
+        onClick: () => setAddStudentDialogVisible(true)
+      },
+      {
+        name: 'Import Student File',
+        onClick: () => setImportStudentDialogVisible(true)
+      }
+    ]
+  ]
+
   return (
+    <TeacherInfoProvider>
     <SectionProvider
       sectionId={sectionId}
       schoolYear={schoolYear}
       semester={semester}
     >
       <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
-        <Tab title={sectionId + ' - ' + courseName} tabs={tabs} className={'w-full h-full'}>
+        <Breadcrumbs className='mb-4'
+          paths={[{name: 'Section', url: '/admin/sections'}, {name: `${sectionId} - ${courseName}`}]}/>
+        <Tab title={sectionId + ' - ' + courseName} configs={configs} tabs={tabs} className={'w-full h-full'}>
           <div className="hidden h-full rounded-lg" id="info" role="tabpanel" aria-labelledby="info-tab">
             <SectionInfoView />
           </div>
@@ -67,7 +97,12 @@ const AdminSectionDetails = () => {
           </div>
         </Tab>
       </div>
+      <SelectTeacherDialog 
+        isOpen={assignTeacherDialogVisible}
+        onClose={() => setAssignTeacherDialogVisible(false)}
+      />
     </SectionProvider >
+    </TeacherInfoProvider>
   );
 }
 
