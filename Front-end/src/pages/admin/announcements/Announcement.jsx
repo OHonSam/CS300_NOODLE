@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
-import { useAnnouncementInfo } from "../../../hooks/useAnnouncementInfo";
+import { useAnnouncementInfo } from "../../../hooks/admin/announcement/useAnnouncementInfo";
 import AnnouncementDialog from "../../../components/dialog/AnnouncementDialog";
 import Toast from "../../../components/toast";
 

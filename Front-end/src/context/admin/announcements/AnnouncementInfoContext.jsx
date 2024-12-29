@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../../../axios.config";
 
-import { AnnouncementInfoContext } from "../../../hooks/useAnnouncementInfo";
+import { AnnouncementInfoContext } from "../../../hooks/admin/announcement/useAnnouncementInfo";
 
 export const AnnouncementInfoProvider = ({ children }) => {
   const [announcements, setAnnouncements] = useState([]);
