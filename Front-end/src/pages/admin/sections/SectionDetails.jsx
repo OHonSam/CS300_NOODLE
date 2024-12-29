@@ -140,10 +140,10 @@ const AdminSectionDetails = () => {
         />
       </div>
       <TeacherInfoProvider>
-        <SelectTeacherDialog
-          isOpen={assignTeacherDialogVisible}
-          onClose={() => setAssignTeacherDialogVisible(false)}
-        />
+          <SelectTeacherDialog
+            isOpen={assignTeacherDialogVisible}
+            onClose={() => setAssignTeacherDialogVisible(false)}
+          />
       </TeacherInfoProvider>
     </div>
   );
