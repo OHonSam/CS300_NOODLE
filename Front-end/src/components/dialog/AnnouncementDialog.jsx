@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6';
-import { useAnnouncementInfo } from "../../hooks/useAnnouncementInfo";
+import { useAnnouncementInfo } from "../../hooks/admin/announcement/useAnnouncementInfo";
 import { decryptToken, getStoredToken } from "../../services/auth/tokenService";
 
 const AnnouncementDialog = ({ announcementData, isOpen, dialogFor, onCreate, onUpdate, onDelete, onClose }) => {
