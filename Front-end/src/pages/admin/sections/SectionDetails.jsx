@@ -20,6 +20,7 @@ const AdminSectionDetails = () => {
   const [assignTeacherDialogVisible, setAssignTeacherDialogVisible] = useState(false);
   const [studentFileUploadDialogVisible, setStudentFileUploadDialogVisible] = useState(false);
   const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
+  const [resourceCreationDialogVisible, setResourceCreationDialogVisible] = useState(false);
   const { addToast } = useToast();
   const [shouldRefreshMaterials, setShouldRefreshMaterials] = useState(false);
 
