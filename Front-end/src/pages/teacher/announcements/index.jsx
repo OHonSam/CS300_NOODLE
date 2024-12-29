@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
 import AnnouncementDialog from "../../../components/dialog/StudentAnnouncementDialog";
-import Toast from "../../../components/toast";
 import { fetchAnnouncements } from "../../../services/AnnouncementService";
 import { useToast } from "../../../hooks/useToast";
 
@@ -11,19 +10,19 @@ const TeacherAnnouncements = () => {
   const [currentAnnouncementDialog, setCurrentAnnouncementDialog] = useState(null);
   const { addToast } = useToast();
   const [announcements, setAnnouncments] = useState([]);
-  
-    useEffect(() => {
-      const fetchAnnouncementData = async () => {
-        try {
-          const data = await fetchAnnouncements();
-          setAnnouncments(data);
-        } catch (error) {
-          addToast('error', error.message || 'Failed to fetch announcements');
-        }
-      };
-  
-      fetchAnnouncementData();
-    }, []);
+
+  useEffect(() => {
+    const fetchAnnouncementData = async () => {
+      try {
+        const data = await fetchAnnouncements();
+        setAnnouncments(data);
+      } catch (error) {
+        addToast('error', error.message || 'Failed to fetch announcements');
+      }
+    };
+
+    fetchAnnouncementData();
+  }, []);
 
   const headings = [
     { id: 'title', label: 'Title' },
@@ -62,20 +61,6 @@ const TeacherAnnouncements = () => {
             }}
           />
         }
-
-        {toast.length > 0 && (
-          <Toast
-            message={toast[0]}
-            onClick={() => setToast([])}
-            className="m-auto top-6"
-            isAccepted={toast[1]}
-            Icon={
-              <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-              </svg>
-            }
-          />
-        )}
       </div>
     </div>
   );

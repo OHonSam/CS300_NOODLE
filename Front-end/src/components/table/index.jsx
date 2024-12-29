@@ -112,79 +112,81 @@ const Table = ({ onRowClicked, headings, data, rowsPerPage = 0, className }) => 
   return (
     <div className={`w-full ${className}`}>
       <div className="flex flex-col flex-grow">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-m text-gray-700 bg-gray-200 top-0">
-            <tr>
-              {headings.map((heading, index) => (
-                <th key={index} className="px-6 py-3 relative">
-                  <div className="flex justify-between items-center">
-                    <span
-                      className="cursor-pointer"
-                      onClick={() => handleSort(heading.id)}
-                    >
-                      {heading.label}
-                      <div className="inline-block ml-1" />
-                      {sortConfig.key === heading.id && <SortIcon direction={sortConfig.direction} />}
-                    </span>
-                    <button
-                      className={`absolute right-2 top-1/2 transform -translate-y-1/2  ${filters[heading.id] ? 'text-blue-500' : 'text-gray-500'
-                        }`}
-                      onClick={() => toggleFilterBox(heading.id)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        width="16"
-                        height="16"
+        <div className="shadow-md">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-m text-gray-700 bg-gray-200 top-0">
+              <tr>
+                {headings.map((heading, index) => (
+                  <th key={index} className="px-6 py-3 relative">
+                    <div className="flex justify-between items-center">
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => handleSort(heading.id)}
                       >
-                        <rect x="1" y="3" width="14" height="2" />
-                        <rect x="3" y="7" width="10" height="2" />
-                        <rect x="5" y="11" width="6" height="2" />
-                      </svg>
-                    </button>
-                  </div>
-                  {filterVisible[heading.id] && (
-                    <div
-                      ref={(el) => (filterRefs.current[heading.id] = el)}
-                      className="mt-2 absolute right-2 top-full z-10 bg-white shadow-lg border rounded-md p-2"
-                    >
-                      <input
-                        type="text"
-                        placeholder={`Filter ${heading.label}`}
-                        value={filters[heading.id]}
-                        onChange={(e) => handleFilterChange(heading.id, e.target.value)}
-                        className="w-full text-sm border rounded-md px-2 py-1"
-                      />
+                        {heading.label}
+                        <div className="inline-block ml-1" />
+                        {sortConfig.key === heading.id && <SortIcon direction={sortConfig.direction} />}
+                      </span>
+                      <button
+                        className={`absolute right-2 top-1/2 transform -translate-y-1/2  ${filters[heading.id] ? 'text-blue-500' : 'text-gray-500'
+                          }`}
+                        onClick={() => toggleFilterBox(heading.id)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          height="16"
+                        >
+                          <rect x="1" y="3" width="14" height="2" />
+                          <rect x="3" y="7" width="10" height="2" />
+                          <rect x="5" y="11" width="6" height="2" />
+                        </svg>
+                      </button>
                     </div>
-                  )}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((row, rowIndex) => (
-              <tr key={rowIndex} className={`bg-white border-b hover:bg-gray-100`}>
-                {headings.map((heading, itemIndex) => (
-                  <td
-                    key={itemIndex}
-                    scope="row"
-                    className="px-6 py-4 select-none"
-                    onClick={() => onRowClicked(row)}
-                  >
-                    {row[heading.id]}
-                  </td>
+                    {filterVisible[heading.id] && (
+                      <div
+                        ref={(el) => (filterRefs.current[heading.id] = el)}
+                        className="mt-2 absolute right-2 top-full z-10 bg-white shadow-lg border rounded-md p-2"
+                      >
+                        <input
+                          type="text"
+                          placeholder={`Filter ${heading.label}`}
+                          value={filters[heading.id]}
+                          onChange={(e) => handleFilterChange(heading.id, e.target.value)}
+                          className="w-full text-sm border rounded-md px-2 py-1"
+                        />
+                      </div>
+                    )}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedData.map((row, rowIndex) => (
+                <tr key={rowIndex} className={`bg-white border-b hover:bg-gray-100 transition-all cursor-pointer`}>
+                  {headings.map((heading, itemIndex) => (
+                    <td
+                      key={itemIndex}
+                      scope="row"
+                      className="px-6 py-4 select-none"
+                      onClick={() => onRowClicked(row)}
+                    >
+                      {row[heading.id]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        {paginatedData.length === 0 && (
-          <div className="flex justify-center items-center py-4 text-sm text-gray-500 bg-white">
-            No data available
-          </div>
-        )}
+          {paginatedData.length === 0 && (
+            <div className="flex justify-center items-center py-4 text-sm text-gray-500 bg-white">
+              No data available
+            </div>
+          )}
+        </div>
 
         {paginatedData.length !== 0 && rowsPerPage > 0 && (
           <div className="flex justify-center pt-4">

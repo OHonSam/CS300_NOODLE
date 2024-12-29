@@ -5,7 +5,7 @@ import AdminDashboard from './AdminDashboard';
 const AdminDashboardLayout = () => {
   return (
     <DashboardInfoProvider>
-      <div className="min-h-screen h-screen bg-gray-100 w-full h-full">
+      <div className="relative flex flex-col overflow-y-auto p-8 bg-gray-100 w-full h-full">
         <AdminDashboard />
       </div>
     </DashboardInfoProvider>
