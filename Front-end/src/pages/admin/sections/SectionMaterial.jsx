@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Expander from "../../../components/expander";
+import Expander from "../../../components/material";
 import { fetchMaterials } from "../../../services/admin/SectionInfoService";
 
 const SectionMaterialView = ({schoolYear, semester, sectionId}) => {

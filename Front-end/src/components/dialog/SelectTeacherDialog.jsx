@@ -1,7 +1,6 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { useState } from "react";
 import { FaXmark } from 'react-icons/fa6'
-import { useSectionTeachers } from "../../hooks/admin/sections/useSectionTeachers";
 import { useTeacherInfo } from "../../hooks/admin/accounts/useTeacherInfo";
 
 const SelectTeacherDialog = ({ isOpen, onSave, onClose }) => {

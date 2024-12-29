@@ -24,7 +24,7 @@ export const SectionStudentsProvider = ({ children, sectionId, schoolYear, semes
   const removeStudentFromSection = async (studentId) => {
     try {
       await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/removeEnrolled/${studentId}`);
-      setEnrolledStudents((prev) => prev.filter((student) => student.studentId !== studentId));
+      return (prev) => prev.filter((student) => student.studentId !== studentId);
     } catch (error) {
       console.error("Error removing student from section:", error);
       throw { message: error.response.data.message };

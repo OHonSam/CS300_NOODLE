@@ -45,3 +45,23 @@ export const fetchMaterials = async (schoolYear, semester, sectionId) => {
         throw{ message: error.response.data.message};
     } 
 };
+
+export const fetchAssignedTeachers = async (schoolYear, semester, sectionId) => {
+    try {
+        const response = await axios.get(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/assignedTeachers`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching teachers:", error);
+        throw{ message: error.response.data.message};
+    }
+};
+
+export const removeTeacherFromSection = async (currentAssignedTeachers, teacherId, schoolYear, semester, sectionId) => {
+    try {
+        await axios.delete(`/api/admin/sections/${schoolYear}/${semester}/${sectionId}/removeAssigned/${teacherId}`);
+        return currentAssignedTeachers.filter((teacher) => teacher.teacherId !== teacherId);
+    } catch (error) {
+        console.error("Error removing teacher from section:", error);
+        throw { message: error.response.data.message };
+    }
+}
