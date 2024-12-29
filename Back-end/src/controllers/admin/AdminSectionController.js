@@ -463,12 +463,10 @@ class AdminSectionController {
         schoolYear: schoolYear,
         semester: Number(semester)
       }).session(session);
-
       if (!section) {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Section not found' });
       }
-
       // TODO: remove redundant checking for existence, 
       // Check if teacher exists
       const teacher = await Teacher.findOne({ teacherId }).session(session);
@@ -476,20 +474,17 @@ class AdminSectionController {
         await session.abortTransaction();
         return res.status(404).json({ message: 'Teacher not found' });
       }
-
       // Add teacher if not already assigned
       if (!section.teachers.includes(teacherId)) {
         section.teachers.push(teacherId);
         await section.save({ session });
       }
-
       // Get all assigned teachers' details
       const assignedTeachers = await Teacher.find({
         teacherId: { $in: section.teachers }
       }).session(session);
 
       await session.commitTransaction();
-
       // Return the list of assigned teachers
       res.json(assignedTeachers);
     } catch (error) {
