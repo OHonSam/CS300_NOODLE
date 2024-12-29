@@ -53,7 +53,7 @@ class TeacherAccountController {
 
   async addTeachersFromFile(req, res) {
     try {
-      const requiredFields = ['teacherId', 'fullName', 'email', 'department', 'gender', 'dob', 'address', 'phone' ];
+      const requiredFields = ['teacherId', 'fullName', 'email', 'department', 'gender', 'dob', 'address', 'phone'];
       const userData = await FileProcessingUtil.processFile(req.file, requiredFields);
 
       const result = await BulkUserCreationUtil.createUsers(userData, {
@@ -61,7 +61,7 @@ class TeacherAccountController {
         roleId: RoleId.TEACHER,
         userIdField: 'teacherId',
       });
-  
+
       res.status(201).json(result);
     } catch (error) {
       console.error('Error processing file:', error);
@@ -91,6 +91,13 @@ class TeacherAccountController {
         await Account.findOneAndUpdate(
           { username: teacherId },
           { email: updateData.email }
+        );
+      }
+
+      if (updateData.fullName) {
+        await Account.findOneAndUpdate(
+          { username: teacherId },
+          { fullName: updateData.fullName }
         );
       }
 

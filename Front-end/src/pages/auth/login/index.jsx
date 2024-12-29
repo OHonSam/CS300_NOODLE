@@ -76,7 +76,7 @@ const SignIn = () => {
           alt="Logo"
           width="50"
           height="50"
-          className="mx-auto"
+          className="mx-auto pb-4"
         />
         <h2 className="text-2xl font-semibold text-gray-800">Welcome Back to Noodle</h2>
         <p className="text-gray-500">Enter your username and password to continue.</p>

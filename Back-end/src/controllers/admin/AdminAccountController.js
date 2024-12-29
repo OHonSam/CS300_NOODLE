@@ -21,7 +21,7 @@ class AdminAccountController {
 
   async addAdminsFromFile(req, res) {
     try {
-      const requiredFields = ['adminId', 'fullName', 'email', 'gender', 'dob', 'address', 'phone' ];
+      const requiredFields = ['adminId', 'fullName', 'email', 'gender', 'dob', 'address', 'phone'];
       const userData = await FileProcessingUtil.processFile(req.file, requiredFields);
 
       const result = await BulkUserCreationUtil.createUsers(userData, {
@@ -29,7 +29,7 @@ class AdminAccountController {
         roleId: RoleId.ADMIN,
         userIdField: 'adminId',
       });
-  
+
       res.status(201).json(result);
     } catch (error) {
       console.error('Error processing file:', error);
@@ -39,7 +39,7 @@ class AdminAccountController {
       });
     }
   }
-  
+
   // Create a new admin with account
   async createAdmin(req, res) {
     const adminData = req.body;
@@ -111,6 +111,13 @@ class AdminAccountController {
         await Account.findOneAndUpdate(
           { username: adminId },
           { email: updateData.email }
+        );
+      }
+
+      if (updateData.fullName) {
+        await Account.findOneAndUpdate(
+          { username: adminId },
+          { fullName: updateData.fullName }
         );
       }
 
