@@ -97,26 +97,26 @@ export const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCre
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label htmlFor="studentId" className="block mb-2 text-sm font-medium text-gray-900">Student ID</label>
-              <input type="text" id="studentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:text-gray-300" placeholder="22125009" required
+              <input type="text" id="studentId" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22125009" required
                 value={formData.studentId}
                 disabled={dialogFor === 'info'}
                 onChange={handleChange} />
             </div>
             <div>
               <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900">Full name</label>
-              <input type="text" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" required
+              <input type="text" disabled={true} id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" required
                 value={formData.fullName}
                 onChange={handleChange} />
             </div>
             <div>
               <label htmlFor="class" className="block mb-2 text-sm font-medium text-gray-900">Class</label>
-              <input type="text" id="class" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22TT2" required
+              <input type="text" disabled={true} id="class" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22TT2" required
                 value={formData.class}
                 onChange={handleChange} />
             </div>
             <div>
               <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
-              <input type="tel" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required
+              <input type="tel" disabled={true} id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="0909909909" pattern="[0-9]{10}" required
                 value={formData.phone}
                 onChange={handleChange} />
             </div>
@@ -146,8 +146,8 @@ export const SectionStudentInfoDialog = ({ studentData, isOpen, dialogFor, onCre
             </div>
           </div>
           <div className="mb-6">
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email address</label>
-            <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required
+            <label htmlFor="email"  className="block mb-2 text-sm font-medium text-gray-900">Email address</label>
+            <input type="email" disabled={true} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required
               value={formData.email}
               onChange={handleChange} />
           </div>

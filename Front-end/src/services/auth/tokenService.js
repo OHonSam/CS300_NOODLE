@@ -10,7 +10,10 @@ export const decryptToken = (encryptedToken) => {
       return null;
     }
 
-    return JSON.parse(atob(originalToken.split('.')[1]));
+    const payload = originalToken.split('.')[1];
+    const decodedData = decodeURIComponent(escape(atob(payload)));
+
+    return JSON.parse(decodedData);
   } catch (error) {
     console.error('Token decryption failed', error);
     return null;

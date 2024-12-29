@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Tab from "../../../components/tab";
 import Table from "../../../components/table";
 import AnnouncementDialog from "../../../components/dialog/StudentAnnouncementDialog";
@@ -10,20 +10,20 @@ const TeacherAnnouncements = () => {
   const [currentAnnouncementDialog, setCurrentAnnouncementDialog] = useState(null);
   const [toast, setToast] = useState([]);
   const [announcements, setAnnouncments] = useState([]);
-
-  useEffect(() => {
-    const fetchAnnouncementData = async () => {
-      const data = await fetchAnnouncements();
-      setAnnouncments(data);
-    };
-
-    fetchAnnouncementData();
-  }, []);
+  
+    useEffect(() => {
+      const fetchAnnouncementData = async () => {
+        const data = await fetchAnnouncements();
+        setAnnouncments(data);
+      };
+  
+      fetchAnnouncementData();
+    }, []);
 
   const headings = [
     { id: 'title', label: 'Title' },
     { id: 'sender', label: 'Sender' },
-    { id: 'status', label: 'Status' },
+    // { id: 'status', label: 'Status' },
     { id: 'createdAt', label: 'Created At' },
     { id: 'updatedAt', label: 'Updated At' },
   ];
@@ -38,7 +38,7 @@ const TeacherAnnouncements = () => {
       <div className="flex justify-between items-start">
         <Tab title="Announcements" />
       </div>
-      <div className="relative mt-8 flex flex-col items-center justify-between w-full">
+      <div className="relative flex flex-col items-center justify-between w-full pt-4">
         <Table
           headings={headings}
           data={announcements}

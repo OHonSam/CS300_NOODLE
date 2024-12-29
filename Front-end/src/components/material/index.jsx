@@ -65,7 +65,7 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
   };
 
   return (
-    <div className="border rounded-lg shadow-md bg-white w-full flex pl-4 pr-2">
+    <div className="border rounded-lg shadow-md hover:bg-gray-100 bg-white w-full flex pl-4 pr-2">
       <div className="flex-grow">
         <Accordion open={open === 1}>
           <AccordionHeader onClick={() => handleOpen(1)}>
@@ -131,7 +131,7 @@ const Material = ({ materialId, title, content, url, isOpened, onUpdate, onDelet
                   <p>
                     Click{" "}
                     <a href={localUrl} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline pt-2">
-                      {localUrl}
+                      this link
                     </a>{" "}
                     to open material
                   </p>
